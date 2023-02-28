@@ -1,0 +1,58 @@
+﻿<Window x:Class="Floyd_Warshall.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Floyd_Warshall.View"
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
+        xmlns:userControls="clr-namespace:Floyd_Warshall.View.UserControls"
+        mc:Ignorable="d"
+        Title="Floyd-Warshall Visulatiton" Height="720" Width="1280"
+        WindowState="Normal" ResizeMode="CanMinimize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="New Graph">
+                    <MenuItem Header="Directed" Command="{Binding NewGraphCommand}">
+                        <MenuItem.CommandParameter>
+                            <s:Boolean>True</s:Boolean>
+                        </MenuItem.CommandParameter>
+                    </MenuItem>
+                    <MenuItem Header="Undirected" Command="{Binding NewGraphCommand}">
+                        <MenuItem.CommandParameter>
+                            <s:Boolean>False</s:Boolean>
+                        </MenuItem.CommandParameter>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Open" Command="{Binding LoadGraphCommand}" />
+                <MenuItem Header="Save" Command="{Binding SaveGraphCommand}" />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+        </Menu>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45*" />
+                <ColumnDefinition Width="55*" />
+            </Grid.ColumnDefinitions>
+
+            <userControls:GraphCanvas
+                DataContext="{Binding Canvas}"
+                Grid.Column="0"
+                CanvasClick="{Binding CanvasClickCommand}"
+                X="{Binding MouseX}"
+                Y="{Binding MouseY}">
+            </userControls:GraphCanvas>
+        </Grid>
+    </Grid>
+
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+L" Command="{Binding LoadGraphCommand}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveGraphCommand}" />
+    </Window.InputBindings>
+</Window>

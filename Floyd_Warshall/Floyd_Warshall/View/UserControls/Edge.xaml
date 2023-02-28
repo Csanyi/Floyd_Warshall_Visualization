@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Floyd_Warshall.View.UserControls.Edge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:Floyd_Warshall.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Line
+            X1="{Binding X1}"  Y1="{Binding Y1}"
+            X2="{Binding X2}"  Y2="{Binding Y2}"
+            Stroke="Black">
+            <Line.Style>
+                <Style TargetType="Line">
+                    <Setter Property="StrokeThickness" Value="1.2" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="StrokeThickness" Value="2" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=1}, Path=IsMouseOver}" Value="True">
+                            <Setter Property="StrokeThickness" Value="3" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Line.Style>
+        </Line>
+        <TextBlock 
+            FontWeight="Bold"
+            TextAlignment="Center"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center" >
+            <LineBreak />
+            <Run Text="{Binding Weight}" />
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="10" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="FontSize" Value="12" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=1}, Path=IsMouseOver}" Value="True">
+                            <Setter Property="FontSize" Value="14" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseLeftButtonUp">
+                <i:InvokeCommandAction Command="{Binding LeftClickCommand}" CommandParameter="{Binding Id}" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="MouseRightButtonUp">
+                <i:InvokeCommandAction Command="{Binding RightClickCommand}" CommandParameter="{Binding Id}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </Grid>
+</UserControl>

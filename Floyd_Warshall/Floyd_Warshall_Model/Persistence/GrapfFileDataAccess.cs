@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Floyd_Warshall_Model.Graph;
 
 namespace Floyd_Warshall_Model.Persistence
 {
     using VertexLocation = Tuple<Vertex, double, double>;
-    using GraphData = Tuple<Graph, IEnumerable<Tuple<Vertex, double, double>>>;
+    using GraphData = Tuple<GraphBase, IEnumerable<Tuple<Vertex, double, double>>>;
 
     public class GrapfFileDataAccess : IGraphDataAccess
     {
@@ -21,7 +16,15 @@ namespace Floyd_Warshall_Model.Persistence
                     string line = await reader.ReadLineAsync();
                     bool isDirected = Convert.ToBoolean(line);
 
-                    Graph graph = new Graph(isDirected);
+                    GraphBase graph;
+                    if (isDirected)
+                    {
+                        graph = new DirectedGraph();
+                    } else
+                    {
+                        graph = new UndirectedGraph();
+                    }
+
                     List<VertexLocation> locations = new List<VertexLocation>();
 
                     line = await reader.ReadLineAsync();
@@ -64,13 +67,13 @@ namespace Floyd_Warshall_Model.Persistence
             }
         }
 
-        public async Task SaveAsync(string path, Graph graph, IEnumerable<VertexLocation> locations)
+        public async Task SaveAsync(string path, GraphBase graph, IEnumerable<VertexLocation> locations)
         {
             try
             {
                 using (StreamWriter writer = new StreamWriter(path))
                 {
-                    await writer.WriteLineAsync(graph.IsDirected.ToString());
+                    await writer.WriteLineAsync(graph.IsDirected().ToString());
 
                     string delimiter = "";
 

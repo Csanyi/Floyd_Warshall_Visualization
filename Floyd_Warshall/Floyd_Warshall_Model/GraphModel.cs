@@ -1,9 +1,5 @@
 ﻿using Floyd_Warshall_Model.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Floyd_Warshall_Model.Graph;
 
 namespace Floyd_Warshall_Model
 {
@@ -11,23 +7,31 @@ namespace Floyd_Warshall_Model
 
     public class GraphModel
     {
-        private Graph _graph;
+        private GraphBase _graph;
         private IGraphDataAccess _dataAccess;
 
-        public Graph Graph { get { return _graph; } }
+        public GraphBase Graph { get { return _graph; } }
 
         public event EventHandler NewEmptyGraph;
         public event EventHandler<IEnumerable<VertexLocation>> GraphLoaded;
 
         public GraphModel(IGraphDataAccess dataAccess)
         {
-            _graph = new Graph(false);
+            _graph = new UndirectedGraph();
             _dataAccess = dataAccess;
         }
 
         public void NewGraph(bool isDirected)
         {
-            _graph = new Graph(isDirected);
+            if (isDirected)
+            {
+                _graph = new DirectedGraph();
+            }
+            else
+            {
+                _graph = new UndirectedGraph();
+            }
+
             OnNewEmptyGraph();
         }
 

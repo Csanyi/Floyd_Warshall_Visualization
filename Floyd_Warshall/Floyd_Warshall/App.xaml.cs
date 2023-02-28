@@ -2,6 +2,7 @@
 using Floyd_Warshall.ViewModel;
 using Floyd_Warshall_Model;
 using Floyd_Warshall_Model.Persistence;
+using Floyd_Warshall_Model.Graph;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

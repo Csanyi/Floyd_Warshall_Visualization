@@ -1,10 +1,8 @@
 ﻿using Floyd_Warshall.ViewModel.GraphComponents;
 using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Graph;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel

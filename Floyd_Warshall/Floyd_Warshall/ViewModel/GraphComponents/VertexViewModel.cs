@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Floyd_Warshall_Model;
+﻿using System.Collections.Generic;
+using Floyd_Warshall_Model.Graph;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {

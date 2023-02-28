@@ -1,4 +1,4 @@
-﻿namespace Floyd_Warshall_Model
+﻿namespace Floyd_Warshall_Model.Graph
 {
     public class Edge
     {

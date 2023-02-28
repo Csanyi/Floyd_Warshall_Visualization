@@ -1,10 +1,8 @@
 ﻿using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Graph;
 using Floyd_Warshall.ViewModel.GraphComponents;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Floyd_Warshall.ViewModel.Commands
 {
@@ -35,7 +33,7 @@ namespace Floyd_Warshall.ViewModel.Commands
                 _vm.SelectedVertex = null;
             } else
             {
-                if (_graphModel.Graph.IsDirected)
+                if (_graphModel.Graph.IsDirected())
                 {
                     AddDirectedEdge(_vm.SelectedVertex, v);
                 } else

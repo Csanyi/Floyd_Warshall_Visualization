@@ -1,12 +1,10 @@
 ﻿using Floyd_Warshall_Model;
 using Floyd_Warshall.ViewModel.Commands;
+using Floyd_Warshall_Model.Graph;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Diagnostics;
-using System.Windows.Automation;
 using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
@@ -88,7 +86,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                         => Verteces.Select(v => new VertexLocation(v.Vertex,v.CanvasX, v.CanvasY));
 
 
-
         private void Init()
         {
             Verteces.Clear();
@@ -100,6 +97,57 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
             _selectedEdge = null;
             _selectedVertex = null;
+        }
+
+        private void CreateDirectedEdges()
+        {
+            foreach (Edge edge in _graphModel.Graph.GetEdges())
+            {
+                VertexViewModel from = Verteces.Single(v => v.Vertex == edge.From);
+                VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
+
+                EdgeViewModelBase edgevm = new DirectedEdgeViewModel(GetEdgeId, _graphModel.Graph)
+                {
+                    From = from,
+                    To = to,
+                    Weight = edge.Weight,
+                    IsSelected = false,
+                    LeftClickCommand = new EdgeLeftClickCommand(this),
+                    RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
+                };
+
+                Edges.Add(edgevm);
+                from.Edges.Add(edgevm);
+                to.Edges.Add(edgevm);
+                Views.Add(edgevm);
+            }
+        }
+
+        private void CreateUndirectedEdges()
+        {
+            foreach (Edge edge in _graphModel.Graph.GetEdges())
+            {
+                VertexViewModel from = Verteces.Single(v => v.Vertex == edge.From);
+                VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
+
+                if (!from.Edges.Exists(e => (e.From == from && e.To == to) || (e.From == to && e.To == from)))
+                {
+                    EdgeViewModelBase edgevm = new EdgeViewModel(GetEdgeId, _graphModel.Graph)
+                    {
+                        From = from,
+                        To = to,
+                        Weight = edge.Weight,
+                        IsSelected = false,
+                        LeftClickCommand = new EdgeLeftClickCommand(this),
+                        RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
+                    };
+
+                    Edges.Add(edgevm);
+                    from.Edges.Add(edgevm);
+                    to.Edges.Add(edgevm);
+                    Views.Add(edgevm);
+                }
+            }
         }
 
 
@@ -128,47 +176,12 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 Views.Add(vertex);
             }
 
-            foreach(Edge edge in _graphModel.Graph.GetEdges())
+            if(_graphModel.Graph.IsDirected())
             {
-                VertexViewModel from =  Verteces.Single(v => v.Vertex == edge.From);
-                VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
-
-                if (_graphModel.Graph.IsDirected)
-                {               
-                    DirectedEdgeViewModel edgevm = new DirectedEdgeViewModel(GetEdgeId, _graphModel.Graph)
-                    {
-                        From = from,
-                        To = to,
-                        Weight = edge.Weight,
-                        IsSelected = false,
-                        LeftClickCommand = new EdgeLeftClickCommand(this),
-                        RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
-                    };
-
-                    Edges.Add(edgevm);
-                    from.Edges.Add(edgevm);
-                    to.Edges.Add(edgevm);
-                    Views.Add(edgevm);
-                } else
-                {
-                    if (!from.Edges.Exists(e => (e.From == from && e.To == to) || (e.From == to && e.To == from)))
-                    {
-                        EdgeViewModel edgevm = new EdgeViewModel(GetEdgeId, _graphModel.Graph)
-                        {
-                            From = from,
-                            To = to,
-                            Weight = edge.Weight,
-                            IsSelected = false,
-                            LeftClickCommand = new EdgeLeftClickCommand(this),
-                            RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
-                        };
-
-                        Edges.Add(edgevm);
-                        from.Edges.Add(edgevm);
-                        to.Edges.Add(edgevm);
-                        Views.Add(edgevm);
-                    }
-                }
+                CreateDirectedEdges();
+            } else
+            {
+                CreateUndirectedEdges();
             }
         }
 

@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Windows;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
-using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Graph;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -16,7 +9,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private const double _angleOffset = 0.3;
         private const int _endPointOffset = 5;
 
-        public DirectedEdgeViewModel(int id, Graph graph) : base(id, graph) { }
+        public DirectedEdgeViewModel(int id, GraphBase graph) : base(id, graph) { }
 
         public override double X1
         {

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Floyd_Warshall_Model
 {
+    using VertexLocation = Tuple<Vertex, double, double>;
+
     public class GraphModel
     {
         private Graph _graph;
@@ -15,7 +17,7 @@ namespace Floyd_Warshall_Model
         public Graph Graph { get { return _graph; } }
 
         public event EventHandler NewEmptyGraph;
-        public event EventHandler<IEnumerable<Tuple<Vertex, double, double>>> GraphLoaded;
+        public event EventHandler<IEnumerable<VertexLocation>> GraphLoaded;
 
         public GraphModel(IGraphDataAccess dataAccess)
         {
@@ -43,7 +45,7 @@ namespace Floyd_Warshall_Model
             OnGraphLoaded(v.Item2);
         }
 
-        public async Task SaveAsync(string path, IEnumerable<Tuple<Vertex, double, double>> locations)
+        public async Task SaveAsync(string path, IEnumerable<VertexLocation> locations)
         {
             if (_dataAccess == null)
             {
@@ -55,6 +57,6 @@ namespace Floyd_Warshall_Model
 
         private void OnNewEmptyGraph() => NewEmptyGraph?.Invoke(this, EventArgs.Empty);
 
-        private void OnGraphLoaded(IEnumerable<Tuple<Vertex, double, double>> locations) => GraphLoaded?.Invoke(this, locations);
+        private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, locations);
     }
 }

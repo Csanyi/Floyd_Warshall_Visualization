@@ -9,6 +9,8 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel
 {
+    using VertexLocation = Tuple<Vertex, double, double>;
+
     public class MainViewModel : ViewModelBase
     {
         private GraphCanvasViewModel _canvas;
@@ -16,10 +18,9 @@ namespace Floyd_Warshall.ViewModel
 
         public event EventHandler<bool> NewGraph;
         public event EventHandler LoadGraph;
-        public event EventHandler<IEnumerable<Tuple<Vertex,double,double>>> SaveGraph;
+        public event EventHandler<IEnumerable<VertexLocation>> SaveGraph;
         public event EventHandler Exit;
    
-
         public ICommand NewGraphCommand { get; private set; }
         public ICommand LoadGraphCommand { get; private set; }
         public ICommand SaveGraphCommand { get; private set; }

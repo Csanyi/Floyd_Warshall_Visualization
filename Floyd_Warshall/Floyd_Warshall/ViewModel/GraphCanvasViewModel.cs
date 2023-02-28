@@ -11,6 +11,8 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
+    using VertexLocation = Tuple<Vertex, double, double>;
+
     public class GraphCanvasViewModel : ViewModelBase
     {
         private GraphModel _graphModel;
@@ -79,11 +81,11 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             CanvasClickCommand = new CanvasClickCommand(this, _graphModel);
 
             _graphModel.NewEmptyGraph += new EventHandler(Model_NewEmptyGraph);
-            _graphModel.GraphLoaded += new EventHandler<IEnumerable<Tuple<Vertex, double, double>>>(Model_GraphLoaded);
+            _graphModel.GraphLoaded += new EventHandler<IEnumerable<VertexLocation>>(Model_GraphLoaded);
         }
 
-        public IEnumerable<Tuple<Vertex,double,double>> GetLocations() 
-                        => Verteces.Select(v => new Tuple<Vertex, double, double>(v.Vertex,v.CanvasX, v.CanvasY));
+        public IEnumerable<VertexLocation> GetLocations() 
+                        => Verteces.Select(v => new VertexLocation(v.Vertex,v.CanvasX, v.CanvasY));
 
 
 
@@ -105,7 +107,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_NewEmptyGraph(object sender, EventArgs e) => Init();
 
-        private void Model_GraphLoaded(object sender, IEnumerable<Tuple<Vertex, double, double>> e)
+        private void Model_GraphLoaded(object sender, IEnumerable<VertexLocation> e)
         {
             Init();
 

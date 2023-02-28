@@ -9,6 +9,8 @@ using System.Windows;
 
 namespace Floyd_Warshall
 {
+    using VertexLocation = Tuple<Vertex, double, double>;
+
     public partial class App : Application
     {
         private GraphModel _graphModel;
@@ -27,7 +29,7 @@ namespace Floyd_Warshall
 
             _viewModel.NewGraph += new EventHandler<bool>(ViewModel_NewGraph);
             _viewModel.LoadGraph += new EventHandler(ViewModel_LoadGraph);
-            _viewModel.SaveGraph += new EventHandler<IEnumerable<Tuple<Vertex, double, double>>>(ViewModel_SaveGraph);
+            _viewModel.SaveGraph += new EventHandler<IEnumerable<VertexLocation>>(ViewModel_SaveGraph);
             _viewModel.Exit += new EventHandler(ViewModel_Exit);
 
             _view = new MainWindow
@@ -62,7 +64,7 @@ namespace Floyd_Warshall
             }
 }
 
-        private async void ViewModel_SaveGraph(object sender, IEnumerable<Tuple<Vertex, double, double>> e)
+        private async void ViewModel_SaveGraph(object sender, IEnumerable<VertexLocation> e)
         {
             try
             {

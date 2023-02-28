@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace Floyd_Warshall_Model.Persistence
 {
+    using VertexLocation = Tuple<Vertex, double, double>;
+    using GraphData = Tuple<Graph, IEnumerable<Tuple<Vertex, double, double>>>;
+
     public class GrapfFileDataAccess : IGraphDataAccess
     {
-        public async Task<Tuple<Graph, IEnumerable<Tuple<Vertex, double, double>>>> LoadAsync(string path)
+        public async Task<GraphData> LoadAsync(string path)
         {
             try
             {
@@ -19,7 +22,7 @@ namespace Floyd_Warshall_Model.Persistence
                     bool isDirected = Convert.ToBoolean(line);
 
                     Graph graph = new Graph(isDirected);
-                    List<Tuple<Vertex, double, double>> locations = new List<Tuple<Vertex, double, double>>();
+                    List<VertexLocation> locations = new List<VertexLocation>();
 
                     line = await reader.ReadLineAsync();
 
@@ -32,7 +35,7 @@ namespace Floyd_Warshall_Model.Persistence
                             string[] v = value.Split(';');
                             Vertex vertex = new Vertex(int.Parse(v[0]));
                             graph.AddVertex(vertex);
-                            locations.Add(new Tuple<Vertex, double, double>(vertex, double.Parse(v[1]), double.Parse(v[2])));
+                            locations.Add(new VertexLocation(vertex, double.Parse(v[1]), double.Parse(v[2])));
                         }
 
                         line = await reader.ReadLineAsync();
@@ -53,7 +56,7 @@ namespace Floyd_Warshall_Model.Persistence
                         }
                     }
 
-                    return new Tuple<Graph, IEnumerable<Tuple<Vertex, double, double>>>(graph, locations);
+                    return new GraphData(graph, locations);
                 }
             } catch
             {
@@ -61,7 +64,7 @@ namespace Floyd_Warshall_Model.Persistence
             }
         }
 
-        public async Task SaveAsync(string path, Graph graph, IEnumerable<Tuple<Vertex, double, double>> locations)
+        public async Task SaveAsync(string path, Graph graph, IEnumerable<VertexLocation> locations)
         {
             try
             {

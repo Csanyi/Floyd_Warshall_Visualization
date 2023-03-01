@@ -33,7 +33,7 @@ namespace Floyd_Warshall.ViewModel.Commands
                 _vm.SelectedVertex = null;
             } else
             {
-                if (_graphModel.Graph.IsDirected())
+                if (_graphModel.Graph.IsDirected)
                 {
                     AddDirectedEdge(_vm.SelectedVertex, v);
                 } else

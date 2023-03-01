@@ -176,7 +176,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 Views.Add(vertex);
             }
 
-            if(_graphModel.Graph.IsDirected())
+            if(_graphModel.Graph.IsDirected)
             {
                 CreateDirectedEdges();
             } else

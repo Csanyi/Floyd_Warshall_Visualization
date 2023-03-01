@@ -4,6 +4,8 @@
     {
         public UndirectedGraph(): base() { }
 
+        public override bool IsDirected => false;
+
         public override void AddEdge(Vertex from, Vertex to, int weight)
         {
             Check(() => _adjacenylist.ContainsKey(from));

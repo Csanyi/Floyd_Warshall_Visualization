@@ -73,7 +73,7 @@ namespace Floyd_Warshall_Model.Persistence
             {
                 using (StreamWriter writer = new StreamWriter(path))
                 {
-                    await writer.WriteLineAsync(graph.IsDirected().ToString());
+                    await writer.WriteLineAsync(graph.IsDirected.ToString());
 
                     string delimiter = "";
 

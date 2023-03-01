@@ -9,6 +9,7 @@
             _adjacenylist = new Dictionary<Vertex, ICollection<Edge>>();
         }
 
+        public abstract bool IsDirected { get; }
 
         public abstract void AddEdge(Vertex from, Vertex to, int weight);
 
@@ -17,8 +18,6 @@
         public abstract void UpdateWeight(Vertex from, Vertex to, int weight);
 
         public abstract void IncrementWeight(Vertex from, Vertex to);
-
-        public bool IsDirected() => this.GetType() == typeof(DirectedGraph);
 
         public void AddVertex(Vertex v) 
         {

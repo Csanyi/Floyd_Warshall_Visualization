@@ -17,7 +17,7 @@
 
         <Menu>
             <MenuItem Header="File">
-                <MenuItem Header="New Graph">
+                <MenuItem Header="New Graph" IsEnabled="{Binding CommandsEnabled}">
                     <MenuItem Header="Directed" Command="{Binding NewGraphCommand}">
                         <MenuItem.CommandParameter>
                             <s:Boolean>True</s:Boolean>
@@ -34,7 +34,7 @@
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
         </Menu>
-        
+
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="45*" />
@@ -42,12 +42,16 @@
             </Grid.ColumnDefinitions>
 
             <userControls:GraphCanvas
-                DataContext="{Binding Canvas}"
                 Grid.Column="0"
+                DataContext="{Binding GraphCanvas}"
                 CanvasClick="{Binding CanvasClickCommand}"
                 X="{Binding MouseX}"
-                Y="{Binding MouseY}">
-            </userControls:GraphCanvas>
+                Y="{Binding MouseY}" />
+
+            <userControls:Algorithm
+                Grid.Column="1"
+                DataContext="{Binding Algorithm}" />
+            
         </Grid>
     </Grid>
 

@@ -53,7 +53,7 @@ namespace Floyd_Warshall_Model.Persistence
                                 Vertex to = graph.GetVertexById(int.Parse(e[1]));
                                 if (graph.GetEdge(from, to) == null)
                                 {
-                                    graph.AddEdge(from, to, int.Parse(e[2]));
+                                    graph.AddEdge(from, to, short.Parse(e[2]));
                                 }
                             }
                         }

@@ -36,4 +36,10 @@ public class DelegateCommand : ICommand
 		}
 		_execute(parameter);
 	}
+
+    public void RaiseCanExecuteChanged()
+    {
+        CommandManager.InvalidateRequerySuggested();
+    }
+
 }

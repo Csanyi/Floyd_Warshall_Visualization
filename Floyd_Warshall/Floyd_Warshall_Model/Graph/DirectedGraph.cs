@@ -6,7 +6,7 @@
 
         public override bool IsDirected => true;
 
-        public override void AddEdge(Vertex from, Vertex to, int weight)
+        public override void AddEdge(Vertex from, Vertex to, short weight)
         {
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
@@ -29,7 +29,7 @@
             }
         }
 
-        public override void UpdateWeight(Vertex from, Vertex to, int weight)
+        public override void UpdateWeight(Vertex from, Vertex to, short weight)
         {
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
@@ -49,7 +49,7 @@
 
             Edge e = GetEdge(from, to);
 
-            if (e != null)
+            if (e != null && e.Weight < short.MaxValue)
             {
                 ++e.Weight;
             }

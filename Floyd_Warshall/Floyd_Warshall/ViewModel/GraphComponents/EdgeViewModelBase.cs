@@ -5,17 +5,17 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 {
     public abstract class EdgeViewModelBase : GraphComponentViewModel
     {
-        private GraphBase _graph;
+        private readonly GraphBase _graph;
 
         protected EdgeViewModelBase(int id, GraphBase graph) { _id = id; _graph = graph;  }
 
-        private int _id;
+        private readonly int _id;
         public override int Id { get { return _id; } }
 
         public VertexViewModel From { get; set; }
         public VertexViewModel To { get; set; }
 
-        public int Weight
+        public short Weight
         {
             get { return _graph.GetWeight(From.Vertex, To.Vertex); }
             set

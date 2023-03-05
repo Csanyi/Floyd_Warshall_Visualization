@@ -11,11 +11,11 @@
 
         public abstract bool IsDirected { get; }
 
-        public abstract void AddEdge(Vertex from, Vertex to, int weight);
+        public abstract void AddEdge(Vertex from, Vertex to, short weight);
 
         public abstract void RemoveEdge(Vertex from, Vertex to);
 
-        public abstract void UpdateWeight(Vertex from, Vertex to, int weight);
+        public abstract void UpdateWeight(Vertex from, Vertex to, short weight);
 
         public abstract void IncrementWeight(Vertex from, Vertex to);
 
@@ -66,13 +66,13 @@
             return edges;
         }
 
-        public int GetEdgeCount() => _adjacenylist.Sum(x => x.Value.Count());
+        public int GetEdgeCount() => _adjacenylist.Sum(x => x.Value.Count);
 
         public int GetVertexCount() => _adjacenylist.Count;
 
         public Vertex GetVertexById(int id) => _adjacenylist.Keys.FirstOrDefault(v => v.Id == id);
 
-        public int GetWeight(Vertex from, Vertex to)
+        public short GetWeight(Vertex from, Vertex to)
         {
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
@@ -95,12 +95,14 @@
 
                     adjacencyMatrix[i, j] = (e != null) ? e.Weight : int.MaxValue; 
                 }
+
+                adjacencyMatrix[i, i] = 0;
             }
 
             return adjacencyMatrix;
         }
 
-        protected void Check(Func<bool> cond)
+        protected static void Check(Func<bool> cond)
         {
             if(!cond())
             {

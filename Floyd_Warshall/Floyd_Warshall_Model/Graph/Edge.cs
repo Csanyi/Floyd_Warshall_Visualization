@@ -2,7 +2,7 @@
 {
     public class Edge
     {
-        public Edge(Vertex from, Vertex to, int weight)
+        public Edge(Vertex from, Vertex to, short weight)
         {
             From = from;
             To = to;
@@ -13,6 +13,6 @@
 
         public Vertex To { get; }
 
-        public int Weight { get; set; }
+        public short Weight { get; set; }
     }
 }

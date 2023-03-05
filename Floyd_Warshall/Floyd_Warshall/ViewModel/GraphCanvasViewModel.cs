@@ -13,7 +13,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
     public class GraphCanvasViewModel : ViewModelBase
     {
-        private GraphModel _graphModel;
+        private readonly GraphModel _graphModel;
 
         private int _vertexId = 0;
         public int GetVertexId { get { return ++_vertexId; } }
@@ -60,6 +60,17 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        private bool _canvasEnabled = true;
+        public bool CanvasEnabled
+        {
+            get => _canvasEnabled;
+            set
+            {
+                _canvasEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
         public List<VertexViewModel> Verteces { get; set; }
 
         public List<EdgeViewModelBase> Edges { get; set; }
@@ -80,6 +91,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
             _graphModel.NewEmptyGraph += new EventHandler(Model_NewEmptyGraph);
             _graphModel.GraphLoaded += new EventHandler<IEnumerable<VertexLocation>>(Model_GraphLoaded);
+            _graphModel.AlgorithmStarted += new EventHandler<Tuple<int[,], int[,]>>(Model_AlgorithmStarted);
+            _graphModel.AlgorithmStopped += new EventHandler(Model_AlgorithmStopped);
         }
 
         public IEnumerable<VertexLocation> GetLocations() 
@@ -183,6 +196,16 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             {
                 CreateUndirectedEdges();
             }
+        }
+
+        private void Model_AlgorithmStarted(object sender, Tuple<int[,], int[,]> e)
+        {
+            CanvasEnabled = false;
+        }
+
+        private void Model_AlgorithmStopped(object sender, EventArgs e)
+        {
+            CanvasEnabled = true;
         }
 
         #endregion

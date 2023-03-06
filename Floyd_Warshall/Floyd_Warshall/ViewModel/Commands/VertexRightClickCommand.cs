@@ -21,7 +21,7 @@ namespace Floyd_Warshall.ViewModel.Commands
             int id = Convert.ToInt32(parameter);
 
             VertexViewModel v = _vm.Verteces.Single(v => v.Id == id);
-            _graphModel.Graph.RemoveVertex(v.Vertex);
+            _graphModel.RemoveVertex(v.Vertex);
             if (_vm.SelectedVertex == v)
             {
                 _vm.SelectedVertex = null;

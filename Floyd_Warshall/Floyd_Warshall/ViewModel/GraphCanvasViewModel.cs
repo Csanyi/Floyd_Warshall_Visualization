@@ -114,12 +114,12 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void CreateDirectedEdges()
         {
-            foreach (Edge edge in _graphModel.Graph.GetEdges())
+            foreach (Edge edge in _graphModel.GetEdges())
             {
                 VertexViewModel from = Verteces.Single(v => v.Vertex == edge.From);
                 VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
 
-                EdgeViewModelBase edgevm = new DirectedEdgeViewModel(GetEdgeId, _graphModel.Graph)
+                EdgeViewModelBase edgevm = new DirectedEdgeViewModel(GetEdgeId, _graphModel)
                 {
                     From = from,
                     To = to,
@@ -138,14 +138,14 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void CreateUndirectedEdges()
         {
-            foreach (Edge edge in _graphModel.Graph.GetEdges())
+            foreach (Edge edge in _graphModel.GetEdges())
             {
                 VertexViewModel from = Verteces.Single(v => v.Vertex == edge.From);
                 VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
 
                 if (!from.Edges.Exists(e => (e.From == from && e.To == to) || (e.From == to && e.To == from)))
                 {
-                    EdgeViewModelBase edgevm = new EdgeViewModel(GetEdgeId, _graphModel.Graph)
+                    EdgeViewModelBase edgevm = new EdgeViewModel(GetEdgeId, _graphModel)
                     {
                         From = from,
                         To = to,
@@ -189,7 +189,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 Views.Add(vertex);
             }
 
-            if(_graphModel.Graph.IsDirected)
+            if(_graphModel.IsDirected)
             {
                 CreateDirectedEdges();
             } else

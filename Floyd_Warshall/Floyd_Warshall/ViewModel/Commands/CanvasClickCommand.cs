@@ -28,7 +28,7 @@ namespace Floyd_Warshall.ViewModel.Commands
                 LeftClickCommand = new VertexLeftClickCommand(_vm, _graphModel),
             };
 
-            _graphModel.Graph.AddVertex(v);
+            _graphModel.AddVertex(v);
             _vm.Verteces.Add(vertex);
             _vm.Views.Add(vertex);
         }

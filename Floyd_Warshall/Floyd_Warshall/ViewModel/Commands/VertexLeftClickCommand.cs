@@ -33,7 +33,7 @@ namespace Floyd_Warshall.ViewModel.Commands
                 _vm.SelectedVertex = null;
             } else
             {
-                if (_graphModel.Graph.IsDirected)
+                if (_graphModel.IsDirected)
                 {
                     AddDirectedEdge(_vm.SelectedVertex, v);
                 } else
@@ -51,11 +51,11 @@ namespace Floyd_Warshall.ViewModel.Commands
             Vertex f = from.Vertex;
             Vertex t = to.Vertex;
 
-            if (_graphModel.Graph.GetEdge(f, t) == null)
+            if (_graphModel.GetEdge(f, t) == null)
             {
-                _graphModel.Graph.AddEdge(f, t, 1);
+                _graphModel.AddEdge(f, t, 1);
 
-                EdgeViewModel edge = new EdgeViewModel(_vm.GetEdgeId, _graphModel.Graph)
+                EdgeViewModel edge = new EdgeViewModel(_vm.GetEdgeId, _graphModel)
                 {
                     From = from,
                     To = to,
@@ -80,11 +80,11 @@ namespace Floyd_Warshall.ViewModel.Commands
             Vertex f = from.Vertex;
             Vertex t = to.Vertex;
 
-            if (_graphModel.Graph.GetEdge(f, t) == null)
+            if (_graphModel.GetEdge(f, t) == null)
             {
-                _graphModel.Graph.AddEdge(f, t, 1);
+                _graphModel.AddEdge(f, t, 1);
 
-                DirectedEdgeViewModel edge = new DirectedEdgeViewModel(_vm.GetEdgeId, _graphModel.Graph)
+                DirectedEdgeViewModel edge = new DirectedEdgeViewModel(_vm.GetEdgeId, _graphModel)
                 {
                     From = from,
                     To = to,

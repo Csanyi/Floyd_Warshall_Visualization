@@ -3,8 +3,8 @@ using System.Windows.Input;
 
 public class DelegateCommand : ICommand
 {
-	private readonly Action<Object> _execute;
-	private readonly Func<Object, Boolean> _canExecute;
+	private readonly Action<object> _execute;
+	private readonly Func<object, bool> _canExecute;
 
 	public event EventHandler CanExecuteChanged
 	{
@@ -12,11 +12,11 @@ public class DelegateCommand : ICommand
 		remove { CommandManager.RequerySuggested -= value; }
 	}
 
-	public DelegateCommand(Action<Object> execute, Func<Object,Boolean> canExecute = null)
+	public DelegateCommand(Action<object> execute, Func<object,bool> canExecute = null)
 	{
 		if (execute == null)
 		{
-			throw new ArgumentNullException("execute");
+			throw new ArgumentNullException(nameof(execute));
 		}
 
 		_execute = execute;
@@ -25,7 +25,7 @@ public class DelegateCommand : ICommand
 
 	public bool CanExecute(object parameter)
 	{
-		return _canExecute == null ? true : _canExecute(parameter);
+		return _canExecute == null || _canExecute(parameter);
 	}
 
 	public void Execute(object parameter)

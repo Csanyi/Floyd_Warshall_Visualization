@@ -11,14 +11,18 @@ namespace Floyd_Warshall_Model
         private FloydWarshall _floydWarshall;
         private readonly IGraphDataAccess _dataAccess;
 
-        public GraphBase Graph { get { return _graph; } }
+        public bool IsDirected => _graph.IsDirected;
 
-        public bool IsRunning { get { return _floydWarshall != null && _floydWarshall.IsRunnging; } }
+        public bool IsAlgorithmRunning => _floydWarshall != null && _floydWarshall.IsRunnging;
 
-        public int? K { get { return _floydWarshall?.K; } }
+        public bool IsAlgorthmInitialized => _floydWarshall != null;
+
+        public int? K  =>  _floydWarshall?.K;
 
         public event EventHandler NewEmptyGraph;
         public event EventHandler<IEnumerable<VertexLocation>> GraphLoaded;
+        public event EventHandler VertexAdded;
+        public event EventHandler VertexRemoved;
         public event EventHandler<Tuple<int[,], int[,]>> AlgorithmStarted;
         public event EventHandler<Tuple<int[,], int[,]>> AlgorithmStepped;
         public event EventHandler AlgorithmEnded;
@@ -43,6 +47,32 @@ namespace Floyd_Warshall_Model
 
             OnNewEmptyGraph();
         }
+
+        public void AddVertex(Vertex v)
+        {
+            _graph.AddVertex(v);
+            OnVertexAdded();
+        }
+
+        public void RemoveVertex(Vertex v)
+        {
+            _graph.RemoveVertex(v);
+            OnVertexRemoved();
+        }
+
+        public void AddEdge(Vertex from, Vertex to, short weight) => _graph.AddEdge(from, to, weight);
+
+        public void RemoveEdge(Vertex from, Vertex to) => _graph.RemoveEdge(from, to);
+
+        public Edge GetEdge(Vertex from, Vertex to) => _graph.GetEdge(from, to);
+
+        public short GetWeight(Vertex from, Vertex to) => _graph.GetWeight(from, to);
+
+        public void UpdateWeight(Vertex from, Vertex to, short weirht) => _graph.UpdateWeight(from, to, weirht);
+
+        public int GetVertexCount() => _graph.GetVertexCount();
+
+        public List<Edge> GetEdges() => _graph.GetEdges();
 
         public async Task LoadAsync(string path)
         {
@@ -95,6 +125,10 @@ namespace Floyd_Warshall_Model
         private void OnNewEmptyGraph() => NewEmptyGraph?.Invoke(this, EventArgs.Empty);
 
         private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, locations);
+
+        private void OnVertexAdded() => VertexAdded?.Invoke(this, EventArgs.Empty);
+
+        private void OnVertexRemoved() => VertexRemoved?.Invoke(this, EventArgs.Empty);
 
         private void OnAlhorithmStarted(int[,] d, int[,] pi) => AlgorithmStarted?.Invoke(this, new Tuple<int[,], int[,]>(d, pi));
 

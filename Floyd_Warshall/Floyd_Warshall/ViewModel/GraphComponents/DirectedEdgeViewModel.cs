@@ -1,5 +1,5 @@
 ﻿using System;
-using Floyd_Warshall_Model.Graph;
+using Floyd_Warshall_Model;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -9,7 +9,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private const double _angleOffset = 0.3;
         private const int _endPointOffset = 5;
 
-        public DirectedEdgeViewModel(int id, GraphBase graph) : base(id, graph) { }
+        public DirectedEdgeViewModel(int id, GraphModel graphModel) : base(id, graphModel) { }
 
         public override double X1
         {

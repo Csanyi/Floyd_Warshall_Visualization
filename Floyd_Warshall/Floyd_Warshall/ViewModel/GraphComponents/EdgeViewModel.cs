@@ -1,10 +1,10 @@
-﻿using Floyd_Warshall_Model.Graph;
+﻿using Floyd_Warshall_Model;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
     public class EdgeViewModel : EdgeViewModelBase
     {
-        public EdgeViewModel(int id, GraphBase graph) : base(id, graph) { }
+        public EdgeViewModel(int id, GraphModel graphModel) : base(id, graphModel) { }
 
         public override double X1 { get { return From.CanvasX - CanvasX + VertexViewModel.Size / 2; } }
 

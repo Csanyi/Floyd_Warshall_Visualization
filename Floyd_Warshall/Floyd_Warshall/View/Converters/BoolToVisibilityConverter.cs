@@ -15,7 +15,7 @@ namespace Floyd_Warshall.View.Converters
         {
             bool isVisible = (bool)value;
 
-            return isVisible? Visibility.Visible : Visibility.Hidden;
+            return isVisible ? Visibility.Visible : Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

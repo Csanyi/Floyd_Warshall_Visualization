@@ -25,7 +25,7 @@
             ItemsSource="{Binding D}"
             Width="280"
             Height="280"
-            Visibility="{Binding IsStarted, Converter={StaticResource BoolToVisibilityConverter}}">
+            Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="{Binding Size}" Columns="{Binding Size}" />
@@ -47,7 +47,7 @@
             ItemsSource="{Binding Pi}"
             Width="280"
             Height="280"
-            Visibility="{Binding IsStarted, Converter={StaticResource BoolToVisibilityConverter}}">
+            Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="{Binding Size}" Columns="{Binding Size}" />
@@ -75,13 +75,13 @@
                 <Button.Style>
                     <Style TargetType="Button">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsStarted}" Value="False" >
-                                <Setter Property="Content" Value="Start" />
-                                <Setter Property="Command" Value="{Binding StartCommand}" />
+                            <DataTrigger Binding="{Binding IsInitialized}" Value="False" >
+                                <Setter Property="Content" Value="Initialize" />
+                                <Setter Property="Command" Value="{Binding InitCommand}" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsStarted}" Value="True" >
-                                <Setter Property="Content" Value="Stop" />
-                                <Setter Property="Command" Value="{Binding StopCommand}" />
+                            <DataTrigger Binding="{Binding IsInitialized}" Value="True" >
+                                <Setter Property="Content" Value="Cancel" />
+                                <Setter Property="Command" Value="{Binding CancelCommand}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -96,8 +96,8 @@
                                 <Setter Property="Command" Value="{Binding PauseCommand}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsStopped}" Value="True" >
-                                <Setter Property="Content" Value="Restart" />
-                                <Setter Property="Command" Value="{Binding RestartCommand}" />
+                                <Setter Property="Content" Value="Start" />
+                                <Setter Property="Command" Value="{Binding StartCommand}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -108,7 +108,7 @@
         </Grid>
 
         <StatusBar Grid.Row="3">
-            <TextBlock Text="{Binding K, StringFormat=k: {0}}" Visibility="{Binding IsStarted, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding K, StringFormat=k: {0}}" Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </StatusBar>
     </Grid>
 </UserControl>

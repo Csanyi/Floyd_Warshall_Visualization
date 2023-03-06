@@ -40,9 +40,13 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        public int? K { get { return _graphModel.K; } }
+        public int? K => _graphModel.K;
 
-        private bool _isStopped = false;
+        public bool IsInitialized => _graphModel.IsAlgorthmInitialized;
+
+        public bool IsRunning => _graphModel.IsAlgorithmRunning;
+
+        private bool _isStopped;
         public bool IsStopped
         {
             get => _isStopped;
@@ -53,37 +57,24 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        private bool _isStarted = false;
-        public bool IsStarted
-        {
-            get => _isStarted;
-            set
-            {
-                _isStarted = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsRunning => _graphModel.IsRunning;
-
         public WpfObservableRangeCollection<int> D { get; set; }
         public WpfObservableRangeCollection<int> Pi { get; set; }
 
-        public DelegateCommand StartCommand { get; private set; }
-        public DelegateCommand StopCommand { get; private set; }
+        public DelegateCommand InitCommand { get; private set; }
+        public DelegateCommand CancelCommand { get; private set; }
         public DelegateCommand PauseCommand { get; private set; }
-        public DelegateCommand RestartCommand { get; private set; }
+        public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand StepCommand { get; private set; }
 
         public AlgorithmViewModel(GraphModel graphModel)
         {
             _graphModel = graphModel;
 
-            StartCommand = new DelegateCommand(param => Start(), param => { return _graphModel.Graph.GetVertexCount() > 1; });
-            StopCommand = new DelegateCommand(param => Stop());
+            InitCommand = new DelegateCommand(param => Init(), param => { return _graphModel.GetVertexCount() > 1; });
+            CancelCommand = new DelegateCommand(param => Cancel());
 
             PauseCommand = new DelegateCommand(param => Pause(), param => { return IsRunning; });
-            RestartCommand = new DelegateCommand(param => Restart(), param => { return IsRunning; });
+            StartCommand = new DelegateCommand(param => Start(), param => { return IsRunning; });
 
             StepCommand = new DelegateCommand(param => Step(), param => { return IsRunning && IsStopped; });
 
@@ -91,12 +82,16 @@ namespace Floyd_Warshall.ViewModel
             TimerInterval = 1000;
             _timer.Tick += new EventHandler(Timer_Tick);
 
+            _graphModel.VertexAdded += new EventHandler(Model_VertexCntChanged);
+            _graphModel.VertexRemoved += new EventHandler(Model_VertexCntChanged);
             _graphModel.AlgorithmStarted += new EventHandler<Tuple<int[,], int[,]>>(Model_AlgorithmStarted);
             _graphModel.AlgorithmStepped += new EventHandler<Tuple<int[,], int[,]>>(Model_AlgorithmStepped);
             _graphModel.AlgorithmEnded += new EventHandler(Model_AlgorithmEnded);
 
             D = new WpfObservableRangeCollection<int>();
             Pi = new WpfObservableRangeCollection<int>();
+
+            IsStopped = true;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -104,22 +99,21 @@ namespace Floyd_Warshall.ViewModel
             _graphModel.StepAlgorithm();
         }
 
-        private void Start()
+        private void Init()
         {
-            Size = _graphModel.Graph.GetVertexCount();
+            Size = _graphModel.GetVertexCount();
             _graphModel.StartAlgorithm();
-            _timer.Start();
 
-            IsStarted = true;
+            OnPropertyChanged(nameof(IsInitialized));
         }
 
-        private void Stop()
+        private void Cancel()
         {
             _timer.Stop();
             _graphModel.StopAlgorithm();
 
-            IsStarted = false;
-            IsStopped = false;
+            OnPropertyChanged(nameof(IsInitialized));
+            IsStopped = true;
 
             D.Clear();
             Pi.Clear();
@@ -131,7 +125,7 @@ namespace Floyd_Warshall.ViewModel
             IsStopped = true;
         }
 
-        private void Restart()
+        private void Start()
         {
             _timer.Start();
             IsStopped = false;
@@ -140,6 +134,11 @@ namespace Floyd_Warshall.ViewModel
         private void Step()
         {
             _graphModel.StepAlgorithm();
+        }
+
+        private void Model_VertexCntChanged(object sender, EventArgs e)
+        {
+            InitCommand.RaiseCanExecuteChanged();
         }
 
         private async void Model_AlgorithmStarted(object sender, Tuple<int[,], int[,]> e)
@@ -187,7 +186,7 @@ namespace Floyd_Warshall.ViewModel
         {
             _timer.Stop();
 
-            RestartCommand.RaiseCanExecuteChanged();
+            StartCommand.RaiseCanExecuteChanged();
             PauseCommand.RaiseCanExecuteChanged();
             StepCommand.RaiseCanExecuteChanged();
         }

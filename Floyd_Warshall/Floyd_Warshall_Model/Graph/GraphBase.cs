@@ -83,7 +83,7 @@
         public int[,] ToAdjacencyMatrix()
         {
             int size = GetVertexCount();
-            List<Vertex> vertices = GetVertices();
+            IList<Vertex> vertices = GetVertices();
 
             int[,] adjacencyMatrix = new int[size, size];
 

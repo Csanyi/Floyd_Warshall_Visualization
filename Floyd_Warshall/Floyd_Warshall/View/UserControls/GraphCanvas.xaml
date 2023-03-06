@@ -75,7 +75,18 @@
                 </TextBox.Style>
             </TextBox>
         </StatusBar>
-
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CanvasEnabled}" Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CanvasEnabled}" Value="False">
+                        <Setter Property="Opacity" Value="0.6" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
     </Grid>
 
 </UserControl>

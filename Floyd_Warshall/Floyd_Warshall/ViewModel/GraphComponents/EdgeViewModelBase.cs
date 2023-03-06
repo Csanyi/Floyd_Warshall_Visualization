@@ -1,13 +1,14 @@
-﻿using Floyd_Warshall_Model.Graph;
+﻿using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Graph;
 using System;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
     public abstract class EdgeViewModelBase : GraphComponentViewModel
     {
-        private readonly GraphBase _graph;
+        private readonly GraphModel _graphModel;
 
-        protected EdgeViewModelBase(int id, GraphBase graph) { _id = id; _graph = graph;  }
+        protected EdgeViewModelBase(int id, GraphModel graphModel) { _id = id; _graphModel = graphModel;  }
 
         private readonly int _id;
         public override int Id { get { return _id; } }
@@ -17,10 +18,10 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public short Weight
         {
-            get { return _graph.GetWeight(From.Vertex, To.Vertex); }
+            get { return _graphModel.GetWeight(From.Vertex, To.Vertex); }
             set
             {
-                _graph.UpdateWeight(From.Vertex, To.Vertex, value);
+                _graphModel.UpdateWeight(From.Vertex, To.Vertex, value);
                 OnPropertyChanged();
             }
         }

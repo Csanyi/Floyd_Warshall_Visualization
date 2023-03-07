@@ -5,7 +5,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 {
     public class VertexViewModel : GraphComponentViewModel
     {
-        public static int Size { get { return 40; } }
+        public static int Size { get { return 32; } }
 
         public VertexViewModel(Vertex v) 
         {

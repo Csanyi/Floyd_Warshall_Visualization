@@ -13,18 +13,19 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <ItemsControl
+            x:Name="canvas"
             Grid.Row="0"
             ItemsSource="{Binding Views}" 
             BorderBrush="Black"
-            BorderThickness="1"
-            ClipToBounds="True">
+            BorderThickness="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas 
+                    <Canvas
                         Background="LightBlue"
+                        ClipToBounds="True"
                         AllowDrop="True"
                         Drop="Canvas_Drop"
-                        MouseLeftButtonDown="Canvas_MouseLeftButtonUp">
+                        MouseLeftButtonDown="Canvas_MouseLeftButtonUp" >
                     </Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>

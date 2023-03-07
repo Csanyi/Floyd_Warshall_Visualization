@@ -31,8 +31,7 @@ namespace Floyd_Warshall.View.UserControls
         }
 
         public static readonly DependencyProperty XProperty =
-            DependencyProperty.Register("X", typeof(double), typeof(GraphCanvas), 
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            DependencyProperty.Register("X", typeof(double), typeof(GraphCanvas), new PropertyMetadata(0.0));
 
 
         public double Y
@@ -42,9 +41,7 @@ namespace Floyd_Warshall.View.UserControls
         }
 
         public static readonly DependencyProperty YProperty =
-            DependencyProperty.Register("Y", typeof(double), typeof(GraphCanvas),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
+            DependencyProperty.Register("Y", typeof(double), typeof(GraphCanvas), new PropertyMetadata(0.0));
 
 
 

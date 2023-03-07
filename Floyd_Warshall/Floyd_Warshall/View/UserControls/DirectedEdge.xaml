@@ -35,13 +35,13 @@
             </Line.RenderTransform>
             <Line.Style>
                 <Style TargetType="Line">
-                    <Setter Property="StrokeThickness" Value="10" />
+                    <Setter Property="StrokeThickness" Value="8" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter Property="StrokeThickness" Value="12" />
+                            <Setter Property="StrokeThickness" Value="10" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Canvas, AncestorLevel=1}, Path=IsMouseOver}" Value="True">
-                            <Setter Property="StrokeThickness" Value="14" />
+                            <Setter Property="StrokeThickness" Value="12" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -55,13 +55,13 @@
             Text="{Binding Weight}">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="FontSize" Value="8" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="FontSize" Value="10" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Canvas, AncestorLevel=1}, Path=IsMouseOver}" Value="True">
-                            <Setter Property="FontSize" Value="14" />
+                            <Setter Property="FontSize" Value="12" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

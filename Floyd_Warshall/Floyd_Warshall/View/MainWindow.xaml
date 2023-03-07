@@ -7,8 +7,10 @@
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:userControls="clr-namespace:Floyd_Warshall.View.UserControls"
         mc:Ignorable="d"
-        Title="Floyd-Warshall Visulatiton" Height="720" Width="1280"
-        WindowState="Normal" ResizeMode="CanMinimize">
+        Title="Floyd-Warshall Visulatiton"
+        Height="720" Width="1280" MinHeight="562" MinWidth="1000"
+        WindowState="Normal" WindowStartupLocation="CenterOwner"
+        SizeChanged="MainWindow_SizeChanged" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -42,11 +44,12 @@
             </Grid.ColumnDefinitions>
 
             <userControls:GraphCanvas
+                x:Name="graphCanvas"
                 Grid.Column="0"
                 DataContext="{Binding GraphCanvas}"
                 CanvasClick="{Binding CanvasClickCommand}"
-                X="{Binding MouseX}"
-                Y="{Binding MouseY}" />
+                X="{Binding MouseX, Mode=OneWayToSource}"
+                Y="{Binding MouseY, Mode=OneWayToSource}" />
 
             <userControls:Algorithm
                 Grid.Column="1"

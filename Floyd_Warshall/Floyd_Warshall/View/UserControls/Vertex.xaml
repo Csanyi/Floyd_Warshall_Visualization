@@ -30,7 +30,7 @@
                         Content="{Binding Id}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        TextBlock.FontSize="14"
+                        TextBlock.FontSize="12"
                         TextBlock.FontWeight="Bold"
                         IsHitTestVisible="False"/>
         <i:Interaction.Triggers>

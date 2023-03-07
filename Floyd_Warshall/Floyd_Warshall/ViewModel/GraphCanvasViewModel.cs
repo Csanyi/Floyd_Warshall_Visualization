@@ -38,27 +38,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public bool IsEdgeSelected { get { return SelectedEdge != null; } }
 
-        private double _mouseX;
-        public double MouseX
-        {
-            get { return _mouseX; }
-            set 
-            {    
-                _mouseX = value; 
-                OnPropertyChanged();
-            }
-        }
-
-        private double _mouseY;
-        public double MouseY
-        {
-            get { return _mouseY; }
-            set
-            {
-                _mouseY = value;
-                OnPropertyChanged();
-            }
-        }
+        public double MouseX { get; set; }
+        public double MouseY { get; set; }
 
         private bool _canvasEnabled = true;
         public bool CanvasEnabled

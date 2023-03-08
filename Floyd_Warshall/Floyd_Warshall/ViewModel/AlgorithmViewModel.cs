@@ -94,7 +94,7 @@ namespace Floyd_Warshall.ViewModel
             IsStopped = true;
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object? sender, EventArgs e)
         {
             _graphModel.StepAlgorithm();
         }
@@ -136,12 +136,12 @@ namespace Floyd_Warshall.ViewModel
             _graphModel.StepAlgorithm();
         }
 
-        private void Model_VertexCntChanged(object sender, EventArgs e)
+        private void Model_VertexCntChanged(object? sender, EventArgs e)
         {
             InitCommand.RaiseCanExecuteChanged();
         }
 
-        private async void Model_AlgorithmStarted(object sender, Tuple<int[,], int[,]> e)
+        private async void Model_AlgorithmStarted(object? sender, Tuple<int[,], int[,]> e)
         {
             OnPropertyChanged(nameof(K));
 
@@ -182,7 +182,7 @@ namespace Floyd_Warshall.ViewModel
             Pi.AddRange(res);
         }
         
-        private void Model_AlgorithmEnded(object sender, EventArgs e)
+        private void Model_AlgorithmEnded(object? sender, EventArgs e)
         {
             _timer.Stop();
 
@@ -191,7 +191,7 @@ namespace Floyd_Warshall.ViewModel
             StepCommand.RaiseCanExecuteChanged();
         }
 
-        private async void Model_AlgorithmStepped(object sender, Tuple<int[,], int[,]> e)
+        private async void Model_AlgorithmStepped(object? sender, Tuple<int[,], int[,]> e)
         {
             OnPropertyChanged(nameof(K));
             OnPropertyChanged(nameof(IsRunning));

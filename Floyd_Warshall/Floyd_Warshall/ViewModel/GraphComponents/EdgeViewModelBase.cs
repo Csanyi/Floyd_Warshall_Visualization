@@ -13,8 +13,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private readonly int _id;
         public override int Id { get { return _id; } }
 
-        public VertexViewModel From { get; set; }
-        public VertexViewModel To { get; set; }
+        public VertexViewModel From { get; set; } = null!;
+        public VertexViewModel To { get; set; } = null!;
 
         public short Weight
         {

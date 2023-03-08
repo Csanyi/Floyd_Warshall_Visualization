@@ -13,7 +13,8 @@ namespace Floyd_Warshall_Model.Persistence
             {
                 using (StreamReader reader= new StreamReader(path))
                 {
-                    string line = await reader.ReadLineAsync();
+                    string? line = await reader.ReadLineAsync();
+
                     bool isDirected = Convert.ToBoolean(line);
 
                     GraphBase graph;

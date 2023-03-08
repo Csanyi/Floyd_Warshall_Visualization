@@ -21,12 +21,12 @@ namespace Floyd_Warshall.ViewModel
         public virtual double CanvasX { get; set; }
         public virtual double CanvasY { get; set; }
 
-        public ICommand LeftClickCommand { get; set; }
-        public ICommand RightClickCommand { get; set; }
+        public ICommand LeftClickCommand { get; set; } = null!;
+        public ICommand RightClickCommand { get; set; } = null!;
 
         public Type Type => this.GetType();
 
-        public Type BaseType => this.GetType().BaseType;
+        public Type? BaseType => this.GetType().BaseType;
 
     }
 }

@@ -8,7 +8,7 @@ namespace Floyd_Warshall_Model
     public class GraphModel
     {
         private GraphBase _graph;
-        private FloydWarshall _floydWarshall;
+        private FloydWarshall? _floydWarshall;
         private readonly IGraphDataAccess _dataAccess;
 
         public bool IsDirected => _graph.IsDirected;
@@ -19,14 +19,14 @@ namespace Floyd_Warshall_Model
 
         public int? K  =>  _floydWarshall?.K;
 
-        public event EventHandler NewEmptyGraph;
-        public event EventHandler<IEnumerable<VertexLocation>> GraphLoaded;
-        public event EventHandler VertexAdded;
-        public event EventHandler VertexRemoved;
-        public event EventHandler<Tuple<int[,], int[,]>> AlgorithmStarted;
-        public event EventHandler<Tuple<int[,], int[,]>> AlgorithmStepped;
-        public event EventHandler AlgorithmEnded;
-        public event EventHandler AlgorithmStopped;
+        public event EventHandler? NewEmptyGraph;
+        public event EventHandler<IEnumerable<VertexLocation>>? GraphLoaded;
+        public event EventHandler? VertexAdded;
+        public event EventHandler? VertexRemoved;
+        public event EventHandler<Tuple<int[,], int[,]>>? AlgorithmStarted;
+        public event EventHandler<Tuple<int[,], int[,]>>? AlgorithmStepped;
+        public event EventHandler? AlgorithmEnded;
+        public event EventHandler? AlgorithmStopped;
 
         public GraphModel(IGraphDataAccess dataAccess)
         {
@@ -64,7 +64,7 @@ namespace Floyd_Warshall_Model
 
         public void RemoveEdge(Vertex from, Vertex to) => _graph.RemoveEdge(from, to);
 
-        public Edge GetEdge(Vertex from, Vertex to) => _graph.GetEdge(from, to);
+        public Edge? GetEdge(Vertex from, Vertex to) => _graph.GetEdge(from, to);
 
         public short GetWeight(Vertex from, Vertex to) => _graph.GetWeight(from, to);
 
@@ -106,6 +106,8 @@ namespace Floyd_Warshall_Model
 
         public void StepAlgorithm()
         {
+            if( _floydWarshall == null ) { return; }
+
             if (_floydWarshall.NextStep())
             {
                 OnAlgorithmStepped(_floydWarshall.D, _floydWarshall.Pi);

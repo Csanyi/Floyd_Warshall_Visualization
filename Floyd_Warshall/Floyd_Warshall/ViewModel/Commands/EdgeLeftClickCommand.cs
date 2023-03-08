@@ -13,7 +13,7 @@ namespace Floyd_Warshall.ViewModel.Commands
             _vm = graphCanvasViewModel;
         }
 
-        public override void Execute(object parameter)
+        public override void Execute(object? parameter)
         {
             int id = Convert.ToInt32(parameter);
 

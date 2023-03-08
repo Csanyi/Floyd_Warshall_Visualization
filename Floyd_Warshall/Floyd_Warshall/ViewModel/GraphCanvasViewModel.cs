@@ -21,11 +21,11 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private int _edgeId = 0;
         public int GetEdgeId { get { return ++_edgeId; } }
 
-        public VertexViewModel _selectedVertex = null;
-        public VertexViewModel SelectedVertex { get { return _selectedVertex; } set { _selectedVertex = value; } }
+        public VertexViewModel? _selectedVertex = null;
+        public VertexViewModel? SelectedVertex { get { return _selectedVertex; } set { _selectedVertex = value; } }
 
-        private EdgeViewModelBase _selectedEdge = null;
-        public EdgeViewModelBase SelectedEdge
+        private EdgeViewModelBase? _selectedEdge = null;
+        public EdgeViewModelBase? SelectedEdge
         {
             get { return _selectedEdge; }
             set
@@ -147,9 +147,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         #region Model event handlers
 
-        private void Model_NewEmptyGraph(object sender, EventArgs e) => Init();
+        private void Model_NewEmptyGraph(object? sender, EventArgs e) => Init();
 
-        private void Model_GraphLoaded(object sender, IEnumerable<VertexLocation> e)
+        private void Model_GraphLoaded(object? sender, IEnumerable<VertexLocation> e)
         {
             Init();
 
@@ -179,12 +179,12 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
-        private void Model_AlgorithmStarted(object sender, Tuple<int[,], int[,]> e)
+        private void Model_AlgorithmStarted(object? sender, Tuple<int[,], int[,]> e)
         {
             CanvasEnabled = false;
         }
 
-        private void Model_AlgorithmStopped(object sender, EventArgs e)
+        private void Model_AlgorithmStopped(object? sender, EventArgs e)
         {
             CanvasEnabled = true;
         }

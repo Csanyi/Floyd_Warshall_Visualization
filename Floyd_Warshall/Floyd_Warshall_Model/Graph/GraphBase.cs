@@ -32,7 +32,7 @@
 
             foreach(var adjacent in _adjacenylist)
             {
-                Edge e = GetEdge(adjacent.Key, v);
+                Edge? e = GetEdge(adjacent.Key, v);
 
                 if(e != null)
                 {
@@ -43,7 +43,7 @@
             _adjacenylist.Remove(v);
         }
 
-        public Edge GetEdge(Vertex from, Vertex to)
+        public Edge? GetEdge(Vertex from, Vertex to)
         {
             Check(() => _adjacenylist.ContainsKey(from));
 
@@ -70,7 +70,7 @@
 
         public int GetVertexCount() => _adjacenylist.Count;
 
-        public Vertex GetVertexById(int id) => _adjacenylist.Keys.FirstOrDefault(v => v.Id == id);
+        public Vertex? GetVertexById(int id) => _adjacenylist.Keys.FirstOrDefault(v => v.Id == id);
 
         public short GetWeight(Vertex from, Vertex to)
         {
@@ -91,7 +91,7 @@
             {
                 for (int j = 0; j < size; ++j)
                 {
-                    Edge e = GetEdge(vertices[i], vertices[j]);
+                    Edge? e = GetEdge(vertices[i], vertices[j]);
 
                     adjacencyMatrix[i, j] = (e != null) ? e.Weight : int.MaxValue; 
                 }

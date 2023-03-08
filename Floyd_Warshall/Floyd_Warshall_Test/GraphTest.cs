@@ -1,17 +1,17 @@
 
-using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Graph;
 
 namespace Floyd_Warshall_Test
 {
     [TestClass]
     public class GraphTest
     {
-        private Graph _graph;
+        private GraphBase _graph = null!;
 
         [TestInitialize]
         public void Initialize()
         {
-            _graph = new Graph(false);
+            _graph = new UndirectedGraph();
         }
 
 

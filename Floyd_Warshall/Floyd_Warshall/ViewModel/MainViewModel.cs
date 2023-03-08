@@ -29,10 +29,10 @@ namespace Floyd_Warshall.ViewModel
         private AlgorithmViewModel _algorithm;
         public AlgorithmViewModel Algorithm { get { return _algorithm; } }
 
-        public event EventHandler<bool> NewGraph;
-        public event EventHandler LoadGraph;
-        public event EventHandler<IEnumerable<VertexLocation>> SaveGraph;
-        public event EventHandler Exit;
+        public event EventHandler<bool>? NewGraph;
+        public event EventHandler? LoadGraph;
+        public event EventHandler<IEnumerable<VertexLocation>>? SaveGraph;
+        public event EventHandler? Exit;
    
         public ICommand NewGraphCommand { get; private set; }
         public ICommand LoadGraphCommand { get; private set; }
@@ -65,12 +65,12 @@ namespace Floyd_Warshall.ViewModel
         private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
 
 
-        private void Model_AlgorithmStarted(object sender, Tuple<int[,], int[,]> e)
+        private void Model_AlgorithmStarted(object? sender, Tuple<int[,], int[,]> e)
         {
             CommandsEnabled = false;
         }
 
-        private void Model_AlgorithmStopped(object sender, EventArgs e)
+        private void Model_AlgorithmStopped(object? sender, EventArgs e)
         {
             CommandsEnabled = true;
         }

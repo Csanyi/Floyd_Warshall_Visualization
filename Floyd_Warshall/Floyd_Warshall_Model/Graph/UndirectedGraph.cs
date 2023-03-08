@@ -22,7 +22,7 @@
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
 
-            Edge e = GetEdge(from, to);
+            Edge? e = GetEdge(from, to);
             if (e != null)
             {
                 _adjacenylist[from].Remove(e);
@@ -40,7 +40,7 @@
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
 
-            Edge e = GetEdge(from, to);
+            Edge? e = GetEdge(from, to);
             if (e != null && e.Weight < short.MaxValue)
             {
                 e.Weight = weight;
@@ -58,7 +58,7 @@
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
 
-            Edge e = GetEdge(from, to);
+            Edge? e = GetEdge(from, to);
             if (e != null)
             {
                 ++e.Weight;

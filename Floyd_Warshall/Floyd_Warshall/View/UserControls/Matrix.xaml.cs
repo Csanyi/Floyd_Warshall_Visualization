@@ -44,9 +44,5 @@ namespace Floyd_Warshall.View.UserControls
 
         public static readonly DependencyProperty UseConverterProperty =
             DependencyProperty.Register("UseConverter", typeof(bool), typeof(Matrix), new PropertyMetadata(false));
-
-
-
-
     }
 }

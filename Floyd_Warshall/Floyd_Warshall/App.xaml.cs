@@ -2,7 +2,6 @@
 using Floyd_Warshall.ViewModel;
 using Floyd_Warshall_Model;
 using Floyd_Warshall_Model.Persistence;
-using Floyd_Warshall_Model.Graph;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -10,13 +9,11 @@ using System.Windows;
 
 namespace Floyd_Warshall
 {
-    using VertexLocation = Tuple<Vertex, double, double>;
-
     public partial class App : Application
     {
-        private GraphModel _graphModel;
-        private MainWindow _view;
-        private MainViewModel _viewModel;
+        private GraphModel _graphModel = null!;
+        private MainWindow _view = null!;
+        private MainViewModel _viewModel = null!;
 
         public App()
         {
@@ -44,10 +41,10 @@ namespace Floyd_Warshall
 
         #region ViewModel event handlers
 
-        private void ViewModel_NewGraph(object sender, bool e) => _graphModel.NewGraph(e);
+        private void ViewModel_NewGraph(object? sender, bool e) => _graphModel.NewGraph(e);
      
 
-        private async void ViewModel_LoadGraph(object sender, EventArgs e)
+        private async void ViewModel_LoadGraph(object? sender, EventArgs e)
         {
             try
             {
@@ -65,7 +62,7 @@ namespace Floyd_Warshall
             }
 }
 
-        private async void ViewModel_SaveGraph(object sender, IEnumerable<VertexLocation> e)
+        private async void ViewModel_SaveGraph(object? sender, IEnumerable<VertexLocation> e)
         {
             try
             {
@@ -90,7 +87,7 @@ namespace Floyd_Warshall
             }
         }
 
-        private void ViewModel_Exit(object sender, EventArgs e) => _view.Close();
+        private void ViewModel_Exit(object? sender, EventArgs e) => _view.Close();
 
 
         #endregion

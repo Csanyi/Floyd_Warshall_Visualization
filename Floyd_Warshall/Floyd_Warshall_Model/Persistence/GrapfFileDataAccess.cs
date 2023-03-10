@@ -2,9 +2,6 @@
 
 namespace Floyd_Warshall_Model.Persistence
 {
-    using VertexLocation = Tuple<Vertex, double, double>;
-    using GraphData = Tuple<GraphBase, IEnumerable<Tuple<Vertex, double, double>>>;
-
     public class GrapfFileDataAccess : IGraphDataAccess
     {
         public async Task<GraphData> LoadAsync(string path)
@@ -50,9 +47,9 @@ namespace Floyd_Warshall_Model.Persistence
                             foreach (string value in values)
                             {
                                 string[] e = value.Split(';');
-                                Vertex from = graph.GetVertexById(int.Parse(e[0]));
-                                Vertex to = graph.GetVertexById(int.Parse(e[1]));
-                                if (graph.GetEdge(from, to) == null)
+                                Vertex? from = graph.GetVertexById(int.Parse(e[0]));
+                                Vertex? to = graph.GetVertexById(int.Parse(e[1]));
+                                if (from != null && to != null && graph.GetEdge(from, to) == null)
                                 {
                                     graph.AddEdge(from, to, short.Parse(e[2]));
                                 }
@@ -80,7 +77,7 @@ namespace Floyd_Warshall_Model.Persistence
 
                     foreach(var v in locations)
                     {
-                        await writer.WriteAsync(delimiter + v.Item1.Id + ";" + v.Item2 + ";" + v.Item3);
+                        await writer.WriteAsync(delimiter + v.Vertex.Id + ";" + v.X + ";" + v.Y);
                         delimiter = " ";
                     }
                     await writer.WriteLineAsync();

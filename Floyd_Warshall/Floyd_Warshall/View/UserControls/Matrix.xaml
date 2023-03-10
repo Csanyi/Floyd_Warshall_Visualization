@@ -11,6 +11,18 @@
 
     <UserControl.Resources>
         <Converters:IntWithInfConverter x:Key="IntWithInfConverter" />
+        <Style x:Key="matrixHeaderStyle" TargetType="Border">
+            <Setter Property="BorderThickness" Value="0.5" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Background" Value="LightGray" />
+        </Style>
+        <Style x:Key="centerText" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
     
     <Viewbox Margin="0,20" >
@@ -35,10 +47,10 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="0.5" BorderBrush="Black" Width="30" Height="30" Background="LightGray">
+                        <Border Style="{StaticResource matrixHeaderStyle}">
                             <TextBlock 
-                                    Text="{Binding}"
-                                    TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                Text="{Binding}"
+                                Style="{StaticResource centerText}" />
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -55,10 +67,10 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="0.5" BorderBrush="Black" Width="30" Height="30" Background="LightGray">
+                        <Border Style="{StaticResource matrixHeaderStyle}">
                             <TextBlock 
                                     Text="{Binding}"
-                                    TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    Style="{StaticResource centerText}" />
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

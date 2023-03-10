@@ -50,11 +50,9 @@
             return _adjacenylist[from].FirstOrDefault(e => e.To == to);
         }
 
-        public List<Vertex> GetNeighbours(Vertex from) => _adjacenylist[from].Select(e => e.To).ToList();
+        public List<Vertex> GetVertices() => _adjacenylist.Keys.OrderBy(v => v.Id).ToList();
 
-        public List<Vertex> GetVertices() => _adjacenylist.Keys.ToList();
-
-        public List<int> GetVertexIds() => _adjacenylist.Keys.Select(v => v.Id).ToList();
+        public List<int> GetVertexIds() => _adjacenylist.Keys.Select(v => v.Id).OrderBy(i => i).ToList();
 
         public List<Edge> GetEdges()
         {

@@ -1,4 +1,6 @@
-﻿using Floyd_Warshall_Model;
+﻿using Floyd_Warshall.ViewModel.Commands;
+using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,13 +19,11 @@ namespace Floyd_Warshall.ViewModel
         private readonly GraphModel _graphModel;
         private readonly DispatcherTimer _timer;
 
-        private int _timerInterval;
         public int TimerInterval
         {
-            get { return _timerInterval; }
+            get { return _timer.Interval.Seconds * 1000 + _timer.Interval.Milliseconds; }
             set
             {
-                _timerInterval = value;
                 _timer.Interval = TimeSpan.FromMilliseconds(value);
                 OnPropertyChanged();
             }
@@ -85,8 +85,8 @@ namespace Floyd_Warshall.ViewModel
 
             _graphModel.VertexAdded += new EventHandler(Model_VertexCntChanged);
             _graphModel.VertexRemoved += new EventHandler(Model_VertexCntChanged);
-            _graphModel.AlgorithmStarted += new EventHandler<Tuple<int[,], int[,]>>(Model_AlgorithmStarted);
-            _graphModel.AlgorithmStepped += new EventHandler<Tuple<int[,], int[,]>>(Model_AlgorithmStepped);
+            _graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
+            _graphModel.AlgorithmStepped += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStepped);
             _graphModel.AlgorithmEnded += new EventHandler(Model_AlgorithmEnded);
 
             D = new WpfObservableRangeCollection<int>();
@@ -103,13 +103,14 @@ namespace Floyd_Warshall.ViewModel
 
         private void Init()
         {
-            Size = _graphModel.GetVertexCount();
             _graphModel.StartAlgorithm();
 
             foreach(int id in _graphModel.GetVertexIds())
             {
                 VertexIds.Add(id);
             }
+
+            Size = VertexIds.Count;
 
             OnPropertyChanged(nameof(IsInitialized));
         }
@@ -149,23 +150,16 @@ namespace Floyd_Warshall.ViewModel
             InitCommand.RaiseCanExecuteChanged();
         }
 
-        private async void Model_AlgorithmStarted(object? sender, Tuple<int[,], int[,]> e)
+        private async void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
             OnPropertyChanged(nameof(K));
 
-            var res = await Task.Run(() =>
+            int[] res = await Task.Run(() =>
             {
-                List<int> res = new List<int>();
+                int[] tmp = new int[e.D.GetLength(0) * e.D.GetLength(1)];
+                Buffer.BlockCopy(e.D, 0, tmp, 0, tmp.Length * sizeof(int));
 
-                for (int i = 0; i < e.Item1.GetLength(0); ++i)
-                {
-                    for (int j = 0; j < e.Item2.GetLength(1); ++j)
-                    {
-                        res.Add(e.Item1[i, j]);
-                    }
-                }
-
-                return res;
+                return tmp;
             });
 
             D.Clear();
@@ -173,17 +167,10 @@ namespace Floyd_Warshall.ViewModel
 
             res = await Task.Run(() =>
             {
-                List<int> res = new List<int>();
+                int[] tmp = new int[e.Pi.GetLength(0) * e.Pi.GetLength(1)];
+                Buffer.BlockCopy(e.Pi, 0, tmp, 0, tmp.Length * sizeof(int));
 
-                for (int i = 0; i < e.Item1.GetLength(0); ++i)
-                {
-                    for (int j = 0; j < e.Item2.GetLength(1); ++j)
-                    {
-                        res.Add(e.Item2[i, j]);
-                    }
-                }
-
-                return res;
+                return tmp;
             });
 
             Pi.Clear();
@@ -199,24 +186,17 @@ namespace Floyd_Warshall.ViewModel
             StepCommand.RaiseCanExecuteChanged();
         }
 
-        private async void Model_AlgorithmStepped(object? sender, Tuple<int[,], int[,]> e)
+        private async void Model_AlgorithmStepped(object? sender, AlgorithmEventArgs e)
         {
             OnPropertyChanged(nameof(K));
             OnPropertyChanged(nameof(IsRunning));
 
-            var res = await Task.Run(() =>
+            int[] res = await Task.Run(() =>
             {
-                List<int> res = new List<int>();
+                int[] tmp = new int[e.D.GetLength(0) * e.D.GetLength(1)];
+                Buffer.BlockCopy(e.D, 0, tmp, 0, tmp.Length * sizeof(int));
 
-                for (int i = 0; i < e.Item1.GetLength(0); ++i)
-                {
-                    for (int j = 0; j < e.Item2.GetLength(1); ++j)
-                    {
-                        res.Add(e.Item1[i, j]);
-                    }
-                }
-
-                return res;
+                return tmp;
             });
 
             D.Clear();
@@ -224,17 +204,10 @@ namespace Floyd_Warshall.ViewModel
 
             res = await Task.Run(() =>
             {
-                List<int> res = new List<int>();
+                int[] tmp = new int[e.Pi.GetLength(0) * e.Pi.GetLength(1)];
+                Buffer.BlockCopy(e.Pi, 0, tmp, 0, tmp.Length * sizeof(int));
 
-                for (int i = 0; i < e.Item1.GetLength(0); ++i)
-                {
-                    for (int j = 0; j < e.Item2.GetLength(1); ++j)
-                    {
-                        res.Add(e.Item2[i, j]);
-                    }
-                }
-
-                return res;
+                return tmp;
             });
 
             Pi.Clear();

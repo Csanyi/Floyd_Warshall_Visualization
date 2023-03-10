@@ -1,6 +1,9 @@
-﻿using Floyd_Warshall.ViewModel.GraphComponents;
+﻿using Floyd_Warshall.ViewModel.Commands;
+using Floyd_Warshall.ViewModel.GraphComponents;
 using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Events;
 using Floyd_Warshall_Model.Graph;
+using Floyd_Warshall_Model.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Security.AccessControl;
@@ -8,11 +11,9 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel
 {
-    using VertexLocation = Tuple<Vertex, double, double>;
-
     public class MainViewModel : ViewModelBase
     {
-        private GraphCanvasViewModel _graphCanvas;
+        private readonly GraphCanvasViewModel _graphCanvas;
         public GraphCanvasViewModel GraphCanvas { get { return _graphCanvas; } }
 
         private bool _commandsEnabled;
@@ -26,7 +27,7 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        private AlgorithmViewModel _algorithm;
+        private readonly AlgorithmViewModel _algorithm;
         public AlgorithmViewModel Algorithm { get { return _algorithm; } }
 
         public event EventHandler<bool>? NewGraph;
@@ -51,7 +52,7 @@ namespace Floyd_Warshall.ViewModel
             SaveGraphCommand = new DelegateCommand(param => OnSave());
             ExitCommand = new DelegateCommand(param => OnExit());
 
-            graphModel.AlgorithmStarted += new EventHandler<Tuple<int[,], int[,]>>(Model_AlgorithmStarted);
+            graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
             graphModel.AlgorithmStopped += new EventHandler(Model_AlgorithmStopped);
         }
 
@@ -65,7 +66,7 @@ namespace Floyd_Warshall.ViewModel
         private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
 
 
-        private void Model_AlgorithmStarted(object? sender, Tuple<int[,], int[,]> e)
+        private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
             CommandsEnabled = false;
         }

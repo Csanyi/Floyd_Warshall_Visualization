@@ -1,16 +1,16 @@
 ﻿using Floyd_Warshall_Model;
 using Floyd_Warshall.ViewModel.Commands;
 using Floyd_Warshall_Model.Graph;
+using Floyd_Warshall_Model.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Floyd_Warshall_Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
-    using VertexLocation = Tuple<Vertex, double, double>;
-
     public class GraphCanvasViewModel : ViewModelBase
     {
         private readonly GraphModel _graphModel;
@@ -71,8 +71,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             CanvasClickCommand = new CanvasClickCommand(this, _graphModel);
 
             _graphModel.NewEmptyGraph += new EventHandler(Model_NewEmptyGraph);
-            _graphModel.GraphLoaded += new EventHandler<IEnumerable<VertexLocation>>(Model_GraphLoaded);
-            _graphModel.AlgorithmStarted += new EventHandler<Tuple<int[,], int[,]>>(Model_AlgorithmStarted);
+            _graphModel.GraphLoaded += new EventHandler<GraphLoadedEventArgs>(Model_GraphLoaded);
+            _graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
             _graphModel.AlgorithmStopped += new EventHandler(Model_AlgorithmStopped);
         }
 
@@ -149,18 +149,18 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_NewEmptyGraph(object? sender, EventArgs e) => Init();
 
-        private void Model_GraphLoaded(object? sender, IEnumerable<VertexLocation> e)
+        private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
         {
             Init();
 
-            foreach (var v in e)
+            foreach (var v in e.VertexLocations)
             {
-                if(v.Item1.Id >_vertexId) { _vertexId = v.Item1.Id; }
+                if(v.Vertex.Id >_vertexId) { _vertexId = v.Vertex.Id; }
 
-                VertexViewModel vertex = new VertexViewModel(v.Item1)
+                VertexViewModel vertex = new VertexViewModel(v.Vertex)
                 {
-                    CanvasX = v.Item2,
-                    CanvasY = v.Item3,
+                    CanvasX = v.X,
+                    CanvasY = v.Y,
                     IsSelected = false,
                     RightClickCommand = new VertexRightClickCommand(this, _graphModel),
                     LeftClickCommand = new VertexLeftClickCommand(this, _graphModel),
@@ -179,7 +179,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
-        private void Model_AlgorithmStarted(object? sender, Tuple<int[,], int[,]> e)
+        private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
             CanvasEnabled = false;
         }

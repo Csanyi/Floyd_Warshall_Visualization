@@ -1,10 +1,9 @@
 ﻿using Floyd_Warshall_Model.Persistence;
 using Floyd_Warshall_Model.Graph;
+using Floyd_Warshall_Model.Events;
 
 namespace Floyd_Warshall_Model
 {
-    using VertexLocation = Tuple<Vertex, double, double>;
-
     public class GraphModel
     {
         private GraphBase _graph;
@@ -20,11 +19,11 @@ namespace Floyd_Warshall_Model
         public int? K  =>  _floydWarshall?.K;
 
         public event EventHandler? NewEmptyGraph;
-        public event EventHandler<IEnumerable<VertexLocation>>? GraphLoaded;
+        public event EventHandler<GraphLoadedEventArgs>? GraphLoaded;
         public event EventHandler? VertexAdded;
         public event EventHandler? VertexRemoved;
-        public event EventHandler<Tuple<int[,], int[,]>>? AlgorithmStarted;
-        public event EventHandler<Tuple<int[,], int[,]>>? AlgorithmStepped;
+        public event EventHandler<AlgorithmEventArgs>? AlgorithmStarted;
+        public event EventHandler<AlgorithmEventArgs>? AlgorithmStepped;
         public event EventHandler? AlgorithmEnded;
         public event EventHandler? AlgorithmStopped;
 
@@ -83,11 +82,11 @@ namespace Floyd_Warshall_Model
                 throw new InvalidOperationException("No data acces provided.");
             }
 
-            var v = await _dataAccess.LoadAsync(path);
+            GraphData v = await _dataAccess.LoadAsync(path);
 
-            _graph = v.Item1;
+            _graph = v.Graph;
 
-            OnGraphLoaded(v.Item2);
+            OnGraphLoaded(v.VertexLocations);
         }
 
         public async Task SaveAsync(string path, IEnumerable<VertexLocation> locations)
@@ -128,15 +127,15 @@ namespace Floyd_Warshall_Model
 
         private void OnNewEmptyGraph() => NewEmptyGraph?.Invoke(this, EventArgs.Empty);
 
-        private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, locations);
+        private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLoadedEventArgs(locations));
 
         private void OnVertexAdded() => VertexAdded?.Invoke(this, EventArgs.Empty);
 
         private void OnVertexRemoved() => VertexRemoved?.Invoke(this, EventArgs.Empty);
 
-        private void OnAlhorithmStarted(int[,] d, int[,] pi) => AlgorithmStarted?.Invoke(this, new Tuple<int[,], int[,]>(d, pi));
+        private void OnAlhorithmStarted(int[,] d, int[,] pi) => AlgorithmStarted?.Invoke(this, new AlgorithmEventArgs(d, pi));
 
-        private void OnAlgorithmStepped(int[,] d, int[,] pi) => AlgorithmStepped?.Invoke(this, new Tuple<int[,], int[,]>(d, pi));
+        private void OnAlgorithmStepped(int[,] d, int[,] pi) => AlgorithmStepped?.Invoke(this, new AlgorithmEventArgs(d, pi));
 
         private void OnAlhorithmEnded() => AlgorithmEnded?.Invoke(this, EventArgs.Empty);
 

@@ -59,6 +59,7 @@ namespace Floyd_Warshall.ViewModel
 
         public WpfObservableRangeCollection<int> D { get; set; }
         public WpfObservableRangeCollection<int> Pi { get; set; }
+        public ObservableCollection<int> VertexIds { get; set; }
 
         public DelegateCommand InitCommand { get; private set; }
         public DelegateCommand CancelCommand { get; private set; }
@@ -90,6 +91,7 @@ namespace Floyd_Warshall.ViewModel
 
             D = new WpfObservableRangeCollection<int>();
             Pi = new WpfObservableRangeCollection<int>();
+            VertexIds = new ObservableCollection<int>();
 
             IsStopped = true;
         }
@@ -104,6 +106,11 @@ namespace Floyd_Warshall.ViewModel
             Size = _graphModel.GetVertexCount();
             _graphModel.StartAlgorithm();
 
+            foreach(int id in _graphModel.GetVertexIds())
+            {
+                VertexIds.Add(id);
+            }
+
             OnPropertyChanged(nameof(IsInitialized));
         }
 
@@ -117,6 +124,7 @@ namespace Floyd_Warshall.ViewModel
 
             D.Clear();
             Pi.Clear();
+            VertexIds.Clear();
         }
 
         private void Pause()

@@ -8,61 +8,32 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Converters:IntWithInfConverter x:Key="IntWithInfConverter" />
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="*" />
             <RowDefinition Height="40"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
-        <ItemsControl 
+        <Grid 
             Grid.Row="0"
-            ItemsSource="{Binding D}"
-            Margin="180,20"
-            Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding Size}" Columns="{Binding Size}" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="0.5" BorderBrush="Black">
-                        <TextBlock 
-                            Text="{Binding Converter={StaticResource IntWithInfConverter}}"
-                            TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}"
+            IsVisibleChanged="MatrixGrid_IsVisibleChanged">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" x:Name="rowDef1"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="*" x:Name="rowDef2"/>
+            </Grid.RowDefinitions>
 
-        <ItemsControl 
-            Grid.Row="1"
-            ItemsSource="{Binding Pi}"
-            Margin="180,20"
-            Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding Size}" Columns="{Binding Size}" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="0.5" BorderBrush="Black">
-                        <TextBlock 
-                            Text="{Binding}"
-                            TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <Grid Grid.Row="2">
+            <local:Matrix Grid.Row="0" MatrixData="{Binding D}" UseConverter="true"/>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
+            <local:Matrix Grid.Row="2" MatrixData="{Binding Pi}"/>
+        </Grid>
+       
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -70,6 +41,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            
             <Button Grid.Column="0">
                 <Button.Style>
                     <Style TargetType="Button">
@@ -105,11 +77,11 @@
                 </Button.Style>
             </Button>
             <Button Grid.Column="2" Content="Step" Command="{Binding StepCommand}" Margin="8,2"/>
-            <TextBlock Grid.Column="3" Text="Speed" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Left"  TextWrapping="Wrap" Margin="10,2"/>
+            <TextBlock Grid.Column="3" Text="Speed" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,2"/>
             <Slider Grid.Column="4" Minimum="0" Maximum="2000" TickPlacement="BottomRight" TickFrequency="250" IsSnapToTickEnabled="True" Value="{Binding TimerInterval}"/>
         </Grid>
 
-        <StatusBar Grid.Row="3">
+        <StatusBar Grid.Row="2">
             <TextBlock Text="{Binding K, StringFormat=k: {0}}" Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </StatusBar>
     </Grid>

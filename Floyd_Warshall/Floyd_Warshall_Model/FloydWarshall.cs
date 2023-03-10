@@ -16,16 +16,16 @@
         private bool _isRunning = true;
         public bool IsRunnging { get { return _isRunning; } }
 
-        public FloydWarshall(int[,] graph) 
+        public FloydWarshall(int[,] graph, List<int> vertexIds) 
         {
             _graph = graph;
             _d = new int[graph.GetLength(0), graph.GetLength(1)];
             _pi = new int[graph.GetLength(0), graph.GetLength(1)];
 
-            Initaliaze();
+            Initaliaze(vertexIds);
         }
 
-        private void Initaliaze()
+        private void Initaliaze(List<int> vertexIds)
         {
             for(int i = 0; i < _graph.GetLength(0); ++i)
             {
@@ -35,7 +35,7 @@
 
                     if(i != j && _graph[i,j] < int.MaxValue)
                     {
-                        _pi[i, j] = i + 1;
+                        _pi[i, j] = vertexIds[i];
                     }
                     else
                     {

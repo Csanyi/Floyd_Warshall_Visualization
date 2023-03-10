@@ -74,6 +74,8 @@ namespace Floyd_Warshall_Model
 
         public List<Edge> GetEdges() => _graph.GetEdges();
 
+        public List<int> GetVertexIds() => _graph.GetVertexIds();
+
         public async Task LoadAsync(string path)
         {
             if (_dataAccess == null)
@@ -100,7 +102,7 @@ namespace Floyd_Warshall_Model
 
         public void StartAlgorithm()
         {
-            _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix());
+            _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix(), _graph.GetVertexIds() );
             OnAlhorithmStarted(_floydWarshall.D, _floydWarshall.Pi);
         }
 

@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="Floyd_Warshall.View.UserControls.Matrix"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Floyd_Warshall.View.UserControls"
+             xmlns:Converters="clr-namespace:Floyd_Warshall.View.Converters"
+             mc:Ignorable="d" 
+             x:Name="matrix"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Converters:IntWithInfConverter x:Key="IntWithInfConverter" />
+    </UserControl.Resources>
+    
+    <Viewbox Margin="0,20" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl 
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    ItemsSource="{Binding VertexIds}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1" Columns="{Binding Size}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="0.5" BorderBrush="Black" Width="30" Height="30" Background="LightGray">
+                            <TextBlock 
+                                    Text="{Binding}"
+                                    TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl 
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ItemsSource="{Binding VertexIds}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding Size}" Columns="1" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="0.5" BorderBrush="Black" Width="30" Height="30" Background="LightGray">
+                            <TextBlock 
+                                    Text="{Binding}"
+                                    TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    ItemsSource="{Binding MatrixData, ElementName=matrix}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding Size}" Columns="{Binding Size}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="0.5" BorderBrush="Black" Width="30" Height="30">
+                            <TextBlock 
+                                TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding UseConverter, ElementName=matrix}" Value="true" >
+                                                <Setter Property="Text" Value="{Binding Converter={StaticResource IntWithInfConverter}}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding UseConverter, ElementName=matrix}" Value="false" >
+                                                <Setter Property="Text" Value="{Binding}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Viewbox>
+</UserControl>

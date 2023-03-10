@@ -54,6 +54,8 @@
 
         public List<Vertex> GetVertices() => _adjacenylist.Keys.ToList();
 
+        public List<int> GetVertexIds() => _adjacenylist.Keys.Select(v => v.Id).ToList();
+
         public List<Edge> GetEdges()
         {
             List<Edge> edges = new List<Edge>();

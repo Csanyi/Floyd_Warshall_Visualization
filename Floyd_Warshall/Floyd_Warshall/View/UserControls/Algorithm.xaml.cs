@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -23,6 +24,12 @@ namespace Floyd_Warshall.View.UserControls
         public Algorithm()
         {
             InitializeComponent();
+        }
+
+        private void MatrixGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            rowDef1.Height = new GridLength(1, GridUnitType.Star);
+            rowDef2.Height = new GridLength(1, GridUnitType.Star);
         }
     }
 }

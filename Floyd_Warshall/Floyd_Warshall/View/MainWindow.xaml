@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="Floyd-Warshall Visulatiton"
         Height="720" Width="1280" MinHeight="562" MinWidth="1000"
-        WindowState="Normal" WindowStartupLocation="CenterOwner"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
         SizeChanged="MainWindow_SizeChanged" >
     <Grid>
         <Grid.RowDefinitions>

@@ -3,6 +3,7 @@
     public class FloydWarshall
     {
         private readonly int[,] _graph;
+        private readonly List<int> _vertexIds;
 
         private int[,] _d;
         public int[,] D { get { return _d; } }
@@ -19,13 +20,14 @@
         public FloydWarshall(int[,] graph, List<int> vertexIds) 
         {
             _graph = graph;
+            _vertexIds = vertexIds;
             _d = new int[graph.GetLength(0), graph.GetLength(1)];
             _pi = new int[graph.GetLength(0), graph.GetLength(1)];
 
-            Initaliaze(vertexIds);
+            Initaliaze();
         }
 
-        private void Initaliaze(List<int> vertexIds)
+        private void Initaliaze()
         {
             for(int i = 0; i < _graph.GetLength(0); ++i)
             {
@@ -35,7 +37,7 @@
 
                     if(i != j && _graph[i,j] < int.MaxValue)
                     {
-                        _pi[i, j] = vertexIds[i];
+                        _pi[i, j] = _vertexIds[i];
                     }
                     else
                     {
@@ -45,12 +47,12 @@
             }
         }
 
-        public bool NextStep()
+        public int NextStep()
         {
             if(!_isRunning || _k >= _graph.GetLength(0)) 
             { 
                 _isRunning = false;
-                return false; 
+                return 0; 
             }
 
             for(int i = 0; i < _graph.GetLength(0); ++i)
@@ -64,7 +66,7 @@
                         if (i == j && _d[i, i] < 0)
                         {
                             _isRunning = false;
-                            return false;
+                            return _vertexIds[i];
                         }
                     }
                 }
@@ -73,10 +75,10 @@
             if(++_k >= _graph.GetLength(0))
             {
                 _isRunning = false;
-                return true;
+                return -1;
             }
 
-            return true;
+            return -1;
         }
     }
 }

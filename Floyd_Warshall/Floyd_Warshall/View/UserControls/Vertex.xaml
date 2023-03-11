@@ -22,6 +22,9 @@
                         <DataTrigger Binding="{Binding IsSelected}" Value="True" >
                             <Setter Property="Fill" Value="Yellow"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding InNegCycle}" Value="True" >
+                            <Setter Property="Fill" Value="Red"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Ellipse.Style>

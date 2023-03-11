@@ -20,6 +20,17 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public List<EdgeViewModelBase> Edges { get; set; }
 
+        private bool _inNegCycle;
+        public bool InNegCycle
+        {
+            get { return _inNegCycle; }
+            set
+            {
+                _inNegCycle = value;
+                OnPropertyChanged();
+            }
+        }
+
         private double _canvasX;
         public override double CanvasX { 
             get { return _canvasX; }

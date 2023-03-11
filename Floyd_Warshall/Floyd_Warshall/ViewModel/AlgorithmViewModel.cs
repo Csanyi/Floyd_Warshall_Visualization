@@ -42,6 +42,21 @@ namespace Floyd_Warshall.ViewModel
 
         public int? K => _graphModel.K;
 
+        public bool IsNegCycleFound { get; set; }
+
+        private int? _vertexInNegCycle;
+        public int? VertexInNegCycle
+        {
+            get { return _vertexInNegCycle; }
+            set
+            {
+                _vertexInNegCycle = value;
+                IsNegCycleFound = _vertexInNegCycle != null;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNegCycleFound));
+            }
+        }
+
         public bool IsInitialized => _graphModel.IsAlgorthmInitialized;
 
         public bool IsRunning => _graphModel.IsAlgorithmRunning;
@@ -88,6 +103,7 @@ namespace Floyd_Warshall.ViewModel
             _graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
             _graphModel.AlgorithmStepped += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStepped);
             _graphModel.AlgorithmEnded += new EventHandler(Model_AlgorithmEnded);
+            _graphModel.NegativeCycleFound += new EventHandler<int>(Model_NegativeCycleFound);
 
             D = new WpfObservableRangeCollection<int>();
             Pi = new WpfObservableRangeCollection<int>();
@@ -119,6 +135,8 @@ namespace Floyd_Warshall.ViewModel
         {
             _timer.Stop();
             _graphModel.StopAlgorithm();
+
+            VertexInNegCycle = null;
 
             OnPropertyChanged(nameof(IsInitialized));
             IsStopped = true;
@@ -212,6 +230,11 @@ namespace Floyd_Warshall.ViewModel
 
             Pi.Clear();
             Pi.AddRange(res);
+        }
+
+        private void Model_NegativeCycleFound(object? sender, int e)
+        {
+            VertexInNegCycle = e;
         }
     }
 }

@@ -74,6 +74,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel.GraphLoaded += new EventHandler<GraphLoadedEventArgs>(Model_GraphLoaded);
             _graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
             _graphModel.AlgorithmStopped += new EventHandler(Model_AlgorithmStopped);
+            _graphModel.NegativeCycleFound += new EventHandler<int>(Model_NegativeCycleFound);
         }
 
         public IEnumerable<VertexLocation> GetLocations() 
@@ -181,12 +182,41 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
+            if(SelectedVertex != null)
+            {
+                SelectedVertex.IsSelected = false;
+                SelectedVertex = null;
+            }
+
+            if (SelectedEdge != null)
+            {
+                SelectedEdge.IsSelected = false;
+                SelectedEdge = null;
+            }
+
             CanvasEnabled = false;
         }
 
         private void Model_AlgorithmStopped(object? sender, EventArgs e)
         {
+            if(SelectedVertex != null)
+            {
+                SelectedVertex.InNegCycle = false;
+                SelectedVertex = null;
+            }
+
             CanvasEnabled = true;
+        }
+
+        private void Model_NegativeCycleFound(object? sender, int e)
+        {
+            VertexViewModel? v = Verteces.FirstOrDefault(v => v.Vertex.Id == e);
+
+            if(v != null)
+            {
+                v.InNegCycle = true;
+                SelectedVertex = v;
+            }
         }
 
         #endregion

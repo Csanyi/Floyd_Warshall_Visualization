@@ -26,6 +26,7 @@ namespace Floyd_Warshall_Model
         public event EventHandler<AlgorithmEventArgs>? AlgorithmStepped;
         public event EventHandler? AlgorithmEnded;
         public event EventHandler? AlgorithmStopped;
+        public event EventHandler<int>? NegativeCycleFound;
 
         public GraphModel(IGraphDataAccess dataAccess)
         {
@@ -109,13 +110,19 @@ namespace Floyd_Warshall_Model
         {
             if( _floydWarshall == null ) { return; }
 
-            if (_floydWarshall.NextStep())
+            int res = _floydWarshall.NextStep();
+
+            if (res == -1)
             {
                 OnAlgorithmStepped(_floydWarshall.D, _floydWarshall.Pi);
             }
-            else
+            else if(res == 0)
             {
                 OnAlhorithmEnded();
+            }
+            else
+            {
+                OnNegativeCycleFound(res);
             }
         }
 
@@ -140,5 +147,7 @@ namespace Floyd_Warshall_Model
         private void OnAlhorithmEnded() => AlgorithmEnded?.Invoke(this, EventArgs.Empty);
 
         private void OnAlhorithmStopped() => AlgorithmStopped?.Invoke(this, EventArgs.Empty);
+
+        private void OnNegativeCycleFound(int v) => NegativeCycleFound?.Invoke(this, v);
     }
 }

@@ -72,8 +72,8 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        public WpfObservableRangeCollection<int> D { get; set; }
-        public WpfObservableRangeCollection<int> Pi { get; set; }
+        public ObservableCollection<int> D { get; set; }
+        public ObservableCollection<int> Pi { get; set; }
         public ObservableCollection<int> VertexIds { get; set; }
 
         public DelegateCommand InitCommand { get; private set; }
@@ -105,8 +105,8 @@ namespace Floyd_Warshall.ViewModel
             _graphModel.AlgorithmEnded += new EventHandler(Model_AlgorithmEnded);
             _graphModel.NegativeCycleFound += new EventHandler<int>(Model_NegativeCycleFound);
 
-            D = new WpfObservableRangeCollection<int>();
-            Pi = new WpfObservableRangeCollection<int>();
+            D = new ObservableCollection<int>();
+            Pi = new ObservableCollection<int>();
             VertexIds = new ObservableCollection<int>();
 
             IsStopped = true;
@@ -168,31 +168,18 @@ namespace Floyd_Warshall.ViewModel
             InitCommand.RaiseCanExecuteChanged();
         }
 
-        private async void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
+        private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
             OnPropertyChanged(nameof(K));
 
-            int[] res = await Task.Run(() =>
+            for(int i = 0; i < e.D.GetLength(0); ++i)
             {
-                int[] tmp = new int[e.D.GetLength(0) * e.D.GetLength(1)];
-                Buffer.BlockCopy(e.D, 0, tmp, 0, tmp.Length * sizeof(int));
-
-                return tmp;
-            });
-
-            D.Clear();
-            D.AddRange(res);
-
-            res = await Task.Run(() =>
-            {
-                int[] tmp = new int[e.Pi.GetLength(0) * e.Pi.GetLength(1)];
-                Buffer.BlockCopy(e.Pi, 0, tmp, 0, tmp.Length * sizeof(int));
-
-                return tmp;
-            });
-
-            Pi.Clear();
-            Pi.AddRange(res);
+                for(int j = 0; j < e.D.GetLength(1); ++j)
+                {
+                    D.Add(e.D[i, j]);
+                    Pi.Add(e.Pi[i, j]);
+                }
+            }
         }
         
         private void Model_AlgorithmEnded(object? sender, EventArgs e)
@@ -204,32 +191,18 @@ namespace Floyd_Warshall.ViewModel
             StepCommand.RaiseCanExecuteChanged();
         }
 
-        private async void Model_AlgorithmStepped(object? sender, AlgorithmEventArgs e)
+        private void Model_AlgorithmStepped(object? sender, AlgorithmEventArgs e)
         {
             OnPropertyChanged(nameof(K));
             OnPropertyChanged(nameof(IsRunning));
 
-            int[] res = await Task.Run(() =>
+            for(int i = 0; i < D.Count; ++i)
             {
-                int[] tmp = new int[e.D.GetLength(0) * e.D.GetLength(1)];
-                Buffer.BlockCopy(e.D, 0, tmp, 0, tmp.Length * sizeof(int));
-
-                return tmp;
-            });
-
-            D.Clear();
-            D.AddRange(res);
-
-            res = await Task.Run(() =>
-            {
-                int[] tmp = new int[e.Pi.GetLength(0) * e.Pi.GetLength(1)];
-                Buffer.BlockCopy(e.Pi, 0, tmp, 0, tmp.Length * sizeof(int));
-
-                return tmp;
-            });
-
-            Pi.Clear();
-            Pi.AddRange(res);
+                int j = i / e.D.GetLength(0);
+                int k = i % e.D.GetLength(1);
+                D[i] = e.D[j, k];
+                Pi[i] = e.Pi[j, k];
+            }
         }
 
         private void Model_NegativeCycleFound(object? sender, int e)

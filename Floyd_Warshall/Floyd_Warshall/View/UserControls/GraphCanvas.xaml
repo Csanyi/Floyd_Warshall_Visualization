@@ -5,8 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Floyd_Warshall.View.UserControls"
              xmlns:vm="clr-namespace:Floyd_Warshall.ViewModel.GraphComponents"
+             xmlns:Converters="clr-namespace:Floyd_Warshall.View.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    
     <Grid IsEnabled="{Binding CanvasEnabled}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -59,7 +64,7 @@
         </ItemsControl>
         <StatusBar
             Grid.Row="1">
-            <StatusBarItem>
+            <StatusBarItem DockPanel.Dock="Left" Margin="10,0" >
                 <TextBox
                     Width="50"
                     MaxLength="6"
@@ -76,6 +81,9 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
+            </StatusBarItem>
+            <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10,0" Visibility="{Binding MaxVertexCountReached, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Text="Maximum vertex count is reached"/>
             </StatusBarItem>
         </StatusBar>
         <Grid.Style>

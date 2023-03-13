@@ -5,10 +5,10 @@
         private readonly int[,] _graph;
         private readonly List<int> _vertexIds;
 
-        private int[,] _d;
+        private readonly int[,] _d;
         public int[,] D { get { return _d; } }
 
-        private int[,] _pi;
+        private readonly int[,] _pi;
         public int[,] Pi { get { return _pi; } }
 
         private int _k = 0;

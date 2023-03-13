@@ -1,13 +1,15 @@
 ﻿using Floyd_Warshall_Model;
 using Floyd_Warshall_Model.Graph;
 using Floyd_Warshall.ViewModel.GraphComponents;
+using System;
+using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands
 {
     public class CanvasClickCommand : CommandBase
     {
-        private GraphCanvasViewModel _vm;
-        private GraphModel _graphModel;
+        private readonly GraphCanvasViewModel _vm;
+        private readonly GraphModel _graphModel;
 
         public CanvasClickCommand(GraphCanvasViewModel graphCanvasViewModel, GraphModel graphModel) 
         {
@@ -31,6 +33,11 @@ namespace Floyd_Warshall.ViewModel.Commands
             _graphModel.AddVertex(v);
             _vm.Verteces.Add(vertex);
             _vm.Views.Add(vertex);
+        }
+
+        public override bool CanExecute(object? parameter)
+        {
+            return !_vm.MaxVertexCountReached;
         }
     }
 }

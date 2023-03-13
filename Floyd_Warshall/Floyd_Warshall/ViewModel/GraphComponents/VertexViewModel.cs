@@ -13,7 +13,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             Edges = new List<EdgeViewModelBase>();
         }
 
-        private Vertex _vertex;
+        private readonly Vertex _vertex;
         public Vertex Vertex { get { return _vertex; } }
 
         public override int Id { get { return _vertex.Id; } }

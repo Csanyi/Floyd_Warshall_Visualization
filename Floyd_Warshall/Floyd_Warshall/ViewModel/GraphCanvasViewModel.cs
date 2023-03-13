@@ -52,6 +52,10 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        public const int maxVertexCount = 20;
+
+        public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= maxVertexCount; } }
+
         public List<VertexViewModel> Verteces { get; set; }
 
         public List<EdgeViewModelBase> Edges { get; set; }
@@ -75,6 +79,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
             _graphModel.AlgorithmStopped += new EventHandler(Model_AlgorithmStopped);
             _graphModel.NegativeCycleFound += new EventHandler<int>(Model_NegativeCycleFound);
+            _graphModel.VertexAdded += new EventHandler(Model_VertexCntChanged);
+            _graphModel.VertexRemoved += new EventHandler(Model_VertexCntChanged);
         }
 
         public IEnumerable<VertexLocation> GetLocations() 
@@ -217,6 +223,11 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 v.InNegCycle = true;
                 SelectedVertex = v;
             }
+        }
+
+        private void Model_VertexCntChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(MaxVertexCountReached));
         }
 
         #endregion

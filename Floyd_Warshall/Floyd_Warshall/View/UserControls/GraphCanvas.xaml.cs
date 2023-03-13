@@ -54,7 +54,11 @@ namespace Floyd_Warshall.View.UserControls
                 X = pos.X;
                 Y = pos.Y;
 
-                CanvasClick?.Execute(null);
+                if (CanvasClick != null && CanvasClick.CanExecute(null))
+                {
+                    CanvasClick?.Execute(null);
+
+                }
             }
         }
 
@@ -71,12 +75,13 @@ namespace Floyd_Warshall.View.UserControls
 
         private void Canvas_Drop(object sender, DragEventArgs e)
         {
-            Vertex v = e.Data.GetData(DataFormats.Serializable) as Vertex;
+            if (e.Data.GetData(DataFormats.Serializable) is Vertex v)
+            {
+                Point p = e.GetPosition(sender as Canvas);
 
-            Point p = e.GetPosition(sender as Canvas);
-
-            v.X = p.X - VertexViewModel.Size / 2;
-            v.Y = p.Y - VertexViewModel.Size / 2;
+                v.X = p.X - VertexViewModel.Size / 2;
+                v.Y = p.Y - VertexViewModel.Size / 2;
+            }
         }
     }
 }

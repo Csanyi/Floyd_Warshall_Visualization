@@ -52,8 +52,8 @@ namespace Floyd_Warshall.ViewModel
             SaveGraphCommand = new DelegateCommand(param => OnSave());
             ExitCommand = new DelegateCommand(param => OnExit());
 
-            graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
-            graphModel.AlgorithmStopped += new EventHandler(Model_AlgorithmStopped);
+            graphModel.AlgorithmStarted += Model_AlgorithmStarted;
+            graphModel.AlgorithmStopped += Model_AlgorithmStopped;
         }
 
 

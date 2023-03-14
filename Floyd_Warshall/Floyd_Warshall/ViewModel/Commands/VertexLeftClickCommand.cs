@@ -55,10 +55,8 @@ namespace Floyd_Warshall.ViewModel.Commands
             {
                 _graphModel.AddEdge(f, t, 1);
 
-                EdgeViewModel edge = new EdgeViewModel(_vm.GetEdgeId, _graphModel)
+                EdgeViewModel edge = new EdgeViewModel(_vm.GetEdgeId, _graphModel, from, to)
                 {
-                    From = from,
-                    To = to,
                     Weight = 1,
                     IsSelected = false,
                     LeftClickCommand = new EdgeLeftClickCommand(_vm),
@@ -84,10 +82,8 @@ namespace Floyd_Warshall.ViewModel.Commands
             {
                 _graphModel.AddEdge(f, t, 1);
 
-                DirectedEdgeViewModel edge = new DirectedEdgeViewModel(_vm.GetEdgeId, _graphModel)
+                DirectedEdgeViewModel edge = new DirectedEdgeViewModel(_vm.GetEdgeId, _graphModel, from, to)
                 {
-                    From = from,
-                    To = to,
                     Weight = 1,
                     IsSelected = false,
                     LeftClickCommand = new EdgeLeftClickCommand(_vm),

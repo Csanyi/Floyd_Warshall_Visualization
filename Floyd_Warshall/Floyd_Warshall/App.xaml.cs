@@ -25,10 +25,10 @@ namespace Floyd_Warshall
             _graphModel = new GraphModel(new GrapfFileDataAccess());
             _viewModel = new MainViewModel(_graphModel);
 
-            _viewModel.NewGraph += new EventHandler<bool>(ViewModel_NewGraph);
-            _viewModel.LoadGraph += new EventHandler(ViewModel_LoadGraph);
-            _viewModel.SaveGraph += new EventHandler<IEnumerable<VertexLocation>>(ViewModel_SaveGraph);
-            _viewModel.Exit += new EventHandler(ViewModel_Exit);
+            _viewModel.NewGraph += ViewModel_NewGraph;
+            _viewModel.LoadGraph += ViewModel_LoadGraph;
+            _viewModel.SaveGraph += ViewModel_SaveGraph;
+            _viewModel.Exit += ViewModel_Exit;
 
             _view = new MainWindow
             {

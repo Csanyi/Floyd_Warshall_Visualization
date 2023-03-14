@@ -72,8 +72,8 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        public ObservableCollection<int> D { get; set; }
-        public ObservableCollection<int> Pi { get; set; }
+        public ObservableCollection<MatrixGridViewModel> D { get; set; }
+        public ObservableCollection<MatrixGridViewModel> Pi { get; set; }
         public ObservableCollection<int> VertexIds { get; set; }
 
         public DelegateCommand InitCommand { get; private set; }
@@ -96,20 +96,21 @@ namespace Floyd_Warshall.ViewModel
 
             _timer = new DispatcherTimer();
             TimerInterval = 1000;
-            _timer.Tick += new EventHandler(Timer_Tick);
+            _timer.Tick += Timer_Tick;
 
-            _graphModel.VertexAdded += new EventHandler(Model_VertexCntChanged);
-            _graphModel.VertexRemoved += new EventHandler(Model_VertexCntChanged);
-            _graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
-            _graphModel.AlgorithmStepped += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStepped);
-            _graphModel.AlgorithmEnded += new EventHandler(Model_AlgorithmEnded);
-            _graphModel.NegativeCycleFound += new EventHandler<int>(Model_NegativeCycleFound);
+            _graphModel.VertexAdded += Model_VertexCntChanged;
+            _graphModel.VertexRemoved += Model_VertexCntChanged;
+            _graphModel.AlgorithmStarted += Model_AlgorithmStarted;
+            _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
+            _graphModel.AlgorithmEnded += Model_AlgorithmEnded;
+            _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
 
-            D = new ObservableCollection<int>();
-            Pi = new ObservableCollection<int>();
+            D = new ObservableCollection<MatrixGridViewModel>();
+            Pi = new ObservableCollection<MatrixGridViewModel>();
             VertexIds = new ObservableCollection<int>();
 
             IsStopped = true;
+            IsNegCycleFound = false;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -172,12 +173,30 @@ namespace Floyd_Warshall.ViewModel
         {
             OnPropertyChanged(nameof(K));
 
+            List<int> vertexIds = _graphModel.GetVertexIds();
+
             for(int i = 0; i < e.D.GetLength(0); ++i)
             {
                 for(int j = 0; j < e.D.GetLength(1); ++j)
                 {
-                    D.Add(e.D[i, j]);
-                    Pi.Add(e.Pi[i, j]);
+                    int ind = i * e.D.GetLength(0) + j;
+
+                    D.Add(new MatrixGridViewModel()
+                    {
+                        Index = ind,
+                        Value = e.D[i, j],
+                        X = vertexIds[i],
+                        Y = vertexIds[j],
+                        ClickCommand = new MatrixGridClickCommand(this, _graphModel),
+                    });
+                    Pi.Add(new MatrixGridViewModel()
+                    {
+                        Index = ind,
+                        Value = e.Pi[i, j],
+                        X = vertexIds[i],
+                        Y = vertexIds[j],
+                        ClickCommand = new MatrixGridClickCommand(this, _graphModel),
+                    });
                 }
             }
         }
@@ -200,8 +219,8 @@ namespace Floyd_Warshall.ViewModel
             {
                 int j = i / e.D.GetLength(0);
                 int k = i % e.D.GetLength(1);
-                D[i] = e.D[j, k];
-                Pi[i] = e.Pi[j, k];
+                D[i].Value = e.D[j, k];
+                Pi[i].Value = e.Pi[j, k];
             }
         }
 

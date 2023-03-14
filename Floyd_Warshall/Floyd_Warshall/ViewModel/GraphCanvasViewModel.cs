@@ -74,13 +74,15 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
             CanvasClickCommand = new CanvasClickCommand(this, _graphModel);
 
-            _graphModel.NewEmptyGraph += new EventHandler(Model_NewEmptyGraph);
-            _graphModel.GraphLoaded += new EventHandler<GraphLoadedEventArgs>(Model_GraphLoaded);
-            _graphModel.AlgorithmStarted += new EventHandler<AlgorithmEventArgs>(Model_AlgorithmStarted);
-            _graphModel.AlgorithmStopped += new EventHandler(Model_AlgorithmStopped);
-            _graphModel.NegativeCycleFound += new EventHandler<int>(Model_NegativeCycleFound);
-            _graphModel.VertexAdded += new EventHandler(Model_VertexCntChanged);
-            _graphModel.VertexRemoved += new EventHandler(Model_VertexCntChanged);
+            _graphModel.NewEmptyGraph += Model_NewEmptyGraph;
+            _graphModel.GraphLoaded += Model_GraphLoaded;
+            _graphModel.AlgorithmStarted += Model_AlgorithmStarted;
+            _graphModel.AlgorithmStopped += Model_AlgorithmStopped;
+            _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
+            _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
+            _graphModel.VertexAdded += Model_VertexCntChanged;
+            _graphModel.VertexRemoved += Model_VertexCntChanged;
+            _graphModel.RouteCreated += Model_RouteCreated;
         }
 
         public IEnumerable<VertexLocation> GetLocations() 
@@ -107,10 +109,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 VertexViewModel from = Verteces.Single(v => v.Vertex == edge.From);
                 VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
 
-                EdgeViewModelBase edgevm = new DirectedEdgeViewModel(GetEdgeId, _graphModel)
+                EdgeViewModelBase edgevm = new DirectedEdgeViewModel(GetEdgeId, _graphModel, from, to)
                 {
-                    From = from,
-                    To = to,
                     Weight = edge.Weight,
                     IsSelected = false,
                     LeftClickCommand = new EdgeLeftClickCommand(this),
@@ -133,10 +133,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
                 if (!from.Edges.Exists(e => (e.From == from && e.To == to) || (e.From == to && e.To == from)))
                 {
-                    EdgeViewModelBase edgevm = new EdgeViewModel(GetEdgeId, _graphModel)
+                    EdgeViewModelBase edgevm = new EdgeViewModel(GetEdgeId, _graphModel, from, to)
                     {
-                        From = from,
-                        To = to,
                         Weight = edge.Weight,
                         IsSelected = false,
                         LeftClickCommand = new EdgeLeftClickCommand(this),
@@ -149,6 +147,12 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                     Views.Add(edgevm);
                 }
             }
+        }
+
+        private void ClearSelections()
+        {
+            Verteces.ForEach(v => v.IsSelected = false);
+            Edges.ForEach(e => e.IsSelected = false);
         }
 
 
@@ -203,6 +207,11 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             CanvasEnabled = false;
         }
 
+        private void Model_AlgorithmStepped(object? sender, EventArgs e)
+        {
+            ClearSelections();
+        }
+
         private void Model_AlgorithmStopped(object? sender, EventArgs e)
         {
             if(SelectedVertex != null)
@@ -210,6 +219,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 SelectedVertex.InNegCycle = false;
                 SelectedVertex = null;
             }
+
+            ClearSelections();
 
             CanvasEnabled = true;
         }
@@ -228,6 +239,42 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private void Model_VertexCntChanged(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(MaxVertexCountReached));
+        }
+
+        private void Model_RouteCreated(object? sender, RouteEventArgs e)
+        {
+            Edges.ForEach(e => e.IsSelected = false);
+
+            foreach(VertexViewModel v in Verteces)
+            {
+                if(e.Route.Contains(v.Id))
+                {
+                    v.IsSelected = true;
+                    int ind = e.Route.FindIndex(x => x == v.Id);
+                    if(ind < e.Route.Count - 1)
+                    {
+                        EdgeViewModelBase? edgevm = null;
+
+                        if (_graphModel.IsDirected)
+                        {
+                            edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == e.Route[ind + 1]);
+                        }
+                        else
+                        {
+                            edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == e.Route[ind + 1] || edge.To.Id == e.Route[ind + 1]);
+                        }
+
+                        if(edgevm != null)
+                        {
+                            edgevm.IsSelected = true;
+                        }
+                    }
+                }
+                else
+                {
+                    v.IsSelected = false;
+                }
+            }
         }
 
         #endregion

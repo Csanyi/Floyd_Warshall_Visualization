@@ -87,23 +87,23 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="0.5" BorderBrush="Black" Width="30" Height="30">
-                            <TextBlock 
-                                TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding UseConverter, ElementName=matrix}" Value="true" >
-                                                <Setter Property="Text" Value="{Binding Converter={StaticResource IntWithInfConverter}}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding UseConverter, ElementName=matrix}" Value="false" >
-                                                <Setter Property="Text" Value="{Binding}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Border>
+                        <Button
+                            Width="30" Height="30"
+                            Background="White" BorderBrush="Black" BorderThickness="0.5"
+                            Command="{Binding ClickCommand}" CommandParameter="{Binding Index}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding UseConverter, ElementName=matrix}" Value="true" >
+                                            <Setter Property="Content" Value="{Binding Value, Converter={StaticResource IntWithInfConverter}}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding UseConverter, ElementName=matrix}" Value="false" >
+                                            <Setter Property="Content" Value="{Binding Value}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

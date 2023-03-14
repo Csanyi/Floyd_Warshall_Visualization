@@ -38,10 +38,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             {
                 _canvasX = value;
                 OnPropertyChanged();
-                foreach(EdgeViewModelBase e in Edges)
-                {
-                    e.LocationChanged();
-                }
             }
         }
 
@@ -53,10 +49,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             {
                 _canvasY = value;
                 OnPropertyChanged();
-                foreach (EdgeViewModelBase e in Edges)
-                {
-                    e.LocationChanged();
-                }
             }
         }
     }

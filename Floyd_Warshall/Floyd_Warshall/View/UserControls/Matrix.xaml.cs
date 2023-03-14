@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Floyd_Warshall.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,14 +26,14 @@ namespace Floyd_Warshall.View.UserControls
             InitializeComponent();
         }
 
-        public ICollection<int> MatrixData
+        public ICollection<MatrixGridViewModel> MatrixData
         {
-            get { return (ICollection<int>)GetValue(MatrixDataProperty); }
+            get { return (ICollection<MatrixGridViewModel>)GetValue(MatrixDataProperty); }
             set { SetValue(MatrixDataProperty, value); }
         }
 
         public static readonly DependencyProperty MatrixDataProperty =
-            DependencyProperty.Register("MatrixData", typeof(ICollection<int>), typeof(Matrix), new PropertyMetadata(null));
+            DependencyProperty.Register("MatrixData", typeof(ICollection<MatrixGridViewModel>), typeof(Matrix), new PropertyMetadata(null));
 
 
 

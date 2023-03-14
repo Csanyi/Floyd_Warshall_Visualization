@@ -27,6 +27,7 @@ namespace Floyd_Warshall_Model
         public event EventHandler? AlgorithmEnded;
         public event EventHandler? AlgorithmStopped;
         public event EventHandler<int>? NegativeCycleFound;
+        public event EventHandler<RouteEventArgs>? RouteCreated;
 
         public GraphModel(IGraphDataAccess dataAccess)
         {
@@ -132,6 +133,37 @@ namespace Floyd_Warshall_Model
             OnAlhorithmStopped();
         }
 
+        public void GetRoute(int from, int to)
+        {
+            if(_floydWarshall == null) 
+            {
+                return; 
+            }
+
+            List<int> route = new List<int>();
+            List<int> vertexIds = _graph.GetVertexIds();
+
+            int fromInd = vertexIds.FindIndex(x => x == from);
+            int toInd = vertexIds.FindIndex(x => x == to);
+
+            int next = _floydWarshall.Pi[fromInd, toInd];
+
+            while( next != 0 )
+            {
+                route.Add(next);
+                int nextInd = vertexIds.FindIndex(x => x == next);
+                next = _floydWarshall.Pi[fromInd, nextInd];
+            }
+
+            route.Reverse();
+            if(from == to || route.Any())
+            {
+                route.Add(to);
+            }
+
+            OnRouteCreated(route);
+        }
+
         private void OnNewEmptyGraph() => NewEmptyGraph?.Invoke(this, EventArgs.Empty);
 
         private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLoadedEventArgs(locations));
@@ -149,5 +181,7 @@ namespace Floyd_Warshall_Model
         private void OnAlhorithmStopped() => AlgorithmStopped?.Invoke(this, EventArgs.Empty);
 
         private void OnNegativeCycleFound(int v) => NegativeCycleFound?.Invoke(this, v);
+
+        private void OnRouteCreated(List<int> route) => RouteCreated?.Invoke(this, new RouteEventArgs(route));
     }
 }

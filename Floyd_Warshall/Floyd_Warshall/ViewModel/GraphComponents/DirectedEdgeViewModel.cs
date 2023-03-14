@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Floyd_Warshall_Model;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
@@ -9,7 +10,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private const double _angleOffset = 0.3;
         private const int _endPointOffset = 5;
 
-        public DirectedEdgeViewModel(int id, GraphModel graphModel) : base(id, graphModel) { }
+        public DirectedEdgeViewModel(int id, GraphModel graphModel, VertexViewModel from, VertexViewModel to) 
+                                            : base(id, graphModel, from, to) { }
 
         public override double X1
         {
@@ -132,12 +134,16 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public double TextY { get { return (Y1 + Y2) / 2; } }
 
-        public override void LocationChanged()
+        protected override void VertexPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            base.LocationChanged();
-            OnPropertyChanged(nameof(Angle));
-            OnPropertyChanged(nameof(TextX));
-            OnPropertyChanged(nameof(TextY));
+            base.VertexPropertyChanged(sender, e);
+
+            if (e.PropertyName == nameof(VertexViewModel.CanvasX) || e.PropertyName == nameof(VertexViewModel.CanvasY))
+            {
+                OnPropertyChanged(nameof(Angle));
+                OnPropertyChanged(nameof(TextX));
+                OnPropertyChanged(nameof(TextY));
+            }
         }
     }
 }

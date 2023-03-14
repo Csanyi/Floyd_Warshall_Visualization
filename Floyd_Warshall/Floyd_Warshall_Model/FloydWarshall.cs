@@ -12,7 +12,7 @@
         public int[,] Pi { get { return _pi; } }
 
         private int _k = 0;
-        public int K { get { return _k; } }
+        public int K { get { return _k == 0 ? 0 : _vertexIds[_k-1]; } }
 
         private bool _isRunning = true;
         public bool IsRunnging { get { return _isRunning; } }

@@ -1,6 +1,7 @@
 ﻿using Floyd_Warshall_Model;
 using Floyd_Warshall_Model.Graph;
 using System;
+using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -8,7 +9,17 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
     {
         private readonly GraphModel _graphModel;
 
-        protected EdgeViewModelBase(int id, GraphModel graphModel) { _id = id; _graphModel = graphModel;  }
+        protected EdgeViewModelBase(int id, GraphModel graphModel, VertexViewModel from, VertexViewModel to) 
+        { 
+            _id = id; 
+            _graphModel = graphModel;
+
+            From = from;
+            To = to;
+
+            From.PropertyChanged += VertexPropertyChanged;
+            To.PropertyChanged += VertexPropertyChanged;
+        }
 
         private readonly int _id;
         public override int Id { get { return _id; } }
@@ -34,14 +45,17 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         public abstract double X2 { get; }
         public abstract double Y2 { get; }
 
-        public virtual void LocationChanged()
+        protected virtual void VertexPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            OnPropertyChanged(nameof(CanvasX));
-            OnPropertyChanged(nameof(CanvasY));
-            OnPropertyChanged(nameof(X1));
-            OnPropertyChanged(nameof(Y1));
-            OnPropertyChanged(nameof(X2));
-            OnPropertyChanged(nameof(Y2));
+            if(e.PropertyName == nameof(VertexViewModel.CanvasX) || e.PropertyName == nameof(VertexViewModel.CanvasY))
+            {
+                OnPropertyChanged(nameof(CanvasX));
+                OnPropertyChanged(nameof(CanvasY));
+                OnPropertyChanged(nameof(X1));
+                OnPropertyChanged(nameof(Y1));
+                OnPropertyChanged(nameof(X2));
+                OnPropertyChanged(nameof(Y2));
+            }
         }
     }
 }

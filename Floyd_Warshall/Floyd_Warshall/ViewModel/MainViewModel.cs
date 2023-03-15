@@ -32,7 +32,7 @@ namespace Floyd_Warshall.ViewModel
 
         public event EventHandler<bool>? NewGraph;
         public event EventHandler? LoadGraph;
-        public event EventHandler<IEnumerable<VertexLocation>>? SaveGraph;
+        public event EventHandler<GraphLoadedEventArgs>? SaveGraph;
         public event EventHandler? Exit;
    
         public ICommand NewGraphCommand { get; private set; }
@@ -61,7 +61,7 @@ namespace Floyd_Warshall.ViewModel
 
         private void OnLoad() => LoadGraph?.Invoke(this, EventArgs.Empty);
 
-        private void OnSave() => SaveGraph?.Invoke(this, _graphCanvas.GetLocations());
+        private void OnSave() => SaveGraph?.Invoke(this, new GraphLoadedEventArgs(_graphCanvas.GetLocations()));
 
         private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
 

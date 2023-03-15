@@ -3,17 +3,16 @@ using Floyd_Warshall_Model.Graph;
 using Floyd_Warshall.ViewModel.GraphComponents;
 using System;
 using System.Linq;
+using System.ComponentModel;
 
-namespace Floyd_Warshall.ViewModel.Commands
+namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
-    public class VertexLeftClickCommand : CommandBase
+    public class VertexLeftClickCommand : GraphCanvasCommandBase
     {
-        private GraphCanvasViewModel _vm;
-        private GraphModel _graphModel;
+        private readonly GraphModel _graphModel;
 
-        public VertexLeftClickCommand(GraphCanvasViewModel graphCanvasViewModel, GraphModel graphModel)
+        public VertexLeftClickCommand(GraphCanvasViewModel viewModel, GraphModel graphModel) : base(viewModel)
         {
-            _vm = graphCanvasViewModel;
             _graphModel = graphModel;
         }
 
@@ -21,28 +20,31 @@ namespace Floyd_Warshall.ViewModel.Commands
         {
             int id = Convert.ToInt32(parameter);
 
-            VertexViewModel v = _vm.Verteces.Single(v => v.Id == id);
+            VertexViewModel v = _viewModel.Verteces.Single(v => v.Id == id);
 
-            if (_vm.SelectedVertex == null)
+            if (_viewModel.SelectedVertex == null)
             {
                 v.IsSelected = true;
-                _vm.SelectedVertex = v;
-            } else if (_vm.SelectedVertex == v)
+                _viewModel.SelectedVertex = v;
+            }
+            else if (_viewModel.SelectedVertex == v)
             {
                 v.IsSelected = false;
-                _vm.SelectedVertex = null;
-            } else
+                _viewModel.SelectedVertex = null;
+            }
+            else
             {
                 if (_graphModel.IsDirected)
                 {
-                    AddDirectedEdge(_vm.SelectedVertex, v);
-                } else
+                    AddDirectedEdge(_viewModel.SelectedVertex, v);
+                }
+                else
                 {
-                    AddEdge(_vm.SelectedVertex, v);
+                    AddEdge(_viewModel.SelectedVertex, v);
                 }
 
-                _vm.SelectedVertex.IsSelected = false;
-                _vm.SelectedVertex = null;
+                _viewModel.SelectedVertex.IsSelected = false;
+                _viewModel.SelectedVertex = null;
             }
         }
 
@@ -55,19 +57,20 @@ namespace Floyd_Warshall.ViewModel.Commands
             {
                 _graphModel.AddEdge(f, t, 1);
 
-                EdgeViewModel edge = new EdgeViewModel(_vm.GetEdgeId, _graphModel, from, to)
+                EdgeViewModel edge = new EdgeViewModel(_viewModel.GetEdgeId, _graphModel, from, to)
                 {
                     Weight = 1,
                     IsSelected = false,
-                    LeftClickCommand = new EdgeLeftClickCommand(_vm),
-                    RightClickCommand = new EdgeRightClickCommand(_vm, _graphModel),
+                    LeftClickCommand = new EdgeLeftClickCommand(_viewModel),
+                    RightClickCommand = new EdgeRightClickCommand(_viewModel, _graphModel),
                 };
 
-                _vm.Edges.Add(edge);
-                _vm.Views.Add(edge);
+                _viewModel.Edges.Add(edge);
+                _viewModel.Views.Add(edge);
                 from.Edges.Add(edge);
                 to.Edges.Add(edge);
-            } else
+            }
+            else
             {
                 from.Edges.Single(e => e.From == from && e.To == to || e.To == from && e.From == to).Weight++;
             }
@@ -82,19 +85,20 @@ namespace Floyd_Warshall.ViewModel.Commands
             {
                 _graphModel.AddEdge(f, t, 1);
 
-                DirectedEdgeViewModel edge = new DirectedEdgeViewModel(_vm.GetEdgeId, _graphModel, from, to)
+                DirectedEdgeViewModel edge = new DirectedEdgeViewModel(_viewModel.GetEdgeId, _graphModel, from, to)
                 {
                     Weight = 1,
                     IsSelected = false,
-                    LeftClickCommand = new EdgeLeftClickCommand(_vm),
-                    RightClickCommand = new EdgeRightClickCommand(_vm, _graphModel),
+                    LeftClickCommand = new EdgeLeftClickCommand(_viewModel),
+                    RightClickCommand = new EdgeRightClickCommand(_viewModel, _graphModel),
                 };
 
-                _vm.Edges.Add(edge);
-                _vm.Views.Add(edge);
+                _viewModel.Edges.Add(edge);
+                _viewModel.Views.Add(edge);
                 from.Edges.Add(edge);
                 to.Edges.Add(edge);
-            } else
+            }
+            else
             {
                 from.Edges.Single(e => e.From == from && e.To == to).Weight++;
             }

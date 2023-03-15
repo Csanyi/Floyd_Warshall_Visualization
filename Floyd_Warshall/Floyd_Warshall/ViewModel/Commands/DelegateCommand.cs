@@ -33,12 +33,6 @@ namespace Floyd_Warshall.ViewModel.Commands
             }
             _execute(parameter!);
         }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CommandManager.InvalidateRequerySuggested();
-        }
-
     }
 }
 

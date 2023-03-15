@@ -1,6 +1,7 @@
 ﻿using Floyd_Warshall.View;
 using Floyd_Warshall.ViewModel;
 using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Events;
 using Floyd_Warshall_Model.Persistence;
 using Microsoft.Win32;
 using System;
@@ -48,9 +49,12 @@ namespace Floyd_Warshall
         {
             try
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = "Load graph";
-                openFileDialog.Filter = "Graph|*.gph";
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Title = "Load graph",
+                    Filter = "Graph|*.gph"
+                };
+
                 if (openFileDialog.ShowDialog() == true)
                 {
                     await _graphModel.LoadAsync(openFileDialog.FileName);
@@ -62,18 +66,21 @@ namespace Floyd_Warshall
             }
 }
 
-        private async void ViewModel_SaveGraph(object? sender, IEnumerable<VertexLocation> e)
+        private async void ViewModel_SaveGraph(object? sender, GraphLoadedEventArgs e)
         {
             try
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = "Save graph";
-                saveFileDialog.Filter = "Graph|*.gph";
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Title = "Save graph",
+                    Filter = "Graph|*.gph"
+                };
+
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     try
                     {
-                        await _graphModel.SaveAsync(saveFileDialog.FileName, e);
+                        await _graphModel.SaveAsync(saveFileDialog.FileName, e.VertexLocations);
                     }
                     catch (GraphDataException)
                     {

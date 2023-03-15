@@ -1,5 +1,5 @@
 ﻿using Floyd_Warshall_Model;
-using Floyd_Warshall.ViewModel.Commands;
+using Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands;
 using Floyd_Warshall_Model.Graph;
 using Floyd_Warshall_Model.Persistence;
 using System;

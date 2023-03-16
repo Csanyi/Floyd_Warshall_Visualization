@@ -14,6 +14,8 @@ namespace Floyd_Warshall.ViewModel
     {
         private readonly GraphModel _graphModel;
 
+        public const int criticalTime = 100;
+
         private readonly DispatcherTimer _timer;
         public DispatcherTimer Timer { get { return _timer; } }
 
@@ -120,6 +122,23 @@ namespace Floyd_Warshall.ViewModel
             OnPropertyChanged(propertyName);
         }
 
+        public void UpdateData()
+        {
+            AlgorithmData? e = _graphModel.GetAlgorithmData();
+
+            if (e != null)
+            {
+
+                for (int i = 0; i < D.Count; ++i)
+                {
+                    int j = i / e.D.GetLength(0);
+                    int k = i % e.D.GetLength(1);
+                    D[i].Value = e.D[j, k];
+                    Pi[i].Value = e.Pi[j, k];
+                }
+            }
+        }
+
         private void Timer_Tick(object? sender, EventArgs e)
         {
             _graphModel.StepAlgorithm();
@@ -134,16 +153,16 @@ namespace Floyd_Warshall.ViewModel
         {
             OnPropertyChanged(nameof(K));
 
-            for(int i = 0; i < e.D.GetLength(0); ++i)
+            for(int i = 0; i < e.Data.D.GetLength(0); ++i)
             {
-                for(int j = 0; j < e.D.GetLength(1); ++j)
+                for(int j = 0; j < e.Data.D.GetLength(1); ++j)
                 {
-                    int ind = i * e.D.GetLength(0) + j;
+                    int ind = i * e.Data.D.GetLength(0) + j;
 
                     D.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
-                        Value = e.D[i, j],
+                        Value = e.Data.D[i, j],
                         X = VertexIds[i],
                         Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
@@ -151,7 +170,7 @@ namespace Floyd_Warshall.ViewModel
                     Pi.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
-                        Value = e.Pi[i, j],
+                        Value = e.Data.Pi[i, j],
                         X = VertexIds[i],
                         Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
@@ -162,22 +181,24 @@ namespace Floyd_Warshall.ViewModel
         
         private void Model_AlgorithmEnded(object? sender, EventArgs e)
         {
+            if (TimerInterval <= criticalTime && !IsStopped)
+            {
+                UpdateData();
+            }
+
             _timer.Stop();
             IsStopped = true;
 
             OnPropertyChanged(nameof(IsRunning));
         }
 
-        private void Model_AlgorithmStepped(object? sender, AlgorithmEventArgs e)
+        private void Model_AlgorithmStepped(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(K));
 
-            for (int i = 0; i < D.Count; ++i)
+            if(TimerInterval > criticalTime || IsStopped)
             {
-                int j = i / e.D.GetLength(0);
-                int k = i % e.D.GetLength(1);
-                D[i].Value = e.D[j, k];
-                Pi[i].Value = e.Pi[j, k];
+                UpdateData();
             }
         }
 

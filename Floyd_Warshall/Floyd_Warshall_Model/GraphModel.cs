@@ -23,7 +23,7 @@ namespace Floyd_Warshall_Model
         public event EventHandler? VertexAdded;
         public event EventHandler? VertexRemoved;
         public event EventHandler<AlgorithmEventArgs>? AlgorithmStarted;
-        public event EventHandler<AlgorithmEventArgs>? AlgorithmStepped;
+        public event EventHandler? AlgorithmStepped;
         public event EventHandler? AlgorithmEnded;
         public event EventHandler? AlgorithmStopped;
         public event EventHandler<int>? NegativeCycleFound;
@@ -164,6 +164,16 @@ namespace Floyd_Warshall_Model
             OnRouteCreated(route);
         }
 
+        public AlgorithmData? GetAlgorithmData()
+        {
+            if(_floydWarshall == null)
+            {
+                return null;
+            }
+
+            return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi);
+        }
+
         private void OnNewEmptyGraph() => NewEmptyGraph?.Invoke(this, EventArgs.Empty);
 
         private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLoadedEventArgs(locations));
@@ -174,7 +184,7 @@ namespace Floyd_Warshall_Model
 
         private void OnAlhorithmStarted(int[,] d, int[,] pi) => AlgorithmStarted?.Invoke(this, new AlgorithmEventArgs(d, pi));
 
-        private void OnAlgorithmStepped(int[,] d, int[,] pi) => AlgorithmStepped?.Invoke(this, new AlgorithmEventArgs(d, pi));
+        private void OnAlgorithmStepped(int[,] d, int[,] pi) => AlgorithmStepped?.Invoke(this, EventArgs.Empty);
 
         private void OnAlhorithmEnded() => AlgorithmEnded?.Invoke(this, EventArgs.Empty);
 

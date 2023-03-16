@@ -10,11 +10,9 @@ namespace Floyd_Warshall_Model.Events
     {
         public AlgorithmEventArgs(int[,] d, int[,] pi)
         {
-            D = d;
-            Pi = pi;
+            Data = new AlgorithmData(d, pi);
         }
 
-        public int[,] D { get; private set; }
-        public int[,] Pi { get; private set; }
+        public AlgorithmData Data { get; private set; }
     }
 }

@@ -17,6 +17,11 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
         {
             _viewModel.Timer.Stop();
             _viewModel.IsStopped = true;
+
+            if(_viewModel.TimerInterval < AlgorithmViewModel.criticalTime)
+            {
+                _viewModel.UpdateData();
+            }
         }
 
         public override bool CanExecute(object? parameter)

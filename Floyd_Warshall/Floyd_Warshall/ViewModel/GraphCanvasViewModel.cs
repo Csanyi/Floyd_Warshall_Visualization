@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Floyd_Warshall_Model.Events;
+using System.Windows;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -100,6 +101,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
             _selectedEdge = null;
             _selectedVertex = null;
+
+            OnPropertyChanged(nameof(MaxVertexCountReached));
         }
 
         private void CreateDirectedEdges()
@@ -162,6 +165,12 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
         {
+            if(e.VertexLocations.Count() > maxVertexCount) 
+            {
+                _graphModel.NewGraph(false);
+                throw new GraphDataException();
+            }
+
             Init();
 
             foreach (var v in e.VertexLocations)

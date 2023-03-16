@@ -4,6 +4,7 @@ using Floyd_Warshall_Model.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -103,6 +104,8 @@ namespace Floyd_Warshall.ViewModel
             _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
             _graphModel.AlgorithmEnded += Model_AlgorithmEnded;
             _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
+            _graphModel.GraphLoaded += Model_GraphLoaded;
+            _graphModel.NewEmptyGraph += Model_NewEmptyGraph;
 
             D = new ObservableCollection<MatrixGridViewModel>();
             Pi = new ObservableCollection<MatrixGridViewModel>();
@@ -131,8 +134,6 @@ namespace Floyd_Warshall.ViewModel
         {
             OnPropertyChanged(nameof(K));
 
-            List<int> vertexIds = _graphModel.GetVertexIds();
-
             for(int i = 0; i < e.D.GetLength(0); ++i)
             {
                 for(int j = 0; j < e.D.GetLength(1); ++j)
@@ -143,16 +144,16 @@ namespace Floyd_Warshall.ViewModel
                     {
                         Index = ind,
                         Value = e.D[i, j],
-                        X = vertexIds[i],
-                        Y = vertexIds[j],
+                        X = VertexIds[i],
+                        Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
                     });
                     Pi.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
                         Value = e.Pi[i, j],
-                        X = vertexIds[i],
-                        Y = vertexIds[j],
+                        X = VertexIds[i],
+                        Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
                     });
                 }
@@ -163,14 +164,15 @@ namespace Floyd_Warshall.ViewModel
         {
             _timer.Stop();
             IsStopped = true;
+
+            OnPropertyChanged(nameof(IsRunning));
         }
 
         private void Model_AlgorithmStepped(object? sender, AlgorithmEventArgs e)
         {
             OnPropertyChanged(nameof(K));
-            OnPropertyChanged(nameof(IsRunning));
 
-            for(int i = 0; i < D.Count; ++i)
+            for (int i = 0; i < D.Count; ++i)
             {
                 int j = i / e.D.GetLength(0);
                 int k = i % e.D.GetLength(1);
@@ -182,6 +184,17 @@ namespace Floyd_Warshall.ViewModel
         private void Model_NegativeCycleFound(object? sender, int e)
         {
             VertexInNegCycle = e;
+            OnPropertyChanged(nameof(IsRunning));
+        }
+
+        private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
+        {
+            OnPropertyChanged(nameof(IsEnoughVerteces));
+        }
+
+        private void Model_NewEmptyGraph(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(IsEnoughVerteces));
         }
     }
 }

@@ -18,14 +18,16 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 
         public override void Execute(object? parameter)
         {
-            _graphModel.StartAlgorithm();
-
             foreach (int id in _graphModel.GetVertexIds())
             {
                 _viewModel.VertexIds.Add(id);
             }
 
             _viewModel.Size = _viewModel.VertexIds.Count;
+
+            _viewModel.CallPropertyChanged(nameof(AlgorithmViewModel.VertexIds));
+
+            _graphModel.StartAlgorithm();
 
             _viewModel.CallPropertyChanged(nameof(AlgorithmViewModel.IsInitialized));
         }

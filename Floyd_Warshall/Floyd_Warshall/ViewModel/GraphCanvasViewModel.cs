@@ -14,18 +14,28 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 {
     public class GraphCanvasViewModel : ViewModelBase
     {
+        #region Fields
+
         private readonly GraphModel _graphModel;
 
-        private int _vertexId = 0;
+        public const int maxVertexCount = 20;
+
+        private int _vertexId;
+        private int _edgeId;
+        public VertexViewModel? _selectedVertex;
+        private EdgeViewModelBase? _selectedEdge;
+        private bool _canvasEnabled;
+
+        #endregion
+
+        #region Properties
+
         public int GetVertexId { get { return ++_vertexId; } }
 
-        private int _edgeId = 0;
         public int GetEdgeId { get { return ++_edgeId; } }
 
-        public VertexViewModel? _selectedVertex = null;
         public VertexViewModel? SelectedVertex { get { return _selectedVertex; } set { _selectedVertex = value; } }
 
-        private EdgeViewModelBase? _selectedEdge = null;
         public EdgeViewModelBase? SelectedEdge
         {
             get { return _selectedEdge; }
@@ -42,7 +52,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         public double MouseX { get; set; }
         public double MouseY { get; set; }
 
-        private bool _canvasEnabled = true;
         public bool CanvasEnabled
         {
             get => _canvasEnabled;
@@ -52,8 +61,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 OnPropertyChanged();
             }
         }
-
-        public const int maxVertexCount = 20;
 
         public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= maxVertexCount; } }
 
@@ -65,13 +72,13 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public ICommand CanvasClickCommand { get; private set; }
 
+        #endregion
+
+        #region Constructors
+
         public GraphCanvasViewModel(GraphModel graphModel)
         {
             _graphModel = graphModel;
-
-            Verteces = new List<VertexViewModel>();
-            Edges = new List<EdgeViewModelBase>();
-            Views = new ObservableCollection<GraphComponentViewModel>();
 
             CanvasClickCommand = new CanvasClickCommand(this, _graphModel);
 
@@ -84,11 +91,30 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel.VertexAdded += Model_VertexCntChanged;
             _graphModel.VertexRemoved += Model_VertexCntChanged;
             _graphModel.RouteCreated += Model_RouteCreated;
+
+            Verteces = new List<VertexViewModel>();
+            Edges = new List<EdgeViewModelBase>();
+            Views = new ObservableCollection<GraphComponentViewModel>();
+
+            _vertexId = 0;
+            _edgeId = 0;
+            _selectedVertex = null;
+            _selectedEdge = null;
+            _canvasEnabled = true;
         }
 
-        public IEnumerable<VertexLocation> GetLocations() 
-                        => Verteces.Select(v => new VertexLocation(v.Vertex,v.CanvasX, v.CanvasY));
+        #endregion
 
+        #region Public methods
+
+        public IEnumerable<VertexLocation> GetLocations()
+        {
+            return Verteces.Select(v => new VertexLocation(v.Vertex, v.CanvasX, v.CanvasY));
+        }
+
+        #endregion
+
+        #region Private methods
 
         private void Init()
         {
@@ -158,6 +184,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             Edges.ForEach(e => e.IsSelected = false);
         }
 
+        #endregion
 
         #region Model event handlers
 

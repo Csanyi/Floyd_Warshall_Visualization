@@ -13,13 +13,22 @@ namespace Floyd_Warshall.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        #region Fields
+
         private readonly GraphCanvasViewModel _graphCanvas;
-        public GraphCanvasViewModel GraphCanvas { get { return _graphCanvas; } }
+        private readonly AlgorithmViewModel _algorithm;
 
         private bool _commandsEnabled;
+
+        #endregion
+
+        #region Properties
+
+        public GraphCanvasViewModel GraphCanvas { get { return _graphCanvas; } }
+
         public bool CommandsEnabled 
         {
-            get => _commandsEnabled;
+            get { return _commandsEnabled; }
             set
             {
                 _commandsEnabled = value;
@@ -27,7 +36,6 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        private readonly AlgorithmViewModel _algorithm;
         public AlgorithmViewModel Algorithm { get { return _algorithm; } }
 
         public event EventHandler<bool>? NewGraph;
@@ -40,12 +48,14 @@ namespace Floyd_Warshall.ViewModel
         public ICommand SaveGraphCommand { get; private set; }
         public ICommand ExitCommand { get; private set; }
 
+        #endregion
+
+        #region Constructors
+
         public MainViewModel(GraphModel graphModel)
         {
             _graphCanvas = new GraphCanvasViewModel(graphModel);
             _algorithm = new AlgorithmViewModel(graphModel);
-
-            CommandsEnabled = true;
 
             NewGraphCommand = new DelegateCommand(param => OnNewGraph((bool)param), param => CommandsEnabled);
             LoadGraphCommand = new DelegateCommand(param => OnLoad(), param => CommandsEnabled);
@@ -54,17 +64,13 @@ namespace Floyd_Warshall.ViewModel
 
             graphModel.AlgorithmStarted += Model_AlgorithmStarted;
             graphModel.AlgorithmStopped += Model_AlgorithmStopped;
+
+            _commandsEnabled = true;
         }
 
+        #endregion
 
-        private void OnNewGraph(bool isDirected) => NewGraph?.Invoke(this, isDirected);
-
-        private void OnLoad() => LoadGraph?.Invoke(this, EventArgs.Empty);
-
-        private void OnSave() => SaveGraph?.Invoke(this, new GraphLoadedEventArgs(_graphCanvas.GetLocations()));
-
-        private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
-
+        #region Model event handlers
 
         private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
@@ -75,5 +81,19 @@ namespace Floyd_Warshall.ViewModel
         {
             CommandsEnabled = true;
         }
+
+        #endregion
+
+        #region Private event methods
+
+        private void OnNewGraph(bool isDirected) => NewGraph?.Invoke(this, isDirected);
+
+        private void OnLoad() => LoadGraph?.Invoke(this, EventArgs.Empty);
+
+        private void OnSave() => SaveGraph?.Invoke(this, new GraphLoadedEventArgs(_graphCanvas.GetLocations()));
+
+        private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
+
+        #endregion
     }
 }

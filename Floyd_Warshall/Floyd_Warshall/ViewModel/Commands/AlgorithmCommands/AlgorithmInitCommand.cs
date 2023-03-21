@@ -1,5 +1,6 @@
 ﻿using Floyd_Warshall_Model;
 using System.ComponentModel;
+using System.Windows;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
@@ -18,10 +19,7 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 
         public override void Execute(object? parameter)
         {
-            foreach (int id in _graphModel.GetVertexIds())
-            {
-                _viewModel.VertexIds.Add(id);
-            }
+            _graphModel.GetVertexIds().ForEach(id => _viewModel.VertexIds.Add(id));
 
             _viewModel.Size = _viewModel.VertexIds.Count;
 

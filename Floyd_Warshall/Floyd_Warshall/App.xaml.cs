@@ -12,14 +12,24 @@ namespace Floyd_Warshall
 {
     public partial class App : Application
     {
+        #region Fields
+
         private GraphModel _graphModel = null!;
         private MainWindow _view = null!;
         private MainViewModel _viewModel = null!;
+
+        #endregion
+
+        #region Constructors
 
         public App()
         {
             Startup += App_Startup;
         }
+
+        #endregion
+
+        #region App event handlers
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -39,12 +49,12 @@ namespace Floyd_Warshall
             _view.Show();
         }
 
+        #endregion
 
         #region ViewModel event handlers
 
         private void ViewModel_NewGraph(object? sender, bool e) => _graphModel.NewGraph(e);
      
-
         private async void ViewModel_LoadGraph(object? sender, EventArgs e)
         {
             try

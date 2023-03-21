@@ -12,11 +12,20 @@ namespace Floyd_Warshall.ViewModel
 {
     public class AlgorithmViewModel : ViewModelBase
     {
+        #region Fields
+
         private readonly GraphModel _graphModel;
+        private readonly DispatcherTimer _timer;
+        private int _size;
+        private int? _vertexInNegCycle;
+        private bool _isStopped;
 
         public const int criticalTime = 100;
 
-        private readonly DispatcherTimer _timer;
+        #endregion
+
+        #region Properties
+
         public DispatcherTimer Timer { get { return _timer; } }
 
         public int TimerInterval
@@ -29,7 +38,6 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        private int _size;
         public int Size
         {
             get { return _size; }
@@ -40,13 +48,12 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        public int? K => _graphModel.K;
+        public int? K { get { return _graphModel.K; } }
 
         public bool IsEnoughVerteces { get { return _graphModel.GetVertexCount() > 1; } }
 
         public bool IsNegCycleFound { get; set; }
 
-        private int? _vertexInNegCycle;
         public int? VertexInNegCycle
         {
             get { return _vertexInNegCycle; }
@@ -59,11 +66,10 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        public bool IsInitialized => _graphModel.IsAlgorthmInitialized;
+        public bool IsInitialized { get { return _graphModel.IsAlgorthmInitialized; } }
 
-        public bool IsRunning => _graphModel.IsAlgorithmRunning;
+        public bool IsRunning { get { return _graphModel.IsAlgorithmRunning; } }
 
-        private bool _isStopped;
         public bool IsStopped
         {
             get => _isStopped;
@@ -83,6 +89,10 @@ namespace Floyd_Warshall.ViewModel
         public ICommand PauseCommand { get; private set; }
         public ICommand StartCommand { get; private set; }
         public ICommand StepCommand { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         public AlgorithmViewModel(GraphModel graphModel)
         {
@@ -117,6 +127,10 @@ namespace Floyd_Warshall.ViewModel
             VertexInNegCycle = null;
         }
 
+        #endregion
+
+        #region Public methods
+
         public void CallPropertyChanged(string propertyName)
         {
             OnPropertyChanged(propertyName);
@@ -139,10 +153,18 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
+        #endregion
+
+        #region Timer event handlers
+
         private void Timer_Tick(object? sender, EventArgs e)
         {
             _graphModel.StepAlgorithm();
         }
+
+        #endregion
+
+        #region Model event handlers
 
         private void Model_VertexCntChanged(object? sender, EventArgs e)
         {
@@ -217,5 +239,7 @@ namespace Floyd_Warshall.ViewModel
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
+
+        #endregion
     }
 }

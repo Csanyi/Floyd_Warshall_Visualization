@@ -6,17 +6,27 @@ namespace Floyd_Warshall_Model
 {
     public class GraphModel
     {
+        #region Fields
+
         private GraphBase _graph;
         private FloydWarshall? _floydWarshall;
         private readonly IGraphDataAccess _dataAccess;
 
-        public bool IsDirected => _graph.IsDirected;
+        #endregion
 
-        public bool IsAlgorithmRunning => _floydWarshall != null && _floydWarshall.IsRunnging;
+        #region Properties
 
-        public bool IsAlgorthmInitialized => _floydWarshall != null;
+        public bool IsDirected { get { return _graph.IsDirected; } }
 
-        public int? K  =>  _floydWarshall?.K;
+        public bool IsAlgorithmRunning { get { return _floydWarshall != null && _floydWarshall.IsRunnging; } }
+
+        public bool IsAlgorthmInitialized { get { return _floydWarshall != null; } }
+
+        public int? K { get { return _floydWarshall?.K; } }
+
+        #endregion
+
+        #region Events
 
         public event EventHandler? NewEmptyGraph;
         public event EventHandler<GraphLoadedEventArgs>? GraphLoaded;
@@ -29,11 +39,19 @@ namespace Floyd_Warshall_Model
         public event EventHandler<int>? NegativeCycleFound;
         public event EventHandler<RouteEventArgs>? RouteCreated;
 
+        #endregion
+
+        #region Constructors
+
         public GraphModel(IGraphDataAccess dataAccess)
         {
             _graph = new UndirectedGraph();
             _dataAccess = dataAccess;
         }
+
+        #endregion
+
+        #region Public graph methods
 
         public void NewGraph(bool isDirected)
         {
@@ -100,6 +118,10 @@ namespace Floyd_Warshall_Model
 
             await _dataAccess.SaveAsync(path, _graph, locations);
         }
+
+        #endregion
+
+        #region Public algorithm methods
 
         public void StartAlgorithm()
         {
@@ -174,6 +196,10 @@ namespace Floyd_Warshall_Model
             return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi);
         }
 
+        #endregion
+
+        #region Private event methods
+
         private void OnNewEmptyGraph() => NewEmptyGraph?.Invoke(this, EventArgs.Empty);
 
         private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLoadedEventArgs(locations));
@@ -193,5 +219,7 @@ namespace Floyd_Warshall_Model
         private void OnNegativeCycleFound(int v) => NegativeCycleFound?.Invoke(this, v);
 
         private void OnRouteCreated(List<int> route) => RouteCreated?.Invoke(this, new RouteEventArgs(route));
+
+        #endregion
     }
 }

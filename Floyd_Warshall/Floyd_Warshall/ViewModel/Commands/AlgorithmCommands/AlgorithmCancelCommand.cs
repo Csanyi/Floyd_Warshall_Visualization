@@ -21,10 +21,10 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
             _viewModel.Timer.Stop();
             _graphModel.StopAlgorithm();
 
-            _viewModel.VertexInNegCycle = null;
-
             _viewModel.CallPropertyChanged(nameof(AlgorithmViewModel.IsInitialized));
             _viewModel.IsStopped = true;
+
+            _viewModel.IsNegCycleFound = false;
 
             _viewModel.D.Clear();
             _viewModel.Pi.Clear();

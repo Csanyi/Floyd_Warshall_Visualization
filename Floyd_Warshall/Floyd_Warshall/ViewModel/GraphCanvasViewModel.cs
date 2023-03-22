@@ -178,9 +178,57 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        private void SelectRoute(List<int> route, bool isNegCycle)
+        {
+            Edges.ForEach(e => e.IsSelected = false);
+
+            foreach (VertexViewModel v in Verteces)
+            {
+                if (route.Contains(v.Id))
+                {
+                    if (isNegCycle)
+                    {
+                        v.InNegCycle = true;
+                    }
+                    else
+                    {
+                        v.IsSelected = true;
+                    }
+
+                    int ind = route.FindIndex(x => x == v.Id);
+          
+                    EdgeViewModelBase? edgevm = null;
+
+                    int i = (ind + 1) % route.Count;
+
+                    if (_graphModel.IsDirected)
+                    {
+                        edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == route[i]);
+                    }
+                    else
+                    {
+                        edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == route[i] || edge.To.Id == route[i]);
+                    }
+
+                    if (edgevm != null)
+                    {
+                        edgevm.IsSelected = true;
+                    }
+                }
+                else
+                {
+                    v.IsSelected = false;
+                }
+            }
+        }
+
         private void ClearSelections()
         {
-            Verteces.ForEach(v => v.IsSelected = false);
+            Verteces.ForEach(v =>
+            {
+                v.IsSelected = false; 
+                v.InNegCycle = false;
+            });
             Edges.ForEach(e => e.IsSelected = false);
         }
 
@@ -188,7 +236,11 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         #region Model event handlers
 
-        private void Model_NewEmptyGraph(object? sender, EventArgs e) => Init();
+        private void Model_NewEmptyGraph(object? sender, EventArgs e)
+        {
+            Init();
+        }
+
 
         private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
         {
@@ -250,26 +302,15 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_AlgorithmStopped(object? sender, EventArgs e)
         {
-            if(SelectedVertex != null)
-            {
-                SelectedVertex.InNegCycle = false;
-                SelectedVertex = null;
-            }
-
             ClearSelections();
 
             CanvasEnabled = true;
         }
 
-        private void Model_NegativeCycleFound(object? sender, int e)
+        private void Model_NegativeCycleFound(object? sender, RouteEventArgs e)
         {
-            VertexViewModel? v = Verteces.FirstOrDefault(v => v.Vertex.Id == e);
 
-            if(v != null)
-            {
-                v.InNegCycle = true;
-                SelectedVertex = v;
-            }
+            SelectRoute(e.Route, true);
         }
 
         private void Model_VertexCntChanged(object? sender, EventArgs e)
@@ -279,38 +320,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_RouteCreated(object? sender, RouteEventArgs e)
         {
-            Edges.ForEach(e => e.IsSelected = false);
-
-            foreach(VertexViewModel v in Verteces)
-            {
-                if(e.Route.Contains(v.Id))
-                {
-                    v.IsSelected = true;
-                    int ind = e.Route.FindIndex(x => x == v.Id);
-                    if(ind < e.Route.Count - 1)
-                    {
-                        EdgeViewModelBase? edgevm = null;
-
-                        if (_graphModel.IsDirected)
-                        {
-                            edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == e.Route[ind + 1]);
-                        }
-                        else
-                        {
-                            edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == e.Route[ind + 1] || edge.To.Id == e.Route[ind + 1]);
-                        }
-
-                        if(edgevm != null)
-                        {
-                            edgevm.IsSelected = true;
-                        }
-                    }
-                }
-                else
-                {
-                    v.IsSelected = false;
-                }
-            }
+            SelectRoute(e.Route, false);
         }
 
         #endregion

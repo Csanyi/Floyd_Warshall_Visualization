@@ -23,8 +23,6 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 
             _viewModel.Size = _viewModel.VertexIds.Count;
 
-            _viewModel.CallPropertyChanged(nameof(AlgorithmViewModel.VertexIds));
-
             _graphModel.StartAlgorithm();
 
             _viewModel.CallPropertyChanged(nameof(AlgorithmViewModel.IsInitialized));

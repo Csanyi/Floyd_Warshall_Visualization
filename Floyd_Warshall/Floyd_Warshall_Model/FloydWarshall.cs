@@ -63,8 +63,10 @@
                     {
                         _d[i, j] = _d[i, _k] + _d[_k, j];
                         _pi[i, j] = _pi[_k, j];
+
                         if (i == j && _d[i, i] < 0)
                         {
+                            ++_k;
                             _isRunning = false;
                             return _vertexIds[i];
                         }
@@ -75,7 +77,7 @@
             if(++_k >= _graph.GetLength(0))
             {
                 _isRunning = false;
-                return -1;
+                return 0;
             }
 
             return -1;

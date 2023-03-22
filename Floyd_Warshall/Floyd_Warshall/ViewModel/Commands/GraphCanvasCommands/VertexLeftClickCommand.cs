@@ -40,7 +40,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
                 }
                 else
                 {
-                    AddEdge(_viewModel.SelectedVertex, v);
+                    AddUndirectedEdge(_viewModel.SelectedVertex, v);
                 }
 
                 _viewModel.SelectedVertex.IsSelected = false;
@@ -48,7 +48,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
             }
         }
 
-        private void AddEdge(VertexViewModel from, VertexViewModel to)
+        private void AddUndirectedEdge(VertexViewModel from, VertexViewModel to)
         {
             Vertex f = from.Vertex;
             Vertex t = to.Vertex;

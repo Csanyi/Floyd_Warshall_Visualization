@@ -17,8 +17,8 @@ namespace Floyd_Warshall.ViewModel
         private readonly GraphModel _graphModel;
         private readonly DispatcherTimer _timer;
         private int _size;
-        private int? _vertexInNegCycle;
         private bool _isStopped;
+        private bool _isNegCycleFound;
 
         public const int criticalTime = 100;
 
@@ -52,17 +52,13 @@ namespace Floyd_Warshall.ViewModel
 
         public bool IsEnoughVerteces { get { return _graphModel.GetVertexCount() > 1; } }
 
-        public bool IsNegCycleFound { get; set; }
-
-        public int? VertexInNegCycle
-        {
-            get { return _vertexInNegCycle; }
+        public bool IsNegCycleFound
+        { 
+            get { return _isNegCycleFound; }
             set
             {
-                _vertexInNegCycle = value;
-                IsNegCycleFound = _vertexInNegCycle != null;
+                _isNegCycleFound = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsNegCycleFound));
             }
         }
 
@@ -124,7 +120,6 @@ namespace Floyd_Warshall.ViewModel
             VertexIds = new ObservableCollection<int>();
 
             IsStopped = true;
-            VertexInNegCycle = null;
         }
 
         #endregion
@@ -224,9 +219,9 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        private void Model_NegativeCycleFound(object? sender, int e)
+        private void Model_NegativeCycleFound(object? sender, RouteEventArgs e)
         {
-            VertexInNegCycle = e;
+            IsNegCycleFound = true;
             OnPropertyChanged(nameof(IsRunning));
         }
 

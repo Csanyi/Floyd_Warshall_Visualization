@@ -34,6 +34,7 @@ namespace Floyd_Warshall.View.UserControls
             DependencyProperty.Register("Y", typeof(double), typeof(Vertex), new PropertyMetadata(0.0));
 
 
+
         private void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

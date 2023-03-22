@@ -62,9 +62,11 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-        <StatusBar
-            Grid.Row="1">
-            <StatusBarItem DockPanel.Dock="Left" Margin="10,0" >
+        <StatusBar Grid.Row="1">
+            <StatusBarItem DockPanel.Dock="Left" Visibility="{Binding IsEdgeSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Text="Edge weight" />
+            </StatusBarItem>
+            <StatusBarItem DockPanel.Dock="Left" >
                 <TextBox
                     Width="50"
                     MaxLength="6"

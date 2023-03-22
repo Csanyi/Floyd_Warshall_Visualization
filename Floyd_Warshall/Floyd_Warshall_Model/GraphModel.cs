@@ -36,7 +36,7 @@ namespace Floyd_Warshall_Model
         public event EventHandler? AlgorithmStepped;
         public event EventHandler? AlgorithmEnded;
         public event EventHandler? AlgorithmStopped;
-        public event EventHandler<int>? NegativeCycleFound;
+        public event EventHandler<RouteEventArgs>? NegativeCycleFound;
         public event EventHandler<RouteEventArgs>? RouteCreated;
 
         #endregion
@@ -135,17 +135,20 @@ namespace Floyd_Warshall_Model
 
             int res = _floydWarshall.NextStep();
 
-            if (res == -1)
-            {
-                OnAlgorithmStepped(_floydWarshall.D, _floydWarshall.Pi);
-            }
-            else if(res == 0)
+            OnAlgorithmStepped(_floydWarshall.D, _floydWarshall.Pi);
+
+            if(res == 0)
             {
                 OnAlhorithmEnded();
             }
-            else
+            else if(res > 0)
             {
-                OnNegativeCycleFound(res);
+                List<int>? route = CreateRoute(res, res);
+
+                if(route != null)
+                {
+                    OnNegativeCycleFound(route);
+                }
             }
         }
 
@@ -157,33 +160,12 @@ namespace Floyd_Warshall_Model
 
         public void GetRoute(int from, int to)
         {
-            if(_floydWarshall == null) 
+           List<int>? route = CreateRoute(from, to);
+
+            if(route != null)
             {
-                return; 
+                OnRouteCreated(route);
             }
-
-            List<int> route = new List<int>();
-            List<int> vertexIds = _graph.GetVertexIds();
-
-            int fromInd = vertexIds.FindIndex(x => x == from);
-            int toInd = vertexIds.FindIndex(x => x == to);
-
-            int next = _floydWarshall.Pi[fromInd, toInd];
-
-            while( next != 0 )
-            {
-                route.Add(next);
-                int nextInd = vertexIds.FindIndex(x => x == next);
-                next = _floydWarshall.Pi[fromInd, nextInd];
-            }
-
-            route.Reverse();
-            if(from == to || route.Any())
-            {
-                route.Add(to);
-            }
-
-            OnRouteCreated(route);
         }
 
         public AlgorithmData? GetAlgorithmData()
@@ -194,6 +176,41 @@ namespace Floyd_Warshall_Model
             }
 
             return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private List<int>? CreateRoute(int from, int to)
+        {
+            if (_floydWarshall == null)
+            {
+                return null;
+            }
+
+            List<int> route = new List<int>();
+            List<int> vertexIds = _graph.GetVertexIds();
+
+            int fromInd = vertexIds.FindIndex(x => x == from);
+            int toInd = vertexIds.FindIndex(x => x == to);
+
+            int next = _floydWarshall.Pi[fromInd, toInd];
+
+            while (next != 0 && next != to)
+            {
+                route.Add(next);
+                int nextInd = vertexIds.FindIndex(x => x == next);
+                next = _floydWarshall.Pi[fromInd, nextInd];
+            }
+
+            route.Reverse();
+            if (from == to || route.Any())
+            {
+                route.Add(to);
+            }
+
+            return route;
         }
 
         #endregion
@@ -216,7 +233,7 @@ namespace Floyd_Warshall_Model
 
         private void OnAlhorithmStopped() => AlgorithmStopped?.Invoke(this, EventArgs.Empty);
 
-        private void OnNegativeCycleFound(int v) => NegativeCycleFound?.Invoke(this, v);
+        private void OnNegativeCycleFound(List<int> route) => NegativeCycleFound?.Invoke(this, new RouteEventArgs(route));
 
         private void OnRouteCreated(List<int> route) => RouteCreated?.Invoke(this, new RouteEventArgs(route));
 

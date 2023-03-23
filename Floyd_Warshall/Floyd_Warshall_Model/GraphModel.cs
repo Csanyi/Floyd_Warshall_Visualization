@@ -11,6 +11,7 @@ namespace Floyd_Warshall_Model
         private GraphBase _graph;
         private FloydWarshall? _floydWarshall;
         private readonly IGraphDataAccess _dataAccess;
+        private int _prevK;
 
         #endregion
 
@@ -23,6 +24,8 @@ namespace Floyd_Warshall_Model
         public bool IsAlgorthmInitialized { get { return _floydWarshall != null; } }
 
         public int? K { get { return _floydWarshall?.K; } }
+
+        public int PrevK { get { return _prevK; } }
 
         #endregion
 
@@ -133,6 +136,8 @@ namespace Floyd_Warshall_Model
         {
             if( _floydWarshall == null ) { return; }
 
+            _prevK = _floydWarshall.K;
+
             int res = _floydWarshall.NextStep();
 
             OnAlgorithmStepped(_floydWarshall.D, _floydWarshall.Pi);
@@ -155,6 +160,7 @@ namespace Floyd_Warshall_Model
         public void StopAlgorithm()
         {
             _floydWarshall = null;
+            _prevK = 0;
             OnAlhorithmStopped();
         }
 

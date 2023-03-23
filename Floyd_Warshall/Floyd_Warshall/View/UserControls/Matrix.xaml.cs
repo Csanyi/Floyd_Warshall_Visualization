@@ -45,5 +45,31 @@ namespace Floyd_Warshall.View.UserControls
 
         public static readonly DependencyProperty UseConverterProperty =
             DependencyProperty.Register("UseConverter", typeof(bool), typeof(Matrix), new PropertyMetadata(false));
+
+
+
+        public string Header
+        {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(string), typeof(Matrix), new PropertyMetadata(null));
+
+
+
+
+        public int? K
+        {
+            get { return (int?)GetValue(KProperty); }
+            set { SetValue(KProperty, value); }
+        }
+
+        public static readonly DependencyProperty KProperty =
+            DependencyProperty.Register("K", typeof(int?), typeof(Matrix), new PropertyMetadata(null));
+
+
+
     }
 }

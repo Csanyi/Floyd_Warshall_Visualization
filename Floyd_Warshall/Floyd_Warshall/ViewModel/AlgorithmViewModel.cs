@@ -19,6 +19,7 @@ namespace Floyd_Warshall.ViewModel
         private int _size;
         private bool _isStopped;
         private bool _isNegCycleFound;
+        private bool _steppedOnce;
 
         public const int criticalTime = 100;
 
@@ -50,6 +51,8 @@ namespace Floyd_Warshall.ViewModel
 
         public int? K { get { return _graphModel.K; } }
 
+        public int PrevK { get { return _graphModel.PrevK; } } 
+
         public bool IsEnoughVerteces { get { return _graphModel.GetVertexCount() > 1; } }
 
         public bool IsNegCycleFound
@@ -60,6 +63,16 @@ namespace Floyd_Warshall.ViewModel
                 _isNegCycleFound = value;
                 OnPropertyChanged();
             }
+        }
+
+        public bool SteppedOnce 
+        { 
+            get { return _steppedOnce; }
+            set
+            {
+                _steppedOnce = value;
+                OnPropertyChanged();
+            } 
         }
 
         public bool IsInitialized { get { return _graphModel.IsAlgorthmInitialized; } }
@@ -78,6 +91,8 @@ namespace Floyd_Warshall.ViewModel
 
         public ObservableCollection<MatrixGridViewModel> D { get; set; }
         public ObservableCollection<MatrixGridViewModel> Pi { get; set; }
+        public ObservableCollection<MatrixGridViewModel> PrewPi { get; set; }
+        public ObservableCollection<MatrixGridViewModel> PrewD { get; set; }
         public ObservableCollection<int> VertexIds { get; set; }
 
         public ICommand InitCommand { get; private set; }
@@ -117,6 +132,8 @@ namespace Floyd_Warshall.ViewModel
 
             D = new ObservableCollection<MatrixGridViewModel>();
             Pi = new ObservableCollection<MatrixGridViewModel>();
+            PrewD = new ObservableCollection<MatrixGridViewModel>();
+            PrewPi = new ObservableCollection<MatrixGridViewModel>();
             VertexIds = new ObservableCollection<int>();
 
             IsStopped = true;
@@ -142,6 +159,8 @@ namespace Floyd_Warshall.ViewModel
                 {
                     int j = i / e.D.GetLength(0);
                     int k = i % e.D.GetLength(1);
+                    PrewD[i].Value = D[i].Value;
+                    PrewPi[i].Value = Pi[i].Value;
                     D[i].Value = e.D[j, k];
                     Pi[i].Value = e.Pi[j, k];
                 }
@@ -169,8 +188,10 @@ namespace Floyd_Warshall.ViewModel
         private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
             OnPropertyChanged(nameof(K));
+            OnPropertyChanged(nameof(PrevK));
+            SteppedOnce = false;
 
-            for(int i = 0; i < e.Data.D.GetLength(0); ++i)
+            for (int i = 0; i < e.Data.D.GetLength(0); ++i)
             {
                 for(int j = 0; j < e.Data.D.GetLength(1); ++j)
                 {
@@ -188,6 +209,22 @@ namespace Floyd_Warshall.ViewModel
                     {
                         Index = ind,
                         Value = e.Data.Pi[i, j],
+                        X = VertexIds[i],
+                        Y = VertexIds[j],
+                        ClickCommand = new MatrixGridClickCommand(this, _graphModel),
+                    });
+
+                    PrewD.Add(new MatrixGridViewModel()
+                    {
+                        Index = ind,
+                        X = VertexIds[i],
+                        Y = VertexIds[j],
+                        ClickCommand = new MatrixGridClickCommand(this, _graphModel),
+                    });
+
+                    PrewPi.Add(new MatrixGridViewModel()
+                    {
+                        Index = ind,
                         X = VertexIds[i],
                         Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
@@ -212,8 +249,10 @@ namespace Floyd_Warshall.ViewModel
         private void Model_AlgorithmStepped(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(K));
+            OnPropertyChanged(nameof(PrevK));
+            SteppedOnce = true;
 
-            if(TimerInterval > criticalTime || IsStopped)
+            if (TimerInterval > criticalTime || IsStopped)
             {
                 UpdateData();
             }

@@ -17,8 +17,6 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
         {
             _vm = vm;
             _graphModel = graphModel;
-
-
         }
 
         public override void Execute(object? parameter)

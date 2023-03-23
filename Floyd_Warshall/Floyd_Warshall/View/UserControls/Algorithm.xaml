@@ -14,23 +14,59 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
 
         <Grid 
             Grid.Row="0"
-            Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}"
-            IsVisibleChanged="MatrixGrid_IsVisibleChanged">
+            Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" x:Name="rowDef1"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="*" x:Name="rowDef2"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="*" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SteppedOnce}" Value="False">
+                                    <Setter Property="Width" Value="0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <local:Matrix Grid.Row="0" MatrixData="{Binding D}" UseConverter="true"/>
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
-            <local:Matrix Grid.Row="2" MatrixData="{Binding Pi}"/>
+
+            <local:Matrix 
+                Grid.Row="0" Grid.Column="0" 
+                MatrixData="{Binding PrewD}" 
+                UseConverter="true"
+                Header="D" 
+                K="{Binding PrevK}"
+                Visibility="{Binding SteppedOnce, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <local:Matrix 
+                Grid.Row="0" Grid.Column="1"
+                MatrixData="{Binding D}" 
+                UseConverter="true" 
+                Header="D" 
+                K="{Binding K}" />
+
+            <local:Matrix 
+                Grid.Row="1" Grid.Column="0" 
+                MatrixData="{Binding PrewPi}" 
+                Header="&#960;" 
+                K="{Binding PrevK}"
+                Visibility="{Binding SteppedOnce, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <local:Matrix 
+                Grid.Row="1" Grid.Column="1" 
+                MatrixData="{Binding Pi}"
+                Header="&#960;" 
+                K="{Binding K}" />
         </Grid>
        
         <Grid Grid.Row="1">

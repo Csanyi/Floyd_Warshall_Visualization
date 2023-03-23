@@ -25,11 +25,5 @@ namespace Floyd_Warshall.View.UserControls
         {
             InitializeComponent();
         }
-
-        private void MatrixGrid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            rowDef1.Height = new GridLength(1, GridUnitType.Star);
-            rowDef2.Height = new GridLength(1, GridUnitType.Star);
-        }
     }
 }

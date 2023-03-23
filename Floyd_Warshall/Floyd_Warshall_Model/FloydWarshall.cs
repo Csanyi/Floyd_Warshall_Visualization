@@ -11,7 +11,7 @@
         private readonly int[,] _pi;
         public int[,] Pi { get { return _pi; } }
 
-        private int _k = 0;
+        private int _k;
         public int K { get { return _k == 0 ? 0 : _vertexIds[_k-1]; } }
 
         private bool _isRunning = true;
@@ -23,6 +23,7 @@
             _vertexIds = vertexIds;
             _d = new int[graph.GetLength(0), graph.GetLength(1)];
             _pi = new int[graph.GetLength(0), graph.GetLength(1)];
+            _k = 0;
 
             Initaliaze();
         }

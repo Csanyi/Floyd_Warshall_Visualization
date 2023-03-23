@@ -201,18 +201,21 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
                     int i = (ind + 1) % route.Count;
 
-                    if (_graphModel.IsDirected)
+                    if(ind < route.Count - 1 || isNegCycle)
                     {
-                        edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == route[i]);
-                    }
-                    else
-                    {
-                        edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == route[i] || edge.To.Id == route[i]);
-                    }
+                        if (_graphModel.IsDirected)
+                        {
+                            edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == route[i]);
+                        }
+                        else
+                        {
+                            edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == route[i] || edge.To.Id == route[i]);
+                        }
 
-                    if (edgevm != null)
-                    {
-                        edgevm.IsSelected = true;
+                        if (edgevm != null)
+                        {
+                            edgevm.IsSelected = true;
+                        }
                     }
                 }
                 else

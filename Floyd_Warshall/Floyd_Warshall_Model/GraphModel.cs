@@ -11,7 +11,8 @@ namespace Floyd_Warshall_Model
         private GraphBase _graph;
         private FloydWarshall? _floydWarshall;
         private readonly IGraphDataAccess _dataAccess;
-        private int _prevK;
+        private int? _prevK;
+        private int[,]? _prevPi;
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace Floyd_Warshall_Model
 
         public int? K { get { return _floydWarshall?.K; } }
 
-        public int PrevK { get { return _prevK; } }
+        public int? PrevK { get { return _prevK; } }
 
         #endregion
 
@@ -137,10 +138,11 @@ namespace Floyd_Warshall_Model
             if( _floydWarshall == null ) { return; }
 
             _prevK = _floydWarshall.K;
+            _prevPi = (int[,])_floydWarshall.Pi.Clone();
 
             int res = _floydWarshall.NextStep();
 
-            OnAlgorithmStepped(_floydWarshall.D, _floydWarshall.Pi);
+            OnAlgorithmStepped();
 
             if(res == 0)
             {
@@ -148,7 +150,7 @@ namespace Floyd_Warshall_Model
             }
             else if(res > 0)
             {
-                List<int>? route = CreateRoute(res, res);
+                List<int>? route = CreateRoute(res, res, _floydWarshall.Pi);
 
                 if(route != null)
                 {
@@ -160,13 +162,24 @@ namespace Floyd_Warshall_Model
         public void StopAlgorithm()
         {
             _floydWarshall = null;
-            _prevK = 0;
+            _prevK = null;
+            _prevPi = null;
             OnAlhorithmStopped();
         }
 
-        public void GetRoute(int from, int to)
+        public void GetRoute(int from, int to, bool isPrev)
         {
-           List<int>? route = CreateRoute(from, to);
+            List<int>? route = null;
+
+            if (!isPrev && _floydWarshall != null)
+            {
+                route = CreateRoute(from, to, _floydWarshall.Pi);
+            }
+            else if(isPrev && _prevPi != null)
+            {
+                route = CreateRoute(from, to, _prevPi);
+            }
+          
 
             if(route != null)
             {
@@ -181,33 +194,28 @@ namespace Floyd_Warshall_Model
                 return null;
             }
 
-            return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi);
+            return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi, _floydWarshall.Changes);
         }
 
         #endregion
 
         #region Private methods
 
-        private List<int>? CreateRoute(int from, int to)
+        private List<int>? CreateRoute(int from, int to, int[,] pi)
         {
-            if (_floydWarshall == null)
-            {
-                return null;
-            }
-
             List<int> route = new List<int>();
             List<int> vertexIds = _graph.GetVertexIds();
 
             int fromInd = vertexIds.FindIndex(x => x == from);
             int toInd = vertexIds.FindIndex(x => x == to);
 
-            int next = _floydWarshall.Pi[fromInd, toInd];
+            int next = pi[fromInd, toInd];
 
             while (next != 0 && next != to)
             {
                 route.Add(next);
                 int nextInd = vertexIds.FindIndex(x => x == next);
-                next = _floydWarshall.Pi[fromInd, nextInd];
+                next = pi[fromInd, nextInd];
             }
 
             route.Reverse();
@@ -233,7 +241,7 @@ namespace Floyd_Warshall_Model
 
         private void OnAlhorithmStarted(int[,] d, int[,] pi) => AlgorithmStarted?.Invoke(this, new AlgorithmEventArgs(d, pi));
 
-        private void OnAlgorithmStepped(int[,] d, int[,] pi) => AlgorithmStepped?.Invoke(this, EventArgs.Empty);
+        private void OnAlgorithmStepped() => AlgorithmStepped?.Invoke(this, EventArgs.Empty);
 
         private void OnAlhorithmEnded() => AlgorithmEnded?.Invoke(this, EventArgs.Empty);
 

@@ -11,6 +11,9 @@
         private readonly int[,] _pi;
         public int[,] Pi { get { return _pi; } }
 
+        private readonly ICollection<Tuple<int, int>> _changes;
+        public ICollection<Tuple<int, int>> Changes { get { return _changes; } }
+
         private int _k;
         public int K { get { return _k == 0 ? 0 : _vertexIds[_k-1]; } }
 
@@ -23,6 +26,7 @@
             _vertexIds = vertexIds;
             _d = new int[graph.GetLength(0), graph.GetLength(1)];
             _pi = new int[graph.GetLength(0), graph.GetLength(1)];
+            _changes = new HashSet<Tuple<int, int>>();
             _k = 0;
 
             Initaliaze();
@@ -56,6 +60,8 @@
                 return 0; 
             }
 
+            _changes.Clear();
+
             for(int i = 0; i < _graph.GetLength(0); ++i)
             {
                 for(int j = 0; j < _graph.GetLength(1); ++j)
@@ -64,6 +70,7 @@
                     {
                         _d[i, j] = _d[i, _k] + _d[_k, j];
                         _pi[i, j] = _pi[_k, j];
+                        _changes.Add(new Tuple<int, int>(i, j));
 
                         if (i == j && _d[i, i] < 0)
                         {

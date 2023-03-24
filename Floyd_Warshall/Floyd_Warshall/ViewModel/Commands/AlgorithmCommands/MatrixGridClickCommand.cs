@@ -21,11 +21,16 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 
         public override void Execute(object? parameter)
         {
-            int ind = Convert.ToInt32(parameter);
+            if(parameter == null) { return; }
+
+            Tuple<int, bool> values = (Tuple<int, bool>)parameter;
+
+            int ind = Convert.ToInt32(values.Item1);
+            bool isPrev = Convert.ToBoolean(values.Item2);
 
             MatrixGridViewModel grid = _vm.Pi[ind];
 
-            _graphModel.GetRoute(grid.X, grid.Y);
+            _graphModel.GetRoute(grid.X, grid.Y, isPrev);
         }
 
         public override bool CanExecute(object? parameter)

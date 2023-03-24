@@ -58,8 +58,6 @@ namespace Floyd_Warshall.View.UserControls
             DependencyProperty.Register("Header", typeof(string), typeof(Matrix), new PropertyMetadata(null));
 
 
-
-
         public int? K
         {
             get { return (int?)GetValue(KProperty); }
@@ -68,6 +66,17 @@ namespace Floyd_Warshall.View.UserControls
 
         public static readonly DependencyProperty KProperty =
             DependencyProperty.Register("K", typeof(int?), typeof(Matrix), new PropertyMetadata(null));
+
+
+
+        public bool IsPrev
+        {
+            get { return (bool)GetValue(isPrevProperty); }
+            set { SetValue(isPrevProperty, value); }
+        }
+
+        public static readonly DependencyProperty isPrevProperty =
+            DependencyProperty.Register("isPrev", typeof(bool), typeof(Matrix), new PropertyMetadata(false));
 
 
 

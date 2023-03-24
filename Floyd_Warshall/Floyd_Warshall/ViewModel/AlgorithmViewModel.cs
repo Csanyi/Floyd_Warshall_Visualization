@@ -51,7 +51,7 @@ namespace Floyd_Warshall.ViewModel
 
         public int? K { get { return _graphModel.K; } }
 
-        public int PrevK { get { return _graphModel.PrevK; } } 
+        public int? PrevK { get { return _graphModel.PrevK; } } 
 
         public bool IsEnoughVerteces { get { return _graphModel.GetVertexCount() > 1; } }
 
@@ -163,6 +163,12 @@ namespace Floyd_Warshall.ViewModel
                     PrewPi[i].Value = Pi[i].Value;
                     D[i].Value = e.D[j, k];
                     Pi[i].Value = e.Pi[j, k];
+
+                    bool changed = e.Changes != null && e.Changes.Contains(new Tuple<int, int>(j, k));
+                    PrewD[i].Changed = changed;
+                    PrewPi[i].Changed = changed;
+                    D[i].Changed = changed;
+                    Pi[i].Changed = changed;
                 }
             }
         }

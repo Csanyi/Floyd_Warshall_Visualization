@@ -18,7 +18,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private readonly GraphModel _graphModel;
 
-        public const int maxVertexCount = 20;
+        public const int maxVertexCount = 14;
 
         private int _vertexId;
         private int _edgeId;
@@ -181,48 +181,84 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private void SelectRoute(List<int> route, bool isNegCycle)
         {
             Edges.ForEach(e => e.IsSelected = false);
+            Verteces.ForEach(v => v.IsSelected = false);
 
-            foreach (VertexViewModel v in Verteces)
+            for(int i = 0; i < route.Count; ++i)
             {
-                if (route.Contains(v.Id))
+                VertexViewModel? v = Verteces.FirstOrDefault(v => v.Id == route[i]);
+
+                if (v == null) { continue; }
+                if (isNegCycle)
                 {
-                    if (isNegCycle)
-                    {
-                        v.InNegCycle = true;
-                    }
-                    else
-                    {
-                        v.IsSelected = true;
-                    }
-
-                    int ind = route.FindIndex(x => x == v.Id);
-          
-                    EdgeViewModelBase? edgevm = null;
-
-                    int i = (ind + 1) % route.Count;
-
-                    if(ind < route.Count - 1 || isNegCycle)
-                    {
-                        if (_graphModel.IsDirected)
-                        {
-                            edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == route[i]);
-                        }
-                        else
-                        {
-                            edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == route[i] || edge.To.Id == route[i]);
-                        }
-
-                        if (edgevm != null)
-                        {
-                            edgevm.IsSelected = true;
-                        }
-                    }
+                    v.InNegCycle = true;
                 }
                 else
                 {
-                    v.IsSelected = false;
+                    v.IsSelected = true;
                 }
-            }
+
+                EdgeViewModelBase? edgevm = null;
+
+                if (i < route.Count - 1 || isNegCycle)
+                {
+                    int ind = (i + 1) % route.Count;
+
+                    if (_graphModel.IsDirected)
+                    {
+                        edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == route[ind]);
+                    }
+                    else
+                    {
+                        edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == route[ind] || edge.To.Id == route[ind]);
+                    }
+
+                    if (edgevm != null)
+                    {
+                        edgevm.IsSelected = true;
+                    }
+                }
+
+            //foreach (VertexViewModel v in Verteces)
+            //{
+            //    if (route.Contains(v.Id))
+            //    {
+            //        if (isNegCycle)
+            //        {
+            //            v.InNegCycle = true;
+            //        }
+            //        else
+            //        {
+            //            v.IsSelected = true;
+            //        }
+
+            //        int ind = route.FindIndex(x => x == v.Id);
+
+            //        EdgeViewModelBase? edgevm = null;
+
+            //        int i = (ind + 1) % route.Count;
+
+            //        if(ind < route.Count - 1 || isNegCycle)
+            //        {
+            //            if (_graphModel.IsDirected)
+            //            {
+            //                edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == route[i]);
+            //            }
+            //            else
+            //            {
+            //                edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == route[i] || edge.To.Id == route[i]);
+            //            }
+
+            //            if (edgevm != null)
+            //            {
+            //                edgevm.IsSelected = true;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        v.IsSelected = false;
+            //    }
+        }
         }
 
         private void ClearSelections()
@@ -243,7 +279,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         {
             Init();
         }
-
 
         private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
         {

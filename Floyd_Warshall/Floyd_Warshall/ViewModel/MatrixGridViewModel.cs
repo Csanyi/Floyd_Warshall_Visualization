@@ -15,6 +15,17 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
+        private bool _changed;
+        public bool Changed
+        {
+            get { return _changed; }
+            set
+            {
+                _changed = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int X { get; set; }
         public int Y { get; set; }
         public int Index { get; set; }

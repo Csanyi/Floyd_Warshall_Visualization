@@ -8,7 +8,7 @@ namespace Floyd_Warshall.View.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int valueInt = (int)value;
+            int valueInt = System.Convert.ToInt32(value);
 
             if(valueInt == int.MaxValue)
             {

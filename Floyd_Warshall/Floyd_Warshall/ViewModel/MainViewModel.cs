@@ -57,7 +57,7 @@ namespace Floyd_Warshall.ViewModel
             _graphCanvas = new GraphCanvasViewModel(graphModel);
             _algorithm = new AlgorithmViewModel(graphModel);
 
-            NewGraphCommand = new DelegateCommand(param => OnNewGraph((bool)param), param => CommandsEnabled);
+            NewGraphCommand = new DelegateCommand(param => OnNewGraph(Convert.ToBoolean(param)), param => CommandsEnabled);
             LoadGraphCommand = new DelegateCommand(param => OnLoad(), param => CommandsEnabled);
             SaveGraphCommand = new DelegateCommand(param => OnSave());
             ExitCommand = new DelegateCommand(param => OnExit());

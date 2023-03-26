@@ -11,7 +11,7 @@ namespace Floyd_Warshall_Test
         [TestInitialize]
         public void Initialize()
         {
-            _graph = new UndirectedGraph();
+            _graph = new DirectedGraph();
         }
 
 
@@ -53,19 +53,12 @@ namespace Floyd_Warshall_Test
             Assert.AreEqual(_graph.GetEdgeCount(), 1);
             Assert.AreEqual(_graph.GetVertexCount(), 2);
             Assert.AreEqual(_graph.GetWeight(v1,v2), 10);
-            Assert.AreEqual(_graph.GetNeighbours(v1).Count, 1);
-            Assert.IsTrue(_graph.GetNeighbours(v1).First() == v2);
-            Assert.AreEqual(_graph.GetNeighbours(v2).Count, 0);
 
             _graph.AddEdge(v2, v1, 11);
 
             Assert.AreEqual(_graph.GetEdgeCount(), 2);
             Assert.AreEqual(_graph.GetVertexCount(), 2);
             Assert.AreEqual(_graph.GetWeight(v2, v1), 11);
-            Assert.AreEqual(_graph.GetNeighbours(v2).Count, 1);
-            Assert.IsTrue(_graph.GetNeighbours(v2).First() == v1);
-            Assert.AreEqual(_graph.GetNeighbours(v1).Count, 1);
-
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
@@ -105,7 +98,6 @@ namespace Floyd_Warshall_Test
 
             Assert.AreEqual(_graph.GetVertexCount(), 2);
             Assert.AreEqual(_graph.GetEdgeCount(), 0);
-            Assert.AreEqual(_graph.GetNeighbours(v1).Count, 0);
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]

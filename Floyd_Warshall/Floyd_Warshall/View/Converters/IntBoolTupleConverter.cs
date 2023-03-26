@@ -8,8 +8,8 @@ namespace Floyd_Warshall.View.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            int i = (int)values[0];
-            bool b = (bool)values[1];
+            int i = System.Convert.ToInt32(values[0]);
+            bool b = System.Convert.ToBoolean(values[1]);
 
             return new Tuple<int, bool>(i, b);
         }

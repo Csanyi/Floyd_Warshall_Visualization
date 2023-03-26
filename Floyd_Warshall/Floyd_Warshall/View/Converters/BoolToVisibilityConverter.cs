@@ -9,7 +9,7 @@ namespace Floyd_Warshall.View.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool isVisible = (bool)value;
+            bool isVisible = System.Convert.ToBoolean(value);
 
             return isVisible ? Visibility.Visible : Visibility.Collapsed;
         }

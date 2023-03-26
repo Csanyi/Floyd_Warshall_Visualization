@@ -16,16 +16,10 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 
             if (_viewModel.SelectedEdge == e)
             {
-                e.IsSelected = false;
                 _viewModel.SelectedEdge = null;
             }
             else
             {
-                if (_viewModel.SelectedEdge != null)
-                {
-                    _viewModel.SelectedEdge.IsSelected = false;
-                }
-                e.IsSelected = true;
                 _viewModel.SelectedEdge = e;
             }
         }

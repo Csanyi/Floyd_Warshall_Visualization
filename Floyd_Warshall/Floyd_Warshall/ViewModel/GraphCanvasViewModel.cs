@@ -34,14 +34,42 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public int GetEdgeId { get { return ++_edgeId; } }
 
-        public VertexViewModel? SelectedVertex { get { return _selectedVertex; } set { _selectedVertex = value; } }
+        public VertexViewModel? SelectedVertex 
+        { 
+            get { return _selectedVertex; } 
+            set 
+            {
+                if(_selectedVertex != null)
+                {
+                    _selectedVertex.IsSelected = false;
+                }
+
+                _selectedVertex = value;
+
+                if (_selectedVertex != null)
+                {
+                    _selectedVertex.IsSelected = true;
+                }
+            } 
+        }
 
         public EdgeViewModelBase? SelectedEdge
         {
             get { return _selectedEdge; }
             set
             {
+                if(_selectedEdge != null)
+                {
+                    _selectedEdge.IsSelected = false;
+                }
+
                 _selectedEdge = value;
+
+                if (_selectedEdge != null)
+                {
+                    _selectedEdge.IsSelected = true;
+                }
+
                 OnPropertyChanged(nameof(IsEdgeSelected));
                 OnPropertyChanged();
             }
@@ -125,8 +153,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _vertexId = 0;
             _edgeId = 0;
 
-            _selectedEdge = null;
-            _selectedVertex = null;
+            SelectedEdge = null;
+            SelectedVertex = null;
 
             OnPropertyChanged(nameof(MaxVertexCountReached));
         }
@@ -217,48 +245,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                         edgevm.IsSelected = true;
                     }
                 }
-
-            //foreach (VertexViewModel v in Verteces)
-            //{
-            //    if (route.Contains(v.Id))
-            //    {
-            //        if (isNegCycle)
-            //        {
-            //            v.InNegCycle = true;
-            //        }
-            //        else
-            //        {
-            //            v.IsSelected = true;
-            //        }
-
-            //        int ind = route.FindIndex(x => x == v.Id);
-
-            //        EdgeViewModelBase? edgevm = null;
-
-            //        int i = (ind + 1) % route.Count;
-
-            //        if(ind < route.Count - 1 || isNegCycle)
-            //        {
-            //            if (_graphModel.IsDirected)
-            //            {
-            //                edgevm = v.Edges.FirstOrDefault(edge => edge.To.Id == route[i]);
-            //            }
-            //            else
-            //            {
-            //                edgevm = v.Edges.FirstOrDefault(edge => edge.From.Id == route[i] || edge.To.Id == route[i]);
-            //            }
-
-            //            if (edgevm != null)
-            //            {
-            //                edgevm.IsSelected = true;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        v.IsSelected = false;
-            //    }
-        }
+            }
         }
 
         private void ClearSelections()
@@ -318,18 +305,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
         {
-            if(SelectedVertex != null)
-            {
-                SelectedVertex.IsSelected = false;
-                SelectedVertex = null;
-            }
-
-            if (SelectedEdge != null)
-            {
-                SelectedEdge.IsSelected = false;
-                SelectedEdge = null;
-            }
-
+            SelectedVertex = null;
+            SelectedEdge = null;
             CanvasEnabled = false;
         }
 
@@ -347,7 +324,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_NegativeCycleFound(object? sender, RouteEventArgs e)
         {
-
             SelectRoute(e.Route, true);
         }
 

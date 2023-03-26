@@ -24,12 +24,10 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 
             if (_viewModel.SelectedVertex == null)
             {
-                v.IsSelected = true;
                 _viewModel.SelectedVertex = v;
             }
             else if (_viewModel.SelectedVertex == v)
             {
-                v.IsSelected = false;
                 _viewModel.SelectedVertex = null;
             }
             else
@@ -43,7 +41,6 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
                     AddUndirectedEdge(_viewModel.SelectedVertex, v);
                 }
 
-                _viewModel.SelectedVertex.IsSelected = false;
                 _viewModel.SelectedVertex = null;
             }
         }

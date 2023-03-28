@@ -18,10 +18,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private readonly GraphModel _graphModel;
 
-        public const int maxVertexCount = 14;
-
-        private int _vertexId;
-        private int _edgeId;
         public VertexViewModel? _selectedVertex;
         private EdgeViewModelBase? _selectedEdge;
         private bool _canvasEnabled;
@@ -29,10 +25,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         #endregion
 
         #region Properties
-
-        public int GetVertexId { get { return ++_vertexId; } }
-
-        public int GetEdgeId { get { return ++_edgeId; } }
 
         public VertexViewModel? SelectedVertex 
         { 
@@ -71,8 +63,22 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 }
 
                 OnPropertyChanged(nameof(IsEdgeSelected));
+                OnPropertyChanged(nameof(SelectedEdgeWeight));
                 OnPropertyChanged();
             }
+        }
+
+        public short? SelectedEdgeWeight 
+        { 
+            get { return SelectedEdge?.Weight; }
+            set 
+            {
+                if(SelectedEdge != null)
+                {
+                    _graphModel.UpdateWeight(SelectedEdge.From.Id, SelectedEdge.To.Id, Convert.ToInt16(value));
+                    OnPropertyChanged();
+                }
+            } 
         }
 
         public bool IsEdgeSelected { get { return SelectedEdge != null; } }
@@ -90,7 +96,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
-        public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= maxVertexCount; } }
+        public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= GraphModel.maxVertexCount; } }
 
         public List<VertexViewModel> Verteces { get; set; }
 
@@ -116,7 +122,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel.AlgorithmStopped += Model_AlgorithmStopped;
             _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
             _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
-            _graphModel.VertexAdded += Model_VertexCntChanged;
+            _graphModel.VertexAdded += Model_VertexAdded;
+            _graphModel.DirectedEdgeAdded += Model_DirectedEdgeAdded;
+            _graphModel.UndirectedEdgeAdded += Model_UndirectedEdgeAdded;
             _graphModel.VertexRemoved += Model_VertexCntChanged;
             _graphModel.RouteCreated += Model_RouteCreated;
 
@@ -124,8 +132,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             Edges = new List<EdgeViewModelBase>();
             Views = new ObservableCollection<GraphComponentViewModel>();
 
-            _vertexId = 0;
-            _edgeId = 0;
             _selectedVertex = null;
             _selectedEdge = null;
             _canvasEnabled = true;
@@ -137,7 +143,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public IEnumerable<VertexLocation> GetLocations()
         {
-            return Verteces.Select(v => new VertexLocation(v.Vertex, v.CanvasX, v.CanvasY));
+            return Verteces.Select(v => new VertexLocation(v.Id, v.CanvasX, v.CanvasY));
         }
 
         #endregion
@@ -150,60 +156,10 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             Edges.Clear();
             Views.Clear();
 
-            _vertexId = 0;
-            _edgeId = 0;
-
             SelectedEdge = null;
             SelectedVertex = null;
 
             OnPropertyChanged(nameof(MaxVertexCountReached));
-        }
-
-        private void CreateDirectedEdges()
-        {
-            foreach (Edge edge in _graphModel.GetEdges())
-            {
-                VertexViewModel from = Verteces.Single(v => v.Vertex == edge.From);
-                VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
-
-                EdgeViewModelBase edgevm = new DirectedEdgeViewModel(GetEdgeId, _graphModel, from, to)
-                {
-                    Weight = edge.Weight,
-                    IsSelected = false,
-                    LeftClickCommand = new EdgeLeftClickCommand(this),
-                    RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
-                };
-
-                Edges.Add(edgevm);
-                from.Edges.Add(edgevm);
-                to.Edges.Add(edgevm);
-                Views.Add(edgevm);
-            }
-        }
-
-        private void CreateUndirectedEdges()
-        {
-            foreach (Edge edge in _graphModel.GetEdges())
-            {
-                VertexViewModel from = Verteces.Single(v => v.Vertex == edge.From);
-                VertexViewModel to = Verteces.Single(v => (v.Vertex == edge.To));
-
-                if (!from.Edges.Exists(e => (e.From == from && e.To == to) || (e.From == to && e.To == from)))
-                {
-                    EdgeViewModelBase edgevm = new EdgeViewModel(GetEdgeId, _graphModel, from, to)
-                    {
-                        Weight = edge.Weight,
-                        IsSelected = false,
-                        LeftClickCommand = new EdgeLeftClickCommand(this),
-                        RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
-                    };
-
-                    Edges.Add(edgevm);
-                    from.Edges.Add(edgevm);
-                    to.Edges.Add(edgevm);
-                    Views.Add(edgevm);
-                }
-            }
         }
 
         private void SelectRoute(List<int> route, bool isNegCycle)
@@ -267,21 +223,68 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             Init();
         }
 
+        private void Model_VertexAdded(object? sender, VertexAddedEventArgs e)
+        {
+            OnPropertyChanged(nameof(MaxVertexCountReached));
+
+            VertexViewModel vertex = new VertexViewModel(e.Id)
+            {
+                CanvasX = MouseX - VertexViewModel.Size / 2,
+                CanvasY = MouseY - VertexViewModel.Size / 2,
+                IsSelected = false,
+                RightClickCommand = new VertexRightClickCommand(this, _graphModel),
+                LeftClickCommand = new VertexLeftClickCommand(this, _graphModel),
+            };
+
+            Verteces.Add(vertex);
+            Views.Add(vertex);
+        }
+
+        private void Model_DirectedEdgeAdded(object? sender, EdgeAddedEventArgs e)
+        {
+            VertexViewModel from = Verteces.First(v => v.Id == e.From);
+            VertexViewModel to = Verteces.First(v => v.Id == e.To);
+
+            DirectedEdgeViewModel edge = new DirectedEdgeViewModel(e.Id, _graphModel, from, to)
+            {
+                IsSelected = false,
+                LeftClickCommand = new EdgeLeftClickCommand(this),
+                RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
+            };
+
+            Edges.Add(edge);
+            Views.Add(edge);
+
+            from.Edges.Add(edge);
+            to.Edges.Add(edge);
+        }
+
+        private void Model_UndirectedEdgeAdded(object? sender, EdgeAddedEventArgs e)
+        {
+            VertexViewModel from = Verteces.First(v => v.Id == e.From);
+            VertexViewModel to = Verteces.First(v => v.Id == e.To);
+
+            EdgeViewModel edge = new EdgeViewModel(e.Id, _graphModel, from, to)
+            {
+                IsSelected = false,
+                LeftClickCommand = new EdgeLeftClickCommand(this),
+                RightClickCommand = new EdgeRightClickCommand(this, _graphModel),
+            };
+
+            Edges.Add(edge);
+            Views.Add(edge);
+
+            from.Edges.Add(edge);
+            to.Edges.Add(edge);
+        }
+
         private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
         {
-            if(e.VertexLocations.Count() > maxVertexCount) 
-            {
-                _graphModel.NewGraph(false);
-                throw new GraphDataException();
-            }
-
             Init();
 
             foreach (var v in e.VertexLocations)
             {
-                if(v.Vertex.Id >_vertexId) { _vertexId = v.Vertex.Id; }
-
-                VertexViewModel vertex = new VertexViewModel(v.Vertex)
+                VertexViewModel vertex = new VertexViewModel(v.Id)
                 {
                     CanvasX = v.X,
                     CanvasY = v.Y,
@@ -293,17 +296,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 Verteces.Add(vertex);
                 Views.Add(vertex);
             }
-
-            if(_graphModel.IsDirected)
-            {
-                CreateDirectedEdges();
-            } else
-            {
-                CreateUndirectedEdges();
-            }
         }
 
-        private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
+        private void Model_AlgorithmStarted(object? sender, EventArgs e)
         {
             SelectedVertex = null;
             SelectedEdge = null;

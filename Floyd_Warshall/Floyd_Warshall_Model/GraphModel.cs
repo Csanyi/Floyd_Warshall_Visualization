@@ -13,6 +13,10 @@ namespace Floyd_Warshall_Model
         private readonly IGraphDataAccess _dataAccess;
         private int? _prevK;
         private int[,]? _prevPi;
+        private int _vertexId;
+        private int _edgeId;
+
+        public const int maxVertexCount = 14;
 
         #endregion
 
@@ -34,7 +38,10 @@ namespace Floyd_Warshall_Model
 
         public event EventHandler? NewEmptyGraph;
         public event EventHandler<GraphLoadedEventArgs>? GraphLoaded;
-        public event EventHandler? VertexAdded;
+        public event EventHandler<VertexAddedEventArgs>? VertexAdded;
+        public event EventHandler<EdgeAddedEventArgs>? DirectedEdgeAdded;
+        public event EventHandler<EdgeAddedEventArgs>? UndirectedEdgeAdded;
+        public event EventHandler<EdgeUpdatedEventArgs>? EdgeUpdated;
         public event EventHandler? VertexRemoved;
         public event EventHandler<AlgorithmEventArgs>? AlgorithmStarted;
         public event EventHandler? AlgorithmStepped;
@@ -68,36 +75,125 @@ namespace Floyd_Warshall_Model
                 _graph = new UndirectedGraph();
             }
 
+            _vertexId = 0;
+            _edgeId = 0;
             OnNewEmptyGraph();
         }
 
-        public void AddVertex(Vertex v)
+        public void AddVertex()
         {
+            Vertex v = new Vertex(++_vertexId);
             _graph.AddVertex(v);
-            OnVertexAdded();
+            OnVertexAdded(v.Id);
         }
 
-        public void RemoveVertex(Vertex v)
+        public void RemoveVertex(int id)
         {
-            _graph.RemoveVertex(v);
-            OnVertexRemoved();
+            Vertex? v = _graph.GetVertexById(id);
+
+            if (v != null)
+            {
+                _graph.RemoveVertex(v);
+                OnVertexRemoved();
+            }
         }
 
-        public void AddEdge(Vertex from, Vertex to, short weight) => _graph.AddEdge(from, to, weight);
+        public void AddEdge(int fromId, int toId, short weight)
+        {
+            Vertex? from = _graph.GetVertexById(fromId);
+            Vertex? to = _graph.GetVertexById(toId);
 
-        public void RemoveEdge(Vertex from, Vertex to) => _graph.RemoveEdge(from, to);
+            if(from != null && to != null)
+            {
+                _graph.AddEdge(from, to, weight);
+                if (_graph.IsDirected)
+                {
+                    OnDirectedEdgeAdded(++_edgeId, fromId, toId, weight);
+                }
+                else
+                {
+                    OnUndirectedEdgeAdded(++_edgeId, fromId, toId, weight);
+                }
+            }
+        }
 
-        public Edge? GetEdge(Vertex from, Vertex to) => _graph.GetEdge(from, to);
+        public void RemoveEdge(int fromId, int toId)
+        {
+            Vertex? from = _graph.GetVertexById(fromId);
+            Vertex? to = _graph.GetVertexById(toId);
 
-        public short GetWeight(Vertex from, Vertex to) => _graph.GetWeight(from, to);
+            if (from != null && to != null)
+            {
+                _graph.RemoveEdge(from, to);
+            }
+        }
 
-        public void UpdateWeight(Vertex from, Vertex to, short weirht) => _graph.UpdateWeight(from, to, weirht);
+        public bool IsEdgeBetween(int fromId, int toId) 
+        {
+            Vertex? from = _graph.GetVertexById(fromId);
+            Vertex? to = _graph.GetVertexById(toId);
 
-        public int GetVertexCount() => _graph.GetVertexCount();
+            if (from == null || to == null)
+            {
+                return false;
+            }
 
-        public List<Edge> GetEdges() => _graph.GetEdges();
+            return _graph.GetEdge(from, to) != null; ;
+        }
 
-        public List<int> GetVertexIds() => _graph.GetVertexIds();
+
+        public short GetWeight(int fromId, int toId)
+        {
+            Vertex? from = _graph.GetVertexById(fromId);
+            Vertex? to = _graph.GetVertexById(toId);
+
+            if (from != null && to != null)
+            {
+                return _graph.GetWeight(from, to);
+            }
+
+            return 0;
+        }
+
+        public void UpdateWeight(int fromId, int toId, short weight)
+        {
+            Vertex? from = _graph.GetVertexById(fromId);
+            Vertex? to = _graph.GetVertexById(toId);
+
+            if (from != null && to != null)
+            {
+                _graph.UpdateWeight(from, to, weight);
+                OnEdgeUpdated(fromId, toId, weight);
+            }
+        }
+
+        public void IncrementWeight(int fromId, int toId)
+        {
+            Vertex? from = _graph.GetVertexById(fromId);
+            Vertex? to = _graph.GetVertexById(toId);
+
+            if (from != null && to != null)
+            {
+                short weight = _graph.GetWeight(from, to);
+                _graph.UpdateWeight(from, to, ++weight);
+                OnEdgeUpdated(fromId, toId, weight);
+            }
+        }
+
+        public int GetVertexCount()
+        {
+            return _graph.GetVertexCount();
+        }
+
+        public List<Edge> GetEdges()
+        {
+            return _graph.GetEdges();
+        }
+
+        public List<int> GetVertexIds() 
+        { 
+            return _graph.GetVertexIds();
+        }
 
         public async Task LoadAsync(string path)
         {
@@ -108,9 +204,36 @@ namespace Floyd_Warshall_Model
 
             GraphData v = await _dataAccess.LoadAsync(path);
 
+            if(v.Graph.GetVertexCount() > maxVertexCount)
+            {
+                throw new GraphDataException();
+            }
+
             _graph = v.Graph;
 
+            _vertexId = _graph.GetVertexIds().Max();
+            _edgeId = 0;
+
             OnGraphLoaded(v.VertexLocations);
+
+            List<Edge> edges = _graph.GetEdges();
+
+            if(_graph.IsDirected)
+            {
+                foreach(Edge e in edges)
+                {
+                    OnDirectedEdgeAdded(++_edgeId, e.From.Id, e.To.Id, e.Weight);
+                }
+            }
+            else
+            {
+                for(int i = 0; i < edges.Count; ++i)
+                {
+                    Edge e = edges.Single(e => e.From == edges[i].To && e.To == edges[i].From);
+                    edges.Remove(e);
+                    OnUndirectedEdgeAdded(++_edgeId, edges[i].From.Id, edges[i].To.Id, e.Weight);
+                }
+            }
         }
 
         public async Task SaveAsync(string path, IEnumerable<VertexLocation> locations)
@@ -235,7 +358,13 @@ namespace Floyd_Warshall_Model
 
         private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLoadedEventArgs(locations));
 
-        private void OnVertexAdded() => VertexAdded?.Invoke(this, EventArgs.Empty);
+        private void OnVertexAdded(int id) => VertexAdded?.Invoke(this, new VertexAddedEventArgs(id));
+
+        private void OnDirectedEdgeAdded(int id, int from, int to, short weight) => DirectedEdgeAdded?.Invoke(this, new EdgeAddedEventArgs(id,from,to,weight));
+
+        private void OnUndirectedEdgeAdded(int id, int from, int to, short weight) => UndirectedEdgeAdded?.Invoke(this, new EdgeAddedEventArgs(id, from, to, weight));
+
+        private void OnEdgeUpdated(int from, int to, short weight) => EdgeUpdated?.Invoke(this, new EdgeUpdatedEventArgs(from, to, weight));
 
         private void OnVertexRemoved() => VertexRemoved?.Invoke(this, EventArgs.Empty);
 

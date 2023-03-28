@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -143,6 +144,14 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 OnPropertyChanged(nameof(Angle));
                 OnPropertyChanged(nameof(TextX));
                 OnPropertyChanged(nameof(TextY));
+            }
+        }
+
+        protected override void Model_EdgeUpdated(object? sender, EdgeUpdatedEventArgs e)
+        {
+            if(e.From == From.Id && e.To == To.Id)
+            {
+                OnPropertyChanged(nameof(Weight));
             }
         }
     }

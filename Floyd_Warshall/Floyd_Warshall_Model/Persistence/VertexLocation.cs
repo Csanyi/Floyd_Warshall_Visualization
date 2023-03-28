@@ -4,14 +4,14 @@ namespace Floyd_Warshall_Model.Persistence
 {
     public class VertexLocation
     {
-        public VertexLocation(Vertex v, double x, double y)
+        public VertexLocation(int id, double x, double y)
         {
-            Vertex = v;
+            Id = id;
             X = x;
             Y = y;
         }
 
-        public Vertex Vertex { get; private set; }
+        public int Id { get; private set; }
         public double X { get; private set; }
         public double Y { get; private set; }
     }

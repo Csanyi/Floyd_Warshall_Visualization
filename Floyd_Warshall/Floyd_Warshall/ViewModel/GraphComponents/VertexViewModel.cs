@@ -7,16 +7,10 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
     {
         public static int Size { get { return 32; } }
 
-        public VertexViewModel(Vertex v) 
+        public VertexViewModel(int id) : base(id)
         {
-            _vertex = v;
             Edges = new List<EdgeViewModelBase>();
         }
-
-        private readonly Vertex _vertex;
-        public Vertex Vertex { get { return _vertex; } }
-
-        public override int Id { get { return _vertex.Id; } }
 
         public List<EdgeViewModelBase> Edges { get; set; }
 

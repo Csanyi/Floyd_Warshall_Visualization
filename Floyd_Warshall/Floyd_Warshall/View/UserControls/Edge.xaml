@@ -32,7 +32,7 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center" >
             <LineBreak />
-            <Run Text="{Binding Weight}" />
+            <Run Text="{Binding Weight, Mode=OneWay}" />
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="8" />

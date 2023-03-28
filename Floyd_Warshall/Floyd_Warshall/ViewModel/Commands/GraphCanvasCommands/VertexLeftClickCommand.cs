@@ -32,72 +32,25 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
             }
             else
             {
-                if (_graphModel.IsDirected)
+                if (!_graphModel.IsEdgeBetween(_viewModel.SelectedVertex.Id, v.Id))
                 {
-                    AddDirectedEdge(_viewModel.SelectedVertex, v);
+                    _graphModel.AddEdge(_viewModel.SelectedVertex.Id, v.Id, 1);
                 }
                 else
                 {
-                    AddUndirectedEdge(_viewModel.SelectedVertex, v);
+                    _graphModel.IncrementWeight(_viewModel.SelectedVertex.Id, v.Id);
                 }
+                //else if (_graphModel.IsDirected)
+                //{
+                //    _viewModel.SelectedVertex.Edges.Single(e => e.From == _viewModel.SelectedVertex && e.To == v).Weight++;
+                //}
+                //else if (!_graphModel.IsDirected)
+                //{
+                //    _viewModel.SelectedVertex.Edges.Single(e => e.From == _viewModel.SelectedVertex && e.To == v 
+                //                        || e.To == _viewModel.SelectedVertex && e.From == v).Weight++;
+                //}
 
                 _viewModel.SelectedVertex = null;
-            }
-        }
-
-        private void AddUndirectedEdge(VertexViewModel from, VertexViewModel to)
-        {
-            Vertex f = from.Vertex;
-            Vertex t = to.Vertex;
-
-            if (_graphModel.GetEdge(f, t) == null)
-            {
-                _graphModel.AddEdge(f, t, 1);
-
-                EdgeViewModel edge = new EdgeViewModel(_viewModel.GetEdgeId, _graphModel, from, to)
-                {
-                    Weight = 1,
-                    IsSelected = false,
-                    LeftClickCommand = new EdgeLeftClickCommand(_viewModel),
-                    RightClickCommand = new EdgeRightClickCommand(_viewModel, _graphModel),
-                };
-
-                _viewModel.Edges.Add(edge);
-                _viewModel.Views.Add(edge);
-                from.Edges.Add(edge);
-                to.Edges.Add(edge);
-            }
-            else
-            {
-                from.Edges.Single(e => e.From == from && e.To == to || e.To == from && e.From == to).Weight++;
-            }
-        }
-
-        private void AddDirectedEdge(VertexViewModel from, VertexViewModel to)
-        {
-            Vertex f = from.Vertex;
-            Vertex t = to.Vertex;
-
-            if (_graphModel.GetEdge(f, t) == null)
-            {
-                _graphModel.AddEdge(f, t, 1);
-
-                DirectedEdgeViewModel edge = new DirectedEdgeViewModel(_viewModel.GetEdgeId, _graphModel, from, to)
-                {
-                    Weight = 1,
-                    IsSelected = false,
-                    LeftClickCommand = new EdgeLeftClickCommand(_viewModel),
-                    RightClickCommand = new EdgeRightClickCommand(_viewModel, _graphModel),
-                };
-
-                _viewModel.Edges.Add(edge);
-                _viewModel.Views.Add(edge);
-                from.Edges.Add(edge);
-                to.Edges.Add(edge);
-            }
-            else
-            {
-                from.Edges.Single(e => e.From == from && e.To == to).Weight++;
             }
         }
     }

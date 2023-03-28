@@ -19,7 +19,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
             int id = Convert.ToInt32(parameter);
 
             VertexViewModel v = _viewModel.Verteces.Single(v => v.Id == id);
-            _graphModel.RemoveVertex(v.Vertex);
+            _graphModel.RemoveVertex(v.Id);
             if (_viewModel.SelectedVertex == v)
             {
                     _viewModel.SelectedVertex = null;

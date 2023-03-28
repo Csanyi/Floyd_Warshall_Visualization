@@ -25,7 +25,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
                 _viewModel.SelectedEdge = null;
             }
 
-            _graphModel.RemoveEdge(e.From.Vertex, e.To.Vertex);
+            _graphModel.RemoveEdge(e.From.Id, e.To.Id);
             e.From.Edges.Remove(e);
             e.To.Edges.Remove(e);
             _viewModel.Edges.Remove(e);

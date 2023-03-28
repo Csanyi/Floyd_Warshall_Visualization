@@ -121,7 +121,7 @@ namespace Floyd_Warshall.ViewModel
             TimerInterval = 1000;
             _timer.Tick += Timer_Tick;
 
-            _graphModel.VertexAdded += Model_VertexCntChanged;
+            _graphModel.VertexAdded += Model_VertexAdded;
             _graphModel.VertexRemoved += Model_VertexCntChanged;
             _graphModel.AlgorithmStarted += Model_AlgorithmStarted;
             _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
@@ -187,6 +187,11 @@ namespace Floyd_Warshall.ViewModel
         #region Model event handlers
 
         private void Model_VertexCntChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(IsEnoughVerteces));
+        }
+
+        private void Model_VertexAdded(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
@@ -264,13 +269,13 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        private void Model_NegativeCycleFound(object? sender, RouteEventArgs e)
+        private void Model_NegativeCycleFound(object? sender, EventArgs e)
         {
             IsNegCycleFound = true;
             OnPropertyChanged(nameof(IsRunning));
         }
 
-        private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
+        private void Model_GraphLoaded(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }

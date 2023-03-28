@@ -1,4 +1,5 @@
 ﻿using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Events;
 using Floyd_Warshall_Model.Graph;
 using System;
 using System.ComponentModel;
@@ -9,9 +10,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
     {
         private readonly GraphModel _graphModel;
 
-        protected EdgeViewModelBase(int id, GraphModel graphModel, VertexViewModel from, VertexViewModel to) 
+        protected EdgeViewModelBase(int id, GraphModel graphModel, VertexViewModel from, VertexViewModel to): base(id)
         { 
-            _id = id; 
             _graphModel = graphModel;
 
             From = from;
@@ -19,22 +19,16 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
             From.PropertyChanged += VertexPropertyChanged;
             To.PropertyChanged += VertexPropertyChanged;
+
+            _graphModel.EdgeUpdated += Model_EdgeUpdated;
         }
 
-        private readonly int _id;
-        public override int Id { get { return _id; } }
-
-        public VertexViewModel From { get; set; } = null!;
-        public VertexViewModel To { get; set; } = null!;
+        public VertexViewModel From { get; set; }
+        public VertexViewModel To { get; set; }
 
         public short Weight
         {
-            get { return _graphModel.GetWeight(From.Vertex, To.Vertex); }
-            set
-            {
-                _graphModel.UpdateWeight(From.Vertex, To.Vertex, value);
-                OnPropertyChanged();
-            }
+            get { return _graphModel.GetWeight(From.Id, To.Id); }
         }
 
         public override double CanvasX { get { return Math.Min(From.CanvasX, To.CanvasX) + VertexViewModel.Size / 2; } }
@@ -57,5 +51,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 OnPropertyChanged(nameof(Y2));
             }
         }
+
+        protected abstract void Model_EdgeUpdated(object? sender, EdgeUpdatedEventArgs e);
     }
 }

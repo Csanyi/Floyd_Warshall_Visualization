@@ -66,22 +66,13 @@
             <StatusBarItem DockPanel.Dock="Left" Visibility="{Binding IsEdgeSelected, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock Text="Edge weight" />
             </StatusBarItem>
-            <StatusBarItem DockPanel.Dock="Left" >
+            <StatusBarItem DockPanel.Dock="Left"  Visibility="{Binding IsEdgeSelected, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBox
                     Width="50"
                     MaxLength="6"
-                    PreviewTextInput="TextBox_PreviewTextInput">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Setter Property="Text" Value="{Binding SelectedEdge.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsEdgeSelected}" Value="False">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
+                    PreviewTextInput="TextBox_PreviewTextInput"
+                    Text="{Binding SelectedEdgeWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsEdgeSelected}">
                 </TextBox>
             </StatusBarItem>
             <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10,0" Visibility="{Binding MaxVertexCountReached, Converter={StaticResource BoolToVisibilityConverter}}">

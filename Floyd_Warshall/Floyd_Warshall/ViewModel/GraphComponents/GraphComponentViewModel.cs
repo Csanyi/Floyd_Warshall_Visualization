@@ -5,7 +5,13 @@ namespace Floyd_Warshall.ViewModel
 {
     public abstract class GraphComponentViewModel : ViewModelBase
     {
-        public virtual int Id { get; }
+        protected GraphComponentViewModel(int id)
+        { 
+            _id = id;
+        }
+
+        private readonly int _id;
+        public int Id { get { return _id; } }
 
         private bool _isSelected;
         public bool IsSelected

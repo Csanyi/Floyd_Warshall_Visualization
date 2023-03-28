@@ -36,7 +36,7 @@ namespace Floyd_Warshall_Model.Persistence
                             string[] v = value.Split(';');
                             Vertex vertex = new Vertex(int.Parse(v[0]));
                             graph.AddVertex(vertex);
-                            locations.Add(new VertexLocation(vertex, double.Parse(v[1]), double.Parse(v[2])));
+                            locations.Add(new VertexLocation(vertex.Id, double.Parse(v[1]), double.Parse(v[2])));
                         }
 
                         line = await reader.ReadLineAsync();
@@ -77,7 +77,7 @@ namespace Floyd_Warshall_Model.Persistence
 
                     foreach(var v in locations)
                     {
-                        await writer.WriteAsync(delimiter + v.Vertex.Id + ";" + v.X + ";" + v.Y);
+                        await writer.WriteAsync(delimiter + v.Id + ";" + v.X + ";" + v.Y);
                         delimiter = " ";
                     }
                     await writer.WriteLineAsync();

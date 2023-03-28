@@ -1,4 +1,5 @@
 ﻿using Floyd_Warshall.ViewModel.GraphComponents;
+using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,17 +61,6 @@ namespace Floyd_Warshall.View.UserControls
 
                 }
             }
-        }
-
-        private static readonly Regex _allowedRegex = new Regex("[0-9\\-]");
-        private static bool IsTextAllowed(string text)
-        {
-            return _allowedRegex.IsMatch(text);
-        }
-
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !IsTextAllowed(e.Text);
         }
 
         private void Canvas_Drop(object sender, DragEventArgs e)

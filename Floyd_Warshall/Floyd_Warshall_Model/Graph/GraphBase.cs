@@ -2,6 +2,9 @@
 {
     public abstract class GraphBase
     {
+        public const short maxValue = 9999;
+        public const short minValue = -maxValue;
+
         protected IDictionary<Vertex, ICollection<Edge>> _adjacenylist;
 
         protected GraphBase()

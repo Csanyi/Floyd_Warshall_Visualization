@@ -10,6 +10,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
     {
         private readonly GraphModel _graphModel;
 
+        public event EventHandler? EdgeUpdated;
+
         protected EdgeViewModelBase(int id, GraphModel graphModel, VertexViewModel from, VertexViewModel to): base(id)
         { 
             _graphModel = graphModel;
@@ -53,5 +55,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         }
 
         protected abstract void Model_EdgeUpdated(object? sender, EdgeUpdatedEventArgs e);
+
+        protected void OnEdgeUpdated() => EdgeUpdated?.Invoke(this, EventArgs.Empty);
     }
 }

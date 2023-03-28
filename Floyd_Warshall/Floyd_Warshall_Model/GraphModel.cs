@@ -163,7 +163,7 @@ namespace Floyd_Warshall_Model
             if (from != null && to != null)
             {
                 _graph.UpdateWeight(from, to, weight);
-                OnEdgeUpdated(fromId, toId, weight);
+                OnEdgeUpdated(fromId, toId);
             }
         }
 
@@ -174,9 +174,8 @@ namespace Floyd_Warshall_Model
 
             if (from != null && to != null)
             {
-                short weight = _graph.GetWeight(from, to);
-                _graph.UpdateWeight(from, to, ++weight);
-                OnEdgeUpdated(fromId, toId, weight);
+                _graph.IncrementWeight(from, to);
+                OnEdgeUpdated(fromId, toId);
             }
         }
 
@@ -364,7 +363,7 @@ namespace Floyd_Warshall_Model
 
         private void OnUndirectedEdgeAdded(int id, int from, int to, short weight) => UndirectedEdgeAdded?.Invoke(this, new EdgeAddedEventArgs(id, from, to, weight));
 
-        private void OnEdgeUpdated(int from, int to, short weight) => EdgeUpdated?.Invoke(this, new EdgeUpdatedEventArgs(from, to, weight));
+        private void OnEdgeUpdated(int from, int to) => EdgeUpdated?.Invoke(this, new EdgeUpdatedEventArgs(from, to));
 
         private void OnVertexRemoved() => VertexRemoved?.Invoke(this, EventArgs.Empty);
 

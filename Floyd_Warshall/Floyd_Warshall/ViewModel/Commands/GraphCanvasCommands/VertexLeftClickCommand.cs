@@ -40,15 +40,6 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
                 {
                     _graphModel.IncrementWeight(_viewModel.SelectedVertex.Id, v.Id);
                 }
-                //else if (_graphModel.IsDirected)
-                //{
-                //    _viewModel.SelectedVertex.Edges.Single(e => e.From == _viewModel.SelectedVertex && e.To == v).Weight++;
-                //}
-                //else if (!_graphModel.IsDirected)
-                //{
-                //    _viewModel.SelectedVertex.Edges.Single(e => e.From == _viewModel.SelectedVertex && e.To == v 
-                //                        || e.To == _viewModel.SelectedVertex && e.From == v).Weight++;
-                //}
 
                 _viewModel.SelectedVertex = null;
             }

@@ -152,6 +152,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             if(e.From == From.Id && e.To == To.Id)
             {
                 OnPropertyChanged(nameof(Weight));
+                OnEdgeUpdated();
             }
         }
     }

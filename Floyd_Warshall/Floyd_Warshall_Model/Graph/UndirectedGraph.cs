@@ -40,14 +40,19 @@
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
 
+            if (weight < minValue || weight > maxValue)
+            {
+                throw new OverflowException();
+            }
+
             Edge? e = GetEdge(from, to);
-            if (e != null && e.Weight < short.MaxValue)
+            if (e != null)
             {
                 e.Weight = weight;
             }
             
             e = GetEdge(to, from);
-            if (e != null && e.Weight < short.MaxValue)
+            if (e != null)
             {
                 e.Weight = weight;
             }
@@ -61,12 +66,20 @@
             Edge? e = GetEdge(from, to);
             if (e != null)
             {
+                if (e.Weight >= maxValue)
+                {
+                    throw new OverflowException();
+                }
                 ++e.Weight;
             }
 
             e = GetEdge(to, from);
             if (e != null)
             {
+                if (e.Weight >= maxValue)
+                {
+                    throw new OverflowException();
+                }
                 ++e.Weight;
             }
         }

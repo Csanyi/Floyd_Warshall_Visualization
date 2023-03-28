@@ -8,15 +8,13 @@ namespace Floyd_Warshall_Model.Events
 {
     public class EdgeUpdatedEventArgs : EventArgs
     {
-        public EdgeUpdatedEventArgs(int from, int to, short weight)
+        public EdgeUpdatedEventArgs(int from, int to)
         {
             From = from;
             To = to;
-            Weight = weight;
         }
 
         public int From { get; private set; }
         public int To { get; private set; }
-        public short Weight { get; private set; }
     }
 }

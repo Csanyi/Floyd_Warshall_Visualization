@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows.Input;
 using Floyd_Warshall_Model.Events;
 using System.Windows;
+using Accessibility;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -21,6 +22,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         public VertexViewModel? _selectedVertex;
         private EdgeViewModelBase? _selectedEdge;
         private bool _canvasEnabled;
+        private bool _hasInputError;
+        private string _weightText;
 
         #endregion
 
@@ -53,35 +56,33 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 if(_selectedEdge != null)
                 {
                     _selectedEdge.IsSelected = false;
+                    _selectedEdge.EdgeUpdated -= SelectedEdge_EdgeUpdated;
                 }
 
                 _selectedEdge = value;
 
                 if (_selectedEdge != null)
                 {
+                    WeightText = _selectedEdge.Weight.ToString();
                     _selectedEdge.IsSelected = true;
+                    _selectedEdge.EdgeUpdated += SelectedEdge_EdgeUpdated;
                 }
-
                 OnPropertyChanged(nameof(IsEdgeSelected));
-                OnPropertyChanged(nameof(SelectedEdgeWeight));
                 OnPropertyChanged();
             }
         }
 
-        public short? SelectedEdgeWeight 
-        { 
-            get { return SelectedEdge?.Weight; }
-            set 
-            {
-                if(SelectedEdge != null)
-                {
-                    _graphModel.UpdateWeight(SelectedEdge.From.Id, SelectedEdge.To.Id, Convert.ToInt16(value));
-                    OnPropertyChanged();
-                }
-            } 
-        }
-
         public bool IsEdgeSelected { get { return SelectedEdge != null; } }
+
+        public string WeightText
+        {
+            get { return _weightText; }
+            set
+            {
+                _weightText = value;
+                OnPropertyChanged();
+            }
+        }
 
         public double MouseX { get; set; }
         public double MouseY { get; set; }
@@ -98,6 +99,16 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= GraphModel.maxVertexCount; } }
 
+        public bool HasInputError
+        {
+            get { return _hasInputError; }
+            set
+            {
+                _hasInputError = value;
+                OnPropertyChanged();
+            }
+        }
+
         public List<VertexViewModel> Verteces { get; set; }
 
         public List<EdgeViewModelBase> Edges { get; set; }
@@ -105,6 +116,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         public ObservableCollection<GraphComponentViewModel> Views { get; set; }
 
         public ICommand CanvasClickCommand { get; private set; }
+        public ICommand SubmitCommand { get; private set; }
 
         #endregion
 
@@ -115,6 +127,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel = graphModel;
 
             CanvasClickCommand = new CanvasClickCommand(this, _graphModel);
+            SubmitCommand = new SubmitCommand(this, _graphModel);
 
             _graphModel.NewEmptyGraph += Model_NewEmptyGraph;
             _graphModel.GraphLoaded += Model_GraphLoaded;
@@ -135,6 +148,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _selectedVertex = null;
             _selectedEdge = null;
             _canvasEnabled = true;
+            _hasInputError = false;
+            _weightText = "";
         }
 
         #endregion
@@ -300,6 +315,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private void Model_AlgorithmStarted(object? sender, EventArgs e)
         {
+            HasInputError = false;
             SelectedVertex = null;
             SelectedEdge = null;
             CanvasEnabled = false;
@@ -330,6 +346,18 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private void Model_RouteCreated(object? sender, RouteEventArgs e)
         {
             SelectRoute(e.Route, false);
+        }
+
+        #endregion
+
+        #region Edge event handlers
+
+        private void SelectedEdge_EdgeUpdated(object? sender, EventArgs e)
+        {
+            if(SelectedEdge != null)
+            {
+                WeightText = SelectedEdge.Weight.ToString();
+            }
         }
 
         #endregion

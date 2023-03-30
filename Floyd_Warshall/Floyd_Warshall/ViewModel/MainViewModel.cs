@@ -1,12 +1,8 @@
 ﻿using Floyd_Warshall.ViewModel.Commands;
 using Floyd_Warshall.ViewModel.GraphComponents;
-using Floyd_Warshall_Model;
-using Floyd_Warshall_Model.Events;
-using Floyd_Warshall_Model.Graph;
-using Floyd_Warshall_Model.Persistence;
+using Floyd_Warshall_Model.Model;
+using Floyd_Warshall_Model.Model.Events;
 using System;
-using System.Collections.Generic;
-using System.Security.AccessControl;
 using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel

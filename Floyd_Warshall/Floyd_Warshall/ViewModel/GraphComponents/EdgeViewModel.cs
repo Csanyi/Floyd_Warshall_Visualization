@@ -1,5 +1,5 @@
-﻿using Floyd_Warshall_Model;
-using Floyd_Warshall_Model.Events;
+﻿using Floyd_Warshall_Model.Model;
+using Floyd_Warshall_Model.Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {

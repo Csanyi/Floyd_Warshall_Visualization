@@ -1,6 +1,6 @@
-﻿using Floyd_Warshall_Model.Persistence;
+﻿using Floyd_Warshall_Model.Model;
 
-namespace Floyd_Warshall_Model.Events
+namespace Floyd_Warshall_Model.Model.Events
 {
     public class GraphLoadedEventArgs : EventArgs
     {

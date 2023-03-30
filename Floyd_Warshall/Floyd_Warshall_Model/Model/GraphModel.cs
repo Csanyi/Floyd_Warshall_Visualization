@@ -1,8 +1,9 @@
 ﻿using Floyd_Warshall_Model.Persistence;
-using Floyd_Warshall_Model.Graph;
-using Floyd_Warshall_Model.Events;
+using Floyd_Warshall_Model.Model.Algorithm;
+using Floyd_Warshall_Model.Model.Events;
+using Floyd_Warshall_Model.Model.Graph;
 
-namespace Floyd_Warshall_Model
+namespace Floyd_Warshall_Model.Model
 {
     public class GraphModel
     {
@@ -103,7 +104,7 @@ namespace Floyd_Warshall_Model
             Vertex? from = _graph.GetVertexById(fromId);
             Vertex? to = _graph.GetVertexById(toId);
 
-            if(from != null && to != null)
+            if (from != null && to != null)
             {
                 _graph.AddEdge(from, to, weight);
                 if (_graph.IsDirected)
@@ -128,7 +129,7 @@ namespace Floyd_Warshall_Model
             }
         }
 
-        public bool IsEdgeBetween(int fromId, int toId) 
+        public bool IsEdgeBetween(int fromId, int toId)
         {
             Vertex? from = _graph.GetVertexById(fromId);
             Vertex? to = _graph.GetVertexById(toId);
@@ -189,8 +190,8 @@ namespace Floyd_Warshall_Model
             return _graph.GetEdges();
         }
 
-        public List<int> GetVertexIds() 
-        { 
+        public List<int> GetVertexIds()
+        {
             return _graph.GetVertexIds();
         }
 
@@ -203,7 +204,7 @@ namespace Floyd_Warshall_Model
 
             GraphData v = await _dataAccess.LoadAsync(path);
 
-            if(v.Graph.GetVertexCount() > maxVertexCount)
+            if (v.Graph.GetVertexCount() > maxVertexCount)
             {
                 throw new GraphDataException();
             }
@@ -217,16 +218,16 @@ namespace Floyd_Warshall_Model
 
             List<Edge> edges = _graph.GetEdges();
 
-            if(_graph.IsDirected)
+            if (_graph.IsDirected)
             {
-                foreach(Edge e in edges)
+                foreach (Edge e in edges)
                 {
                     OnDirectedEdgeAdded(++_edgeId, e.From.Id, e.To.Id, e.Weight);
                 }
             }
             else
             {
-                for(int i = 0; i < edges.Count; ++i)
+                for (int i = 0; i < edges.Count; ++i)
                 {
                     Edge e = edges.Single(e => e.From == edges[i].To && e.To == edges[i].From);
                     edges.Remove(e);
@@ -251,13 +252,13 @@ namespace Floyd_Warshall_Model
 
         public void StartAlgorithm()
         {
-            _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix(), _graph.GetVertexIds() );
+            _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix(), _graph.GetVertexIds());
             OnAlhorithmStarted(_floydWarshall.D, _floydWarshall.Pi);
         }
 
         public void StepAlgorithm()
         {
-            if( _floydWarshall == null ) { return; }
+            if (_floydWarshall == null) { return; }
 
             _prevK = _floydWarshall.K;
             _prevPi = (int[,])_floydWarshall.Pi.Clone();
@@ -266,15 +267,15 @@ namespace Floyd_Warshall_Model
 
             OnAlgorithmStepped();
 
-            if(res == 0)
+            if (res == 0)
             {
                 OnAlhorithmEnded();
             }
-            else if(res > 0)
+            else if (res > 0)
             {
                 List<int>? route = CreateRoute(res, res, _floydWarshall.Pi);
 
-                if(route != null)
+                if (route != null)
                 {
                     OnNegativeCycleFound(route);
                 }
@@ -297,13 +298,13 @@ namespace Floyd_Warshall_Model
             {
                 route = CreateRoute(from, to, _floydWarshall.Pi);
             }
-            else if(isPrev && _prevPi != null)
+            else if (isPrev && _prevPi != null)
             {
                 route = CreateRoute(from, to, _prevPi);
             }
-          
 
-            if(route != null)
+
+            if (route != null)
             {
                 OnRouteCreated(route);
             }
@@ -311,7 +312,7 @@ namespace Floyd_Warshall_Model
 
         public AlgorithmData? GetAlgorithmData()
         {
-            if(_floydWarshall == null)
+            if (_floydWarshall == null)
             {
                 return null;
             }
@@ -359,7 +360,7 @@ namespace Floyd_Warshall_Model
 
         private void OnVertexAdded(int id) => VertexAdded?.Invoke(this, new VertexAddedEventArgs(id));
 
-        private void OnDirectedEdgeAdded(int id, int from, int to, short weight) => DirectedEdgeAdded?.Invoke(this, new EdgeAddedEventArgs(id,from,to,weight));
+        private void OnDirectedEdgeAdded(int id, int from, int to, short weight) => DirectedEdgeAdded?.Invoke(this, new EdgeAddedEventArgs(id, from, to, weight));
 
         private void OnUndirectedEdgeAdded(int id, int from, int to, short weight) => UndirectedEdgeAdded?.Invoke(this, new EdgeAddedEventArgs(id, from, to, weight));
 

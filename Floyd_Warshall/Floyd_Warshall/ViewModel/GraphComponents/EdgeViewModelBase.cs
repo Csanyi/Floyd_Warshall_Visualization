@@ -1,6 +1,5 @@
-﻿using Floyd_Warshall_Model;
-using Floyd_Warshall_Model.Events;
-using Floyd_Warshall_Model.Graph;
+﻿using Floyd_Warshall_Model.Model;
+using Floyd_Warshall_Model.Model.Events;
 using System;
 using System.ComponentModel;
 

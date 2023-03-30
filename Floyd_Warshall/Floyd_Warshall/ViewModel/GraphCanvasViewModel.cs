@@ -1,15 +1,11 @@
-﻿using Floyd_Warshall_Model;
-using Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands;
-using Floyd_Warshall_Model.Graph;
-using Floyd_Warshall_Model.Persistence;
+﻿using Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Floyd_Warshall_Model.Events;
-using System.Windows;
-using Accessibility;
+using Floyd_Warshall_Model.Model;
+using Floyd_Warshall_Model.Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {

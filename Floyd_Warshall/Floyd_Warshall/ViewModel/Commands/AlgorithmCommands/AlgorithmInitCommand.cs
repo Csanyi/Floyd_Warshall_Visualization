@@ -1,6 +1,5 @@
-﻿using Floyd_Warshall_Model;
+﻿using Floyd_Warshall_Model.Model;
 using System.ComponentModel;
-using System.Windows;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {

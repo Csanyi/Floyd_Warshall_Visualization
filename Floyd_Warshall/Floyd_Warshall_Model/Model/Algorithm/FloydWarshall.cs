@@ -1,4 +1,4 @@
-﻿namespace Floyd_Warshall_Model
+﻿namespace Floyd_Warshall_Model.Model.Algorithm
 {
     public class FloydWarshall
     {
@@ -15,12 +15,12 @@
         public ICollection<Tuple<int, int>> Changes { get { return _changes; } }
 
         private int _k;
-        public int K { get { return _k == 0 ? 0 : _vertexIds[_k-1]; } }
+        public int K { get { return _k == 0 ? 0 : _vertexIds[_k - 1]; } }
 
         private bool _isRunning = true;
         public bool IsRunnging { get { return _isRunning; } }
 
-        public FloydWarshall(int[,] graph, List<int> vertexIds) 
+        public FloydWarshall(int[,] graph, List<int> vertexIds)
         {
             _graph = graph;
             _vertexIds = vertexIds;
@@ -34,13 +34,13 @@
 
         private void Initaliaze()
         {
-            for(int i = 0; i < _graph.GetLength(0); ++i)
+            for (int i = 0; i < _graph.GetLength(0); ++i)
             {
-                for(int j = 0; j < _graph.GetLength(1); ++j)
+                for (int j = 0; j < _graph.GetLength(1); ++j)
                 {
                     _d[i, j] = _graph[i, j];
 
-                    if(i != j && _graph[i,j] < int.MaxValue)
+                    if (i != j && _graph[i, j] < int.MaxValue)
                     {
                         _pi[i, j] = _vertexIds[i];
                     }
@@ -54,17 +54,17 @@
 
         public int NextStep()
         {
-            if(!_isRunning || _k >= _graph.GetLength(0)) 
-            { 
+            if (!_isRunning || _k >= _graph.GetLength(0))
+            {
                 _isRunning = false;
-                return 0; 
+                return 0;
             }
 
             _changes.Clear();
 
-            for(int i = 0; i < _graph.GetLength(0); ++i)
+            for (int i = 0; i < _graph.GetLength(0); ++i)
             {
-                for(int j = 0; j < _graph.GetLength(1); ++j)
+                for (int j = 0; j < _graph.GetLength(1); ++j)
                 {
                     if (_d[i, _k] != int.MaxValue && _d[_k, j] != int.MaxValue && _d[i, j] > _d[i, _k] + _d[_k, j])
                     {
@@ -82,7 +82,7 @@
                 }
             }
 
-            if(++_k >= _graph.GetLength(0))
+            if (++_k >= _graph.GetLength(0))
             {
                 _isRunning = false;
                 return 0;

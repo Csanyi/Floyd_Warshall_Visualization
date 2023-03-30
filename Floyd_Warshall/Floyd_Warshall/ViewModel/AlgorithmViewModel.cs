@@ -1,10 +1,9 @@
 ﻿using Floyd_Warshall.ViewModel.Commands.AlgorithmCommands;
-using Floyd_Warshall_Model;
-using Floyd_Warshall_Model.Events;
+using Floyd_Warshall_Model.Model;
+using Floyd_Warshall_Model.Model.Algorithm;
+using Floyd_Warshall_Model.Model.Events;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 

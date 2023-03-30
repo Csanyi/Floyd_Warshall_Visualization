@@ -1,4 +1,4 @@
-﻿namespace Floyd_Warshall_Model.Graph
+﻿namespace Floyd_Warshall_Model.Model.Graph
 {
     public abstract class GraphBase
     {
@@ -8,7 +8,7 @@
         protected IDictionary<Vertex, ICollection<Edge>> _adjacenylist;
 
         protected GraphBase()
-        { 
+        {
             _adjacenylist = new Dictionary<Vertex, ICollection<Edge>>();
         }
 
@@ -22,7 +22,7 @@
 
         public abstract void IncrementWeight(Vertex from, Vertex to);
 
-        public void AddVertex(Vertex v) 
+        public void AddVertex(Vertex v)
         {
             Check(() => !_adjacenylist.ContainsKey(v));
 
@@ -33,11 +33,11 @@
         {
             Check(() => _adjacenylist.ContainsKey(v));
 
-            foreach(var adjacent in _adjacenylist)
+            foreach (var adjacent in _adjacenylist)
             {
                 Edge? e = GetEdge(adjacent.Key, v);
 
-                if(e != null)
+                if (e != null)
                 {
                     adjacent.Value.Remove(e);
                 }
@@ -61,7 +61,7 @@
         {
             List<Edge> edges = new List<Edge>();
 
-            foreach(var v in _adjacenylist)
+            foreach (var v in _adjacenylist)
             {
                 edges.AddRange(v.Value);
             }
@@ -90,13 +90,13 @@
 
             int[,] adjacencyMatrix = new int[size, size];
 
-            for(int i = 0;  i < size; ++i)
+            for (int i = 0; i < size; ++i)
             {
                 for (int j = 0; j < size; ++j)
                 {
                     Edge? e = GetEdge(vertices[i], vertices[j]);
 
-                    adjacencyMatrix[i, j] = (e != null) ? e.Weight : int.MaxValue; 
+                    adjacencyMatrix[i, j] = e != null ? e.Weight : int.MaxValue;
                 }
 
                 adjacencyMatrix[i, i] = 0;
@@ -107,7 +107,7 @@
 
         protected static void Check(Func<bool> cond)
         {
-            if(!cond())
+            if (!cond())
             {
                 throw new InvalidOperationException();
             }

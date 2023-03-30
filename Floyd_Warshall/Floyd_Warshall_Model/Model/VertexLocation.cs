@@ -1,6 +1,4 @@
-﻿using Floyd_Warshall_Model.Graph;
-
-namespace Floyd_Warshall_Model.Persistence
+﻿namespace Floyd_Warshall_Model.Model
 {
     public class VertexLocation
     {

@@ -1,6 +1,6 @@
-﻿using Floyd_Warshall_Model.Graph;
+﻿using Floyd_Warshall_Model.Model.Graph;
 
-namespace Floyd_Warshall_Model.Persistence
+namespace Floyd_Warshall_Model.Model
 {
     public class GraphData
     {

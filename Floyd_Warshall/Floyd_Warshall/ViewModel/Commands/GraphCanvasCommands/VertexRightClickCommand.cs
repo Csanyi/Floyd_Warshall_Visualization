@@ -1,7 +1,7 @@
-﻿using Floyd_Warshall_Model;
-using Floyd_Warshall.ViewModel.GraphComponents;
+﻿using Floyd_Warshall.ViewModel.GraphComponents;
 using System;
 using System.Linq;
+using Floyd_Warshall_Model.Model;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {

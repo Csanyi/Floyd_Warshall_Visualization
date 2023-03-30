@@ -1,5 +1,5 @@
 ﻿using Floyd_Warshall.ViewModel.GraphComponents;
-using Floyd_Warshall_Model;
+using Floyd_Warshall_Model.Model;
 using System;
 using System.ComponentModel;
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Floyd_Warshall_Model.Model.Algorithm;
 
-namespace Floyd_Warshall_Model.Events
+namespace Floyd_Warshall_Model.Model.Events
 {
     public class AlgorithmEventArgs : EventArgs
     {

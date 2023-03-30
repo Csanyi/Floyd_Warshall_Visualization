@@ -1,11 +1,10 @@
 ﻿using Floyd_Warshall.View;
 using Floyd_Warshall.ViewModel;
-using Floyd_Warshall_Model;
-using Floyd_Warshall_Model.Events;
+using Floyd_Warshall_Model.Model;
+using Floyd_Warshall_Model.Model.Events;
 using Floyd_Warshall_Model.Persistence;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace Floyd_Warshall

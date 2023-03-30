@@ -1,4 +1,4 @@
-﻿using Floyd_Warshall_Model;
+﻿using Floyd_Warshall_Model.Model;
 using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands

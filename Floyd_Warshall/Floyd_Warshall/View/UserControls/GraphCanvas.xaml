@@ -40,8 +40,8 @@
                         X="{Binding CanvasX, Mode=TwoWay}" 
                         Y="{Binding CanvasY, Mode=TwoWay}" />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:EdgeViewModel}">
-                    <local:Edge />
+                <DataTemplate DataType="{x:Type vm:UndirectedEdgeViewModel}">
+                    <local:UndirectedEdge />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:DirectedEdgeViewModel}">
                     <local:DirectedEdge />

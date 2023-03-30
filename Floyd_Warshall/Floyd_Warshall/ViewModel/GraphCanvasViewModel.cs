@@ -256,7 +256,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             VertexViewModel from = Verteces.First(v => v.Id == e.From);
             VertexViewModel to = Verteces.First(v => v.Id == e.To);
 
-            DirectedEdgeViewModel edge = new DirectedEdgeViewModel(e.Id, _graphModel, from, to)
+            EdgeViewModelBase edge = new DirectedEdgeViewModel(e.Id, _graphModel, from, to)
             {
                 IsSelected = false,
                 LeftClickCommand = new EdgeLeftClickCommand(this),
@@ -275,7 +275,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             VertexViewModel from = Verteces.First(v => v.Id == e.From);
             VertexViewModel to = Verteces.First(v => v.Id == e.To);
 
-            EdgeViewModel edge = new EdgeViewModel(e.Id, _graphModel, from, to)
+            EdgeViewModelBase edge = new UndirectedEdgeViewModel(e.Id, _graphModel, from, to)
             {
                 IsSelected = false,
                 LeftClickCommand = new EdgeLeftClickCommand(this),

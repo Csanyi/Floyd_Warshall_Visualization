@@ -1,4 +1,4 @@
-﻿namespace Floyd_Warshall_Model.Model.Graph
+﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
     public class UndirectedGraph : GraphBase
     {
@@ -40,7 +40,7 @@
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
 
-            if (weight < minValue || weight > maxValue)
+            if (weight < MinValue || weight > MaxValue)
             {
                 throw new OverflowException();
             }
@@ -65,7 +65,7 @@
 
             if (e1 != null && e2 != null)
             {
-                if (e1.Weight >= maxValue || e2.Weight >= maxValue)
+                if (e1.Weight >= MaxValue || e2.Weight >= MaxValue)
                 {
                     throw new OverflowException();
                 }

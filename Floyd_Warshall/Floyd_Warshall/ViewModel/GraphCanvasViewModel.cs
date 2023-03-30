@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using Floyd_Warshall_Model.Model;
 using Floyd_Warshall_Model.Model.Events;
+using Floyd_Warshall_Model.Persistence;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -154,7 +155,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public IEnumerable<VertexLocation> GetLocations()
         {
-            return Verteces.Select(v => new VertexLocation(v.Id, v.CanvasX, v.CanvasY));
+            return Verteces.Select(v => new VertexLocation(v.Id, v.GetX(), v.GetY()));
         }
 
         #endregion
@@ -240,8 +241,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
             VertexViewModel vertex = new VertexViewModel(e.Id)
             {
-                CanvasX = MouseX - VertexViewModel.Size / 2,
-                CanvasY = MouseY - VertexViewModel.Size / 2,
+                CanvasX = MouseX,
+                CanvasY = MouseY,
                 IsSelected = false,
                 RightClickCommand = new VertexRightClickCommand(this, _graphModel),
                 LeftClickCommand = new VertexLeftClickCommand(this, _graphModel),

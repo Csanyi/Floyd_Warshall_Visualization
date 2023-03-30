@@ -1,7 +1,7 @@
-﻿using Floyd_Warshall_Model.Persistence;
-using Floyd_Warshall_Model.Model.Algorithm;
+﻿using Floyd_Warshall_Model.Model.Algorithm;
 using Floyd_Warshall_Model.Model.Events;
-using Floyd_Warshall_Model.Model.Graph;
+using Floyd_Warshall_Model.Persistence.Graph;
+using Floyd_Warshall_Model.Persistence;
 
 namespace Floyd_Warshall_Model.Model
 {
@@ -182,17 +182,17 @@ namespace Floyd_Warshall_Model.Model
 
         public int GetVertexCount()
         {
-            return _graph.GetVertexCount();
+            return _graph.VertexCount;
         }
 
         public List<Edge> GetEdges()
         {
-            return _graph.GetEdges();
+            return _graph.Edges;
         }
 
         public List<int> GetVertexIds()
         {
-            return _graph.GetVertexIds();
+            return _graph.VertexIds;
         }
 
         public async Task LoadAsync(string path)
@@ -204,19 +204,19 @@ namespace Floyd_Warshall_Model.Model
 
             GraphData v = await _dataAccess.LoadAsync(path);
 
-            if (v.Graph.GetVertexCount() > maxVertexCount)
+            if (v.Graph.VertexCount > maxVertexCount)
             {
                 throw new GraphDataException();
             }
 
             _graph = v.Graph;
 
-            _vertexId = _graph.GetVertexIds().Max();
+            _vertexId = _graph.VertexIds.Max();
             _edgeId = 0;
 
             OnGraphLoaded(v.VertexLocations);
 
-            List<Edge> edges = _graph.GetEdges();
+            List<Edge> edges = _graph.Edges;
 
             if (_graph.IsDirected)
             {
@@ -252,7 +252,7 @@ namespace Floyd_Warshall_Model.Model
 
         public void StartAlgorithm()
         {
-            _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix(), _graph.GetVertexIds());
+            _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix(), _graph.VertexIds);
             OnAlhorithmStarted(_floydWarshall.D, _floydWarshall.Pi);
         }
 
@@ -327,7 +327,7 @@ namespace Floyd_Warshall_Model.Model
         private List<int>? CreateRoute(int from, int to, int[,] pi)
         {
             List<int> route = new List<int>();
-            List<int> vertexIds = _graph.GetVertexIds();
+            List<int> vertexIds = _graph.VertexIds;
 
             int fromInd = vertexIds.FindIndex(x => x == from);
             int toInd = vertexIds.FindIndex(x => x == to);

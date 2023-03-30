@@ -1,4 +1,4 @@
-﻿namespace Floyd_Warshall_Model.Model.Graph
+﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
     public class DirectedGraph : GraphBase
     {
@@ -34,7 +34,7 @@
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
 
-            if (weight < minValue || weight > maxValue)
+            if (weight < MinValue || weight > MaxValue)
             {
                 throw new OverflowException();
             }
@@ -56,7 +56,7 @@
 
             if (e != null)
             {
-                if (e.Weight >= maxValue)
+                if (e.Weight >= MaxValue)
                 {
                     throw new OverflowException();
                 }

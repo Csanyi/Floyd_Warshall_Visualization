@@ -1,4 +1,4 @@
-﻿namespace Floyd_Warshall_Model.Model.Graph
+﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
     public class Vertex
     {

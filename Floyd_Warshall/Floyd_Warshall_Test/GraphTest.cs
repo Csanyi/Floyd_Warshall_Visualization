@@ -1,4 +1,4 @@
-using Floyd_Warshall_Model.Model.Graph;
+using Floyd_Warshall_Model.Persistence.Graph;
 
 namespace Floyd_Warshall_Test
 {

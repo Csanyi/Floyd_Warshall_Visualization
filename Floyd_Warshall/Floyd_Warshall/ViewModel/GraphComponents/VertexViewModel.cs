@@ -26,7 +26,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         private double _canvasX;
         public override double CanvasX { 
-            get { return _canvasX; }
+            get { return _canvasX - VertexViewModel.Size / 2; }
             set
             {
                 _canvasX = value;
@@ -37,12 +37,22 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         private double _canvasY;
         public override double CanvasY
         {
-            get { return _canvasY; }
+            get { return _canvasY - VertexViewModel.Size / 2; }
             set
             {
                 _canvasY = value;
                 OnPropertyChanged();
             }
+        }
+
+        public double GetX()
+        {
+            return _canvasX;
+        }
+
+        public double GetY()
+        {
+            return _canvasY;
         }
     }
 }

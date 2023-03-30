@@ -1,5 +1,4 @@
-﻿using Floyd_Warshall_Model.Model;
-using Floyd_Warshall_Model.Model.Graph;
+﻿using Floyd_Warshall_Model.Persistence.Graph;
 
 namespace Floyd_Warshall_Model.Persistence
 {
@@ -85,7 +84,7 @@ namespace Floyd_Warshall_Model.Persistence
 
                     delimiter = "";
 
-                    foreach(Edge e in graph.GetEdges())
+                    foreach(Edge e in graph.Edges)
                     {
                         await writer.WriteAsync(delimiter + e.From.Id + ";" + e.To.Id + ";" + e.Weight);
                         delimiter = " ";

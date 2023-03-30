@@ -1,18 +1,67 @@
-﻿namespace Floyd_Warshall_Model.Model.Graph
+﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
     public abstract class GraphBase
     {
-        public const short maxValue = 9999;
-        public const short minValue = -maxValue;
+        #region Fields
+
+        protected const short MaxValue = 9999;
+        protected const short MinValue = -MaxValue;
 
         protected IDictionary<Vertex, ICollection<Edge>> _adjacenylist;
+
+        #endregion
+
+        #region Constructors
 
         protected GraphBase()
         {
             _adjacenylist = new Dictionary<Vertex, ICollection<Edge>>();
         }
 
+        #endregion
+
+        #region Properties
+
         public abstract bool IsDirected { get; }
+
+        public List<Vertex> Vertices
+        {
+            get { return _adjacenylist.Keys.OrderBy(v => v.Id).ToList(); }
+        }
+
+        public List<int> VertexIds
+        {
+            get { return _adjacenylist.Keys.Select(v => v.Id).OrderBy(i => i).ToList(); }
+        }
+
+        public List<Edge> Edges
+        {
+            get
+            {
+                List<Edge> edges = new List<Edge>();
+
+                foreach (var v in _adjacenylist)
+                {
+                    edges.AddRange(v.Value);
+                }
+
+                return edges;
+            }
+        }
+
+        public int EdgeCount
+        {
+            get { return _adjacenylist.Sum(x => x.Value.Count); }
+        }
+
+        public int VertexCount
+        {
+            get { return _adjacenylist.Count; }
+        }
+
+        #endregion
+
+        #region Methods
 
         public abstract void AddEdge(Vertex from, Vertex to, short weight);
 
@@ -53,27 +102,10 @@
             return _adjacenylist[from].FirstOrDefault(e => e.To == to);
         }
 
-        public List<Vertex> GetVertices() => _adjacenylist.Keys.OrderBy(v => v.Id).ToList();
-
-        public List<int> GetVertexIds() => _adjacenylist.Keys.Select(v => v.Id).OrderBy(i => i).ToList();
-
-        public List<Edge> GetEdges()
-        {
-            List<Edge> edges = new List<Edge>();
-
-            foreach (var v in _adjacenylist)
-            {
-                edges.AddRange(v.Value);
-            }
-
-            return edges;
+        public Vertex? GetVertexById(int id) 
+        { 
+            return _adjacenylist.Keys.FirstOrDefault(v => v.Id == id);
         }
-
-        public int GetEdgeCount() => _adjacenylist.Sum(x => x.Value.Count);
-
-        public int GetVertexCount() => _adjacenylist.Count;
-
-        public Vertex? GetVertexById(int id) => _adjacenylist.Keys.FirstOrDefault(v => v.Id == id);
 
         public short GetWeight(Vertex from, Vertex to)
         {
@@ -85,8 +117,8 @@
 
         public int[,] ToAdjacencyMatrix()
         {
-            int size = GetVertexCount();
-            IList<Vertex> vertices = GetVertices();
+            int size = VertexCount;
+            IList<Vertex> vertices = Vertices;
 
             int[,] adjacencyMatrix = new int[size, size];
 
@@ -112,5 +144,7 @@
                 throw new InvalidOperationException();
             }
         }
+
+        #endregion
     }
 }

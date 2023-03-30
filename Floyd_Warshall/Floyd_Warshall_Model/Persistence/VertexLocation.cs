@@ -1,4 +1,4 @@
-﻿namespace Floyd_Warshall_Model.Model
+﻿namespace Floyd_Warshall_Model.Persistence
 {
     public class VertexLocation
     {

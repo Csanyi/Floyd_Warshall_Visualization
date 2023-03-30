@@ -1,6 +1,6 @@
-﻿using Floyd_Warshall_Model.Model.Graph;
+﻿using Floyd_Warshall_Model.Persistence.Graph;
 
-namespace Floyd_Warshall_Model.Model
+namespace Floyd_Warshall_Model.Persistence
 {
     public class GraphData
     {
@@ -10,7 +10,7 @@ namespace Floyd_Warshall_Model.Model
             VertexLocations = vertexLocations;
         }
 
-        public GraphBase Graph { get; private set; }
-        public IEnumerable<VertexLocation> VertexLocations { get; private set; }
+        public GraphBase Graph { get; }
+        public IEnumerable<VertexLocation> VertexLocations { get; }
     }
 }

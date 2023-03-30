@@ -1,5 +1,4 @@
-﻿using Floyd_Warshall.ViewModel.GraphComponents;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -67,8 +66,8 @@ namespace Floyd_Warshall.View.UserControls
             {
                 Point p = e.GetPosition(sender as Canvas);
 
-                v.X = p.X - VertexViewModel.Size / 2;
-                v.Y = p.Y - VertexViewModel.Size / 2;
+                v.X = p.X;
+                v.Y = p.Y;
             }
         }
     }

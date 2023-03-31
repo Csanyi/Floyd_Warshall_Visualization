@@ -14,8 +14,8 @@ namespace Floyd_Warshall
         #region Fields
 
         private GraphModel _graphModel = null!;
-        private MainWindow _view = null!;
         private MainViewModel _viewModel = null!;
+        private MainWindow _view = null!;
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace Floyd_Warshall
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            _graphModel = new GraphModel(new GrapfFileDataAccess());
+            _graphModel = new GraphModel(new GraphFileDataAccess());
             _viewModel = new MainViewModel(_graphModel);
 
             _viewModel.NewGraph += ViewModel_NewGraph;
@@ -52,7 +52,10 @@ namespace Floyd_Warshall
 
         #region ViewModel event handlers
 
-        private void ViewModel_NewGraph(object? sender, bool e) => _graphModel.NewGraph(e);
+        private void ViewModel_NewGraph(object? sender, bool e)
+        {
+            _graphModel.NewGraph(e);
+        }
      
         private async void ViewModel_LoadGraph(object? sender, EventArgs e)
         {
@@ -75,7 +78,7 @@ namespace Floyd_Warshall
             }
 }
 
-        private async void ViewModel_SaveGraph(object? sender, GraphLoadedEventArgs e)
+        private async void ViewModel_SaveGraph(object? sender, GraphLocationEventArgs e)
         {
             try
             {
@@ -103,7 +106,10 @@ namespace Floyd_Warshall
             }
         }
 
-        private void ViewModel_Exit(object? sender, EventArgs e) => _view.Close();
+        private void ViewModel_Exit(object? sender, EventArgs e)
+        {
+            _view.Close();
+        }
 
 
         #endregion

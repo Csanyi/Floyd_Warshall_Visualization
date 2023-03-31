@@ -18,7 +18,7 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
             _viewModel.Timer.Stop();
             _viewModel.IsStopped = true;
 
-            if(_viewModel.TimerInterval < AlgorithmViewModel.criticalTime)
+            if(_viewModel.TimerInterval < AlgorithmViewModel.CriticalTime)
             {
                 _viewModel.UpdateData();
             }

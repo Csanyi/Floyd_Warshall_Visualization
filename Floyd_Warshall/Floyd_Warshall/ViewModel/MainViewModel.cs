@@ -22,6 +22,8 @@ namespace Floyd_Warshall.ViewModel
 
         public GraphCanvasViewModel GraphCanvas { get { return _graphCanvas; } }
 
+        public AlgorithmViewModel Algorithm { get { return _algorithm; } }
+
         public bool CommandsEnabled 
         {
             get { return _commandsEnabled; }
@@ -31,18 +33,20 @@ namespace Floyd_Warshall.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        public AlgorithmViewModel Algorithm { get { return _algorithm; } }
-
-        public event EventHandler<bool>? NewGraph;
-        public event EventHandler? LoadGraph;
-        public event EventHandler<GraphLoadedEventArgs>? SaveGraph;
-        public event EventHandler? Exit;
    
         public ICommand NewGraphCommand { get; private set; }
         public ICommand LoadGraphCommand { get; private set; }
         public ICommand SaveGraphCommand { get; private set; }
         public ICommand ExitCommand { get; private set; }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<bool>? NewGraph;
+        public event EventHandler? LoadGraph;
+        public event EventHandler<GraphLocationEventArgs>? SaveGraph;
+        public event EventHandler? Exit;
 
         #endregion
 
@@ -58,8 +62,8 @@ namespace Floyd_Warshall.ViewModel
             SaveGraphCommand = new DelegateCommand(param => OnSave());
             ExitCommand = new DelegateCommand(param => OnExit());
 
-            graphModel.AlgorithmStarted += Model_AlgorithmStarted;
-            graphModel.AlgorithmStopped += Model_AlgorithmStopped;
+            graphModel.AlgorithmInitialized += Model_AlgorithmInitialized;
+            graphModel.AlgorithmCancelled += Model_AlgorithmCancelled;
 
             _commandsEnabled = true;
         }
@@ -68,12 +72,12 @@ namespace Floyd_Warshall.ViewModel
 
         #region Model event handlers
 
-        private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
+        private void Model_AlgorithmInitialized(object? sender, EventArgs e)
         {
             CommandsEnabled = false;
         }
 
-        private void Model_AlgorithmStopped(object? sender, EventArgs e)
+        private void Model_AlgorithmCancelled(object? sender, EventArgs e)
         {
             CommandsEnabled = true;
         }
@@ -86,7 +90,7 @@ namespace Floyd_Warshall.ViewModel
 
         private void OnLoad() => LoadGraph?.Invoke(this, EventArgs.Empty);
 
-        private void OnSave() => SaveGraph?.Invoke(this, new GraphLoadedEventArgs(_graphCanvas.GetLocations()));
+        private void OnSave() => SaveGraph?.Invoke(this, new GraphLocationEventArgs(_graphCanvas.GetLocations()));
 
         private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
 

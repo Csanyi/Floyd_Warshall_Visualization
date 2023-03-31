@@ -20,7 +20,7 @@
         <ItemsControl
             x:Name="canvas"
             Grid.Row="0"
-            ItemsSource="{Binding Views}" 
+            ItemsSource="{Binding GraphComponents}" 
             BorderBrush="Black"
             BorderThickness="1">
             <ItemsControl.ItemsPanel>

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Input;
 using Floyd_Warshall_Model.Model;
 using Floyd_Warshall_Model.Model.Events;
-using Floyd_Warshall_Model.Persistence;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
@@ -94,7 +93,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
-        public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= GraphModel.maxVertexCount; } }
+        public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= GraphModel.MaxVertexCount; } }
 
         public bool HasInputError
         {
@@ -110,7 +109,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public List<EdgeViewModelBase> Edges { get; set; }
 
-        public ObservableCollection<GraphComponentViewModel> Views { get; set; }
+        public ObservableCollection<GraphComponentViewModelBase> GraphComponents { get; set; }
 
         public ICommand CanvasClickCommand { get; private set; }
         public ICommand SubmitCommand { get; private set; }
@@ -126,21 +125,21 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             CanvasClickCommand = new CanvasClickCommand(this, _graphModel);
             SubmitCommand = new SubmitCommand(this, _graphModel);
 
-            _graphModel.NewEmptyGraph += Model_NewEmptyGraph;
+            _graphModel.NewGraphCreated += Model_NewGraphCreated;
             _graphModel.GraphLoaded += Model_GraphLoaded;
-            _graphModel.AlgorithmStarted += Model_AlgorithmStarted;
-            _graphModel.AlgorithmStopped += Model_AlgorithmStopped;
+            _graphModel.AlgorithmInitialized += Model_AlgorithmInitialized;
+            _graphModel.AlgorithmCancelled += Model_AlgorithmCancelled;
             _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
             _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
             _graphModel.VertexAdded += Model_VertexAdded;
             _graphModel.DirectedEdgeAdded += Model_DirectedEdgeAdded;
             _graphModel.UndirectedEdgeAdded += Model_UndirectedEdgeAdded;
-            _graphModel.VertexRemoved += Model_VertexCntChanged;
+            _graphModel.VertexRemoved += Model_VertexRemoved;
             _graphModel.RouteCreated += Model_RouteCreated;
 
             Verteces = new List<VertexViewModel>();
             Edges = new List<EdgeViewModelBase>();
-            Views = new ObservableCollection<GraphComponentViewModel>();
+            GraphComponents = new ObservableCollection<GraphComponentViewModelBase>();
 
             _selectedVertex = null;
             _selectedEdge = null;
@@ -166,7 +165,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         {
             Verteces.Clear();
             Edges.Clear();
-            Views.Clear();
+            GraphComponents.Clear();
 
             SelectedEdge = null;
             SelectedVertex = null;
@@ -230,7 +229,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         #region Model event handlers
 
-        private void Model_NewEmptyGraph(object? sender, EventArgs e)
+        private void Model_NewGraphCreated(object? sender, EventArgs e)
         {
             Init();
         }
@@ -249,7 +248,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             };
 
             Verteces.Add(vertex);
-            Views.Add(vertex);
+            GraphComponents.Add(vertex);
         }
 
         private void Model_DirectedEdgeAdded(object? sender, EdgeAddedEventArgs e)
@@ -265,7 +264,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             };
 
             Edges.Add(edge);
-            Views.Add(edge);
+            GraphComponents.Add(edge);
 
             from.Edges.Add(edge);
             to.Edges.Add(edge);
@@ -284,13 +283,13 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             };
 
             Edges.Add(edge);
-            Views.Add(edge);
+            GraphComponents.Add(edge);
 
             from.Edges.Add(edge);
             to.Edges.Add(edge);
         }
 
-        private void Model_GraphLoaded(object? sender, GraphLoadedEventArgs e)
+        private void Model_GraphLoaded(object? sender, GraphLocationEventArgs e)
         {
             Init();
 
@@ -306,11 +305,11 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
                 };
 
                 Verteces.Add(vertex);
-                Views.Add(vertex);
+                GraphComponents.Add(vertex);
             }
         }
 
-        private void Model_AlgorithmStarted(object? sender, EventArgs e)
+        private void Model_AlgorithmInitialized(object? sender, EventArgs e)
         {
             HasInputError = false;
             SelectedVertex = null;
@@ -323,7 +322,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             ClearSelections();
         }
 
-        private void Model_AlgorithmStopped(object? sender, EventArgs e)
+        private void Model_AlgorithmCancelled(object? sender, EventArgs e)
         {
             ClearSelections();
 
@@ -335,14 +334,14 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             SelectRoute(e.Route, true);
         }
 
-        private void Model_VertexCntChanged(object? sender, EventArgs e)
-        {
-            OnPropertyChanged(nameof(MaxVertexCountReached));
-        }
-
         private void Model_RouteCreated(object? sender, RouteEventArgs e)
         {
             SelectRoute(e.Route, false);
+        }
+
+        private void Model_VertexRemoved(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(MaxVertexCountReached));
         }
 
         #endregion

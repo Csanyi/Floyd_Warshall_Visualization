@@ -29,7 +29,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
             e.From.Edges.Remove(e);
             e.To.Edges.Remove(e);
             _viewModel.Edges.Remove(e);
-            _viewModel.Views.Remove(e);
+            _viewModel.GraphComponents.Remove(e);
         }
     }
 }

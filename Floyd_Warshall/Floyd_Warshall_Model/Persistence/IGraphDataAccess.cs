@@ -6,6 +6,6 @@ namespace Floyd_Warshall_Model.Persistence
     {
         Task<GraphData> LoadAsync(string path);
 
-        Task SaveAsync(string path, GraphBase graph, IEnumerable<VertexLocation> locations);
+        Task SaveAsync(string path, GraphBase graph, IEnumerable<VertexData> locations);
     }
 }

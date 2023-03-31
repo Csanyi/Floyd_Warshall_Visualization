@@ -19,7 +19,7 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
         public override void Execute(object? parameter)
         {
             _viewModel.Timer.Stop();
-            _graphModel.StopAlgorithm();
+            _graphModel.CancelAlgorithm();
 
             _viewModel.CallPropertyChanged(nameof(AlgorithmViewModel.IsInitialized));
             _viewModel.IsStopped = true;

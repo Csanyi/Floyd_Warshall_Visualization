@@ -20,7 +20,7 @@ namespace Floyd_Warshall.ViewModel
         private bool _isNegCycleFound;
         private bool _steppedOnce;
 
-        public const int criticalTime = 100;
+        public const int CriticalTime = 100;
 
         #endregion
 
@@ -121,13 +121,13 @@ namespace Floyd_Warshall.ViewModel
             _timer.Tick += Timer_Tick;
 
             _graphModel.VertexAdded += Model_VertexAdded;
-            _graphModel.VertexRemoved += Model_VertexCntChanged;
-            _graphModel.AlgorithmStarted += Model_AlgorithmStarted;
+            _graphModel.VertexRemoved += Model_VertexRemoved;
+            _graphModel.AlgorithmInitialized += Model_AlgorithmInitialized;
             _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
             _graphModel.AlgorithmEnded += Model_AlgorithmEnded;
             _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
             _graphModel.GraphLoaded += Model_GraphLoaded;
-            _graphModel.NewEmptyGraph += Model_NewEmptyGraph;
+            _graphModel.NewGraphCreated += Model_NewGraphCreated;
 
             D = new ObservableCollection<MatrixGridViewModel>();
             Pi = new ObservableCollection<MatrixGridViewModel>();
@@ -185,17 +185,17 @@ namespace Floyd_Warshall.ViewModel
 
         #region Model event handlers
 
-        private void Model_VertexCntChanged(object? sender, EventArgs e)
-        {
-            OnPropertyChanged(nameof(IsEnoughVerteces));
-        }
-
         private void Model_VertexAdded(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
 
-        private void Model_AlgorithmStarted(object? sender, AlgorithmEventArgs e)
+        private void Model_VertexRemoved(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(IsEnoughVerteces));
+        }
+
+        private void Model_AlgorithmInitialized(object? sender, AlgorithmEventArgs e)
         {
             OnPropertyChanged(nameof(K));
             OnPropertyChanged(nameof(PrevK));
@@ -245,7 +245,7 @@ namespace Floyd_Warshall.ViewModel
         
         private void Model_AlgorithmEnded(object? sender, EventArgs e)
         {
-            if (TimerInterval <= criticalTime && !IsStopped)
+            if (TimerInterval <= CriticalTime && !IsStopped)
             {
                 UpdateData();
             }
@@ -262,7 +262,7 @@ namespace Floyd_Warshall.ViewModel
             OnPropertyChanged(nameof(PrevK));
             SteppedOnce = true;
 
-            if (TimerInterval > criticalTime || IsStopped)
+            if (TimerInterval > CriticalTime || IsStopped)
             {
                 UpdateData();
             }
@@ -279,7 +279,7 @@ namespace Floyd_Warshall.ViewModel
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
 
-        private void Model_NewEmptyGraph(object? sender, EventArgs e)
+        private void Model_NewGraphCreated(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }

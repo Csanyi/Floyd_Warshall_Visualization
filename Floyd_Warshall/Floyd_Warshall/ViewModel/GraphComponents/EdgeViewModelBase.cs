@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
-    public abstract class EdgeViewModelBase : GraphComponentViewModel
+    public abstract class EdgeViewModelBase : GraphComponentViewModelBase
     {
         private readonly GraphModel _graphModel;
 
@@ -24,8 +24,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel.EdgeUpdated += Model_EdgeUpdated;
         }
 
-        public VertexViewModel From { get; set; }
-        public VertexViewModel To { get; set; }
+        public VertexViewModel From { get; }
+        public VertexViewModel To { get; }
 
         public short Weight
         {

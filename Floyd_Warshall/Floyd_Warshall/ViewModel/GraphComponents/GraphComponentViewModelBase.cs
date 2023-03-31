@@ -3,10 +3,10 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel
 {
-    public abstract class GraphComponentViewModel : ViewModelBase
+    public abstract class GraphComponentViewModelBase : ViewModelBase
     {
-        protected GraphComponentViewModel(int id)
-        { 
+        protected GraphComponentViewModelBase(int id)
+        {
             _id = id;
         }
 
@@ -30,9 +30,6 @@ namespace Floyd_Warshall.ViewModel
         public ICommand LeftClickCommand { get; set; } = null!;
         public ICommand RightClickCommand { get; set; } = null!;
 
-        public Type Type => this.GetType();
-
-        public Type? BaseType => this.GetType().BaseType;
-
+        public Type Type { get { return this.GetType(); } }
     }
 }

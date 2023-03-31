@@ -10,9 +10,9 @@
             Weight = weight;
         }
 
-        public int Id { get; private set; }
-        public int From { get; private set; }
-        public int To { get; private set; }
-        public short Weight { get; private set; }
+        public int Id { get; }
+        public int From { get; }
+        public int To { get; }
+        public short Weight { get; }
     }
 }

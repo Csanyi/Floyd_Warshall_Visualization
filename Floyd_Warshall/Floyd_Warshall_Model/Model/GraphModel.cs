@@ -9,15 +9,15 @@ namespace Floyd_Warshall_Model.Model
     {
         #region Fields
 
+        private readonly IGraphDataAccess _dataAccess;
         private GraphBase _graph;
         private FloydWarshall? _floydWarshall;
-        private readonly IGraphDataAccess _dataAccess;
         private int? _prevK;
         private int[,]? _prevPi;
         private int _vertexId;
         private int _edgeId;
 
-        public const int maxVertexCount = 14;
+        public const int MaxVertexCount = 14;
 
         #endregion
 
@@ -37,17 +37,17 @@ namespace Floyd_Warshall_Model.Model
 
         #region Events
 
-        public event EventHandler? NewEmptyGraph;
-        public event EventHandler<GraphLoadedEventArgs>? GraphLoaded;
+        public event EventHandler? NewGraphCreated;
+        public event EventHandler<GraphLocationEventArgs>? GraphLoaded;
         public event EventHandler<VertexAddedEventArgs>? VertexAdded;
         public event EventHandler<EdgeAddedEventArgs>? DirectedEdgeAdded;
         public event EventHandler<EdgeAddedEventArgs>? UndirectedEdgeAdded;
         public event EventHandler<EdgeUpdatedEventArgs>? EdgeUpdated;
         public event EventHandler? VertexRemoved;
-        public event EventHandler<AlgorithmEventArgs>? AlgorithmStarted;
+        public event EventHandler<AlgorithmEventArgs>? AlgorithmInitialized;
         public event EventHandler? AlgorithmStepped;
         public event EventHandler? AlgorithmEnded;
-        public event EventHandler? AlgorithmStopped;
+        public event EventHandler? AlgorithmCancelled;
         public event EventHandler<RouteEventArgs>? NegativeCycleFound;
         public event EventHandler<RouteEventArgs>? RouteCreated;
 
@@ -78,7 +78,7 @@ namespace Floyd_Warshall_Model.Model
 
             _vertexId = 0;
             _edgeId = 0;
-            OnNewEmptyGraph();
+            OnNewGraphCreated();
         }
 
         public void AddVertex()
@@ -142,7 +142,6 @@ namespace Floyd_Warshall_Model.Model
             return _graph.GetEdge(from, to) != null; ;
         }
 
-
         public short GetWeight(int fromId, int toId)
         {
             Vertex? from = _graph.GetVertexById(fromId);
@@ -204,7 +203,7 @@ namespace Floyd_Warshall_Model.Model
 
             GraphData v = await _dataAccess.LoadAsync(path);
 
-            if (v.Graph.VertexCount > maxVertexCount)
+            if (v.Graph.VertexCount > MaxVertexCount)
             {
                 throw new GraphDataException();
             }
@@ -214,7 +213,7 @@ namespace Floyd_Warshall_Model.Model
             _vertexId = _graph.VertexIds.Max();
             _edgeId = 0;
 
-            OnGraphLoaded(v.VertexLocations);
+            OnGraphLoaded(v.VertexDatas.Select(v => new VertexLocation(v.Id, v.X, v.Y)));
 
             List<Edge> edges = _graph.Edges;
 
@@ -243,17 +242,17 @@ namespace Floyd_Warshall_Model.Model
                 throw new InvalidOperationException("No data acces provided.");
             }
 
-            await _dataAccess.SaveAsync(path, _graph, locations);
+            await _dataAccess.SaveAsync(path, _graph, locations.Select(l => new VertexData(l.Id, l.X, l.Y)));
         }
 
         #endregion
 
         #region Public algorithm methods
 
-        public void StartAlgorithm()
+        public void InitAlgorithm()
         {
             _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix(), _graph.VertexIds);
-            OnAlhorithmStarted(_floydWarshall.D, _floydWarshall.Pi);
+            OnAlgorithmInitialized(_floydWarshall.D, _floydWarshall.Pi);
         }
 
         public void StepAlgorithm()
@@ -261,7 +260,7 @@ namespace Floyd_Warshall_Model.Model
             if (_floydWarshall == null) { return; }
 
             _prevK = _floydWarshall.K;
-            _prevPi = (int[,])_floydWarshall.Pi.Clone();
+            _prevPi = _floydWarshall.Pi.Clone() as int[,];
 
             int res = _floydWarshall.NextStep();
 
@@ -282,12 +281,12 @@ namespace Floyd_Warshall_Model.Model
             }
         }
 
-        public void StopAlgorithm()
+        public void CancelAlgorithm()
         {
             _floydWarshall = null;
             _prevK = null;
             _prevPi = null;
-            OnAlhorithmStopped();
+            OnAlgorithmCancelled();
         }
 
         public void GetRoute(int from, int to, bool isPrev)
@@ -354,9 +353,9 @@ namespace Floyd_Warshall_Model.Model
 
         #region Private event methods
 
-        private void OnNewEmptyGraph() => NewEmptyGraph?.Invoke(this, EventArgs.Empty);
+        private void OnNewGraphCreated() => NewGraphCreated?.Invoke(this, EventArgs.Empty);
 
-        private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLoadedEventArgs(locations));
+        private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLocationEventArgs(locations));
 
         private void OnVertexAdded(int id) => VertexAdded?.Invoke(this, new VertexAddedEventArgs(id));
 
@@ -368,13 +367,13 @@ namespace Floyd_Warshall_Model.Model
 
         private void OnVertexRemoved() => VertexRemoved?.Invoke(this, EventArgs.Empty);
 
-        private void OnAlhorithmStarted(int[,] d, int[,] pi) => AlgorithmStarted?.Invoke(this, new AlgorithmEventArgs(d, pi));
+        private void OnAlgorithmInitialized(int[,] d, int[,] pi) => AlgorithmInitialized?.Invoke(this, new AlgorithmEventArgs(d, pi));
 
         private void OnAlgorithmStepped() => AlgorithmStepped?.Invoke(this, EventArgs.Empty);
 
         private void OnAlhorithmEnded() => AlgorithmEnded?.Invoke(this, EventArgs.Empty);
 
-        private void OnAlhorithmStopped() => AlgorithmStopped?.Invoke(this, EventArgs.Empty);
+        private void OnAlgorithmCancelled() => AlgorithmCancelled?.Invoke(this, EventArgs.Empty);
 
         private void OnNegativeCycleFound(List<int> route) => NegativeCycleFound?.Invoke(this, new RouteEventArgs(route));
 

@@ -29,7 +29,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
             {
                 EdgeViewModelBase e = v.Edges[i];
                 _viewModel.Edges.Remove(e);
-                _viewModel.Views.Remove(e);
+                _viewModel.GraphComponents.Remove(e);
                 if (v == e.From)
                 {
                     e.To.Edges.Remove(e);
@@ -41,12 +41,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
             }
 
             _viewModel.Verteces.Remove(v);
-            _viewModel.Views.Remove(v);
-        }
-
-        public override bool CanExecute(object? parameter)
-        {
-            return _viewModel.CanvasEnabled;
+            _viewModel.GraphComponents.Remove(v);
         }
     }
 }

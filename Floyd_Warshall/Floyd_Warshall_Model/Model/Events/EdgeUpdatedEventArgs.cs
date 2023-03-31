@@ -8,7 +8,7 @@
             To = to;
         }
 
-        public int From { get; private set; }
-        public int To { get; private set; }
+        public int From { get; }
+        public int To { get; }
     }
 }

@@ -17,7 +17,7 @@
         private int _k;
         public int K { get { return _k == 0 ? 0 : _vertexIds[_k - 1]; } }
 
-        private bool _isRunning = true;
+        private bool _isRunning;
         public bool IsRunnging { get { return _isRunning; } }
 
         public FloydWarshall(int[,] graph, List<int> vertexIds)
@@ -28,6 +28,7 @@
             _pi = new int[graph.GetLength(0), graph.GetLength(1)];
             _changes = new HashSet<Tuple<int, int>>();
             _k = 0;
+            _isRunning = true;
 
             Initaliaze();
         }

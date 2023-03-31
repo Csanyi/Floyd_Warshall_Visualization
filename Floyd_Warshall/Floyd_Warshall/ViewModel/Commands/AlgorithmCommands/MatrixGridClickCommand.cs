@@ -6,12 +6,12 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
     public class MatrixGridClickCommand : CommandBase
     {
-        private readonly AlgorithmViewModel _vm;
+        private readonly AlgorithmViewModel _viewModel;
         private readonly GraphModel _graphModel;
 
-        public MatrixGridClickCommand(AlgorithmViewModel vm, GraphModel graphModel)
+        public MatrixGridClickCommand(AlgorithmViewModel viewModel, GraphModel graphModel)
         {
-            _vm = vm;
+            _viewModel = viewModel;
             _graphModel = graphModel;
         }
 
@@ -24,14 +24,14 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
             int ind = Convert.ToInt32(values.Item1);
             bool isPrev = Convert.ToBoolean(values.Item2);
 
-            MatrixGridViewModel grid = _vm.Pi[ind];
+            MatrixGridViewModel grid = _viewModel.Pi[ind];
 
             _graphModel.GetRoute(grid.X, grid.Y, isPrev);
         }
 
         public override bool CanExecute(object? parameter)
         {
-            return _vm.IsStopped && !_vm.IsNegCycleFound && _vm.IsInitialized;
+            return _viewModel.IsStopped && !_viewModel.IsNegCycleFound && _viewModel.IsInitialized;
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

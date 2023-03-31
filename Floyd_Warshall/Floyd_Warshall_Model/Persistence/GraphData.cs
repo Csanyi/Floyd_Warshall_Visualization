@@ -4,13 +4,13 @@ namespace Floyd_Warshall_Model.Persistence
 {
     public class GraphData
     {
-        public GraphData(GraphBase graph, IEnumerable<VertexLocation> vertexLocations)
+        public GraphData(GraphBase graph, IEnumerable<VertexData> vertexData)
         {
             Graph = graph;
-            VertexLocations = vertexLocations;
+            VertexDatas = vertexData;
         }
 
         public GraphBase Graph { get; }
-        public IEnumerable<VertexLocation> VertexLocations { get; }
+        public IEnumerable<VertexData> VertexDatas { get; }
     }
 }

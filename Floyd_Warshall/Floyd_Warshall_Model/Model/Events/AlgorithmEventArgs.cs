@@ -9,6 +9,6 @@ namespace Floyd_Warshall_Model.Model.Events
             Data = new AlgorithmData(d, pi);
         }
 
-        public AlgorithmData Data { get; private set; }
+        public AlgorithmData Data { get; }
     }
 }

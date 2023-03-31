@@ -2,7 +2,7 @@
 
 namespace Floyd_Warshall_Model.Persistence
 {
-    public class GrapfFileDataAccess : IGraphDataAccess
+    public class GraphFileDataAccess : IGraphDataAccess
     {
         public async Task<GraphData> LoadAsync(string path)
         {
@@ -23,7 +23,7 @@ namespace Floyd_Warshall_Model.Persistence
                         graph = new UndirectedGraph();
                     }
 
-                    List<VertexLocation> locations = new List<VertexLocation>();
+                    List<VertexData> locations = new List<VertexData>();
 
                     line = await reader.ReadLineAsync();
 
@@ -36,7 +36,7 @@ namespace Floyd_Warshall_Model.Persistence
                             string[] v = value.Split(';');
                             Vertex vertex = new Vertex(int.Parse(v[0]));
                             graph.AddVertex(vertex);
-                            locations.Add(new VertexLocation(vertex.Id, double.Parse(v[1]), double.Parse(v[2])));
+                            locations.Add(new VertexData(vertex.Id, double.Parse(v[1]), double.Parse(v[2])));
                         }
 
                         line = await reader.ReadLineAsync();
@@ -65,7 +65,7 @@ namespace Floyd_Warshall_Model.Persistence
             }
         }
 
-        public async Task SaveAsync(string path, GraphBase graph, IEnumerable<VertexLocation> locations)
+        public async Task SaveAsync(string path, GraphBase graph, IEnumerable<VertexData> locations)
         {
             try
             {

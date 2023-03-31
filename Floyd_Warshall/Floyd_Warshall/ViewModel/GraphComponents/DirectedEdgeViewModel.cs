@@ -127,9 +127,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
-        public double Width { get { return Math.Abs(From.CanvasX - To.CanvasX); } }
+        private double Width { get { return Math.Abs(From.CanvasX - To.CanvasX); } }
 
-        public double Height { get { return Math.Abs(From.CanvasY - To.CanvasY); } }
+        private double Height { get { return Math.Abs(From.CanvasY - To.CanvasY); } }
 
         public double TextX { get { return (X1 + X2) / 2; } }
 

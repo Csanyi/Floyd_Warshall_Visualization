@@ -7,6 +7,6 @@
             Route = route;
         }
 
-        public List<int> Route { get; private set; }
+        public List<int> Route { get; }
     }
 }

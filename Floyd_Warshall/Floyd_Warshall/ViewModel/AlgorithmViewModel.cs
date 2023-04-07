@@ -4,6 +4,7 @@ using Floyd_Warshall_Model.Model.Algorithm;
 using Floyd_Warshall_Model.Model.Events;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Channels;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -90,8 +91,8 @@ namespace Floyd_Warshall.ViewModel
 
         public ObservableCollection<MatrixGridViewModel> D { get; set; }
         public ObservableCollection<MatrixGridViewModel> Pi { get; set; }
-        public ObservableCollection<MatrixGridViewModel> PrewPi { get; set; }
-        public ObservableCollection<MatrixGridViewModel> PrewD { get; set; }
+        public ObservableCollection<MatrixGridViewModel> PrevPi { get; set; }
+        public ObservableCollection<MatrixGridViewModel> PrevD { get; set; }
         public ObservableCollection<int> VertexIds { get; set; }
 
         public ICommand InitCommand { get; private set; }
@@ -131,8 +132,8 @@ namespace Floyd_Warshall.ViewModel
 
             D = new ObservableCollection<MatrixGridViewModel>();
             Pi = new ObservableCollection<MatrixGridViewModel>();
-            PrewD = new ObservableCollection<MatrixGridViewModel>();
-            PrewPi = new ObservableCollection<MatrixGridViewModel>();
+            PrevD = new ObservableCollection<MatrixGridViewModel>();
+            PrevPi = new ObservableCollection<MatrixGridViewModel>();
             VertexIds = new ObservableCollection<int>();
 
             IsStopped = true;
@@ -158,15 +159,17 @@ namespace Floyd_Warshall.ViewModel
                 {
                     int j = i / e.D.GetLength(0);
                     int k = i % e.D.GetLength(1);
-                    PrewD[i].Value = D[i].Value;
-                    PrewPi[i].Value = Pi[i].Value;
+                    PrevD[i].Value = D[i].Value;
+                    PrevPi[i].Value = Pi[i].Value;
                     D[i].Value = e.D[j, k];
                     Pi[i].Value = e.Pi[j, k];
 
-                    bool changed = e.Changes != null && e.Changes.Contains(new Tuple<int, int>(j, k));
-                    PrewD[i].Changed = changed;
-                    PrewPi[i].Changed = changed;
+                    bool changed = e.ChangesD != null && e.ChangesD.Contains(new Tuple<int, int>(j, k));
+                    PrevD[i].Changed = changed;
                     D[i].Changed = changed;
+
+                    changed = e.ChangesPi != null && e.ChangesPi.Contains(new Tuple<int, int>(j, k));
+                    PrevPi[i].Changed = changed;
                     Pi[i].Changed = changed;
                 }
             }
@@ -224,7 +227,7 @@ namespace Floyd_Warshall.ViewModel
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
                     });
 
-                    PrewD.Add(new MatrixGridViewModel()
+                    PrevD.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
                         X = VertexIds[i],
@@ -232,7 +235,7 @@ namespace Floyd_Warshall.ViewModel
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
                     });
 
-                    PrewPi.Add(new MatrixGridViewModel()
+                    PrevPi.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
                         X = VertexIds[i],

@@ -83,9 +83,12 @@ namespace Floyd_Warshall_Model.Model
 
         public void AddVertex()
         {
-            Vertex v = new Vertex(++_vertexId);
-            _graph.AddVertex(v);
-            OnVertexAdded(v.Id);
+            if(_graph.VertexCount < MaxVertexCount)
+            {
+                Vertex v = new Vertex(++_vertexId);
+                _graph.AddVertex(v);
+                OnVertexAdded(v.Id);
+            }
         }
 
         public void RemoveVertex(int id)
@@ -316,7 +319,7 @@ namespace Floyd_Warshall_Model.Model
                 return null;
             }
 
-            return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi, _floydWarshall.Changes);
+            return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi, _floydWarshall.ChangesD, _floydWarshall.ChangesPi);
         }
 
         #endregion

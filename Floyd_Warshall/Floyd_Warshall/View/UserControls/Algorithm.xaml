@@ -44,7 +44,7 @@
 
             <local:Matrix 
                 Grid.Row="0" Grid.Column="0" 
-                MatrixData="{Binding PrewD}" 
+                MatrixData="{Binding PrevD}" 
                 UseConverter="true"
                 Header="D" 
                 K="{Binding PrevK}"
@@ -59,7 +59,7 @@
 
             <local:Matrix 
                 Grid.Row="1" Grid.Column="0" 
-                MatrixData="{Binding PrewPi}" 
+                MatrixData="{Binding PrevPi}" 
                 Header="&#960;" 
                 K="{Binding PrevK}"
                 IsPrev="true"

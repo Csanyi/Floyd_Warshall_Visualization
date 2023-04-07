@@ -28,8 +28,8 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 
             _viewModel.D.Clear();
             _viewModel.Pi.Clear();
-            _viewModel.PrewD.Clear();
-            _viewModel.PrewPi.Clear();
+            _viewModel.PrevD.Clear();
+            _viewModel.PrevPi.Clear();
             _viewModel.VertexIds.Clear();
         }
 

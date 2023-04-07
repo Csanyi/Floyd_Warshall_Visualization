@@ -12,11 +12,12 @@
     <UserControl.Resources>
         <Converters:IntWithInfConverter x:Key="IntWithInfConverter" />
         <Converters:IntBoolTupleConverter x:Key="IntBoolTupleConverter" />
+        <Converters:FontSizeConverter x:Key="FontSizeConverter" />
         <Style x:Key="matrixHeaderStyle" TargetType="Border">
             <Setter Property="BorderThickness" Value="0.5" />
             <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="Width" Value="30" />
-            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="26" />
+            <Setter Property="Height" Value="26" />
             <Setter Property="Background" Value="LightGray" />
         </Style>
         <Style x:Key="centerText" TargetType="TextBlock">
@@ -98,8 +99,9 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button
-                            Width="30" Height="30"
+                            Width="26" Height="26"
                             BorderBrush="Black" BorderThickness="0.5"
+                            FontSize="{Binding Value, Converter={StaticResource FontSizeConverter}}"
                             Command="{Binding ClickCommand}">
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource IntBoolTupleConverter}">

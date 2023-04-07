@@ -111,7 +111,6 @@ namespace Floyd_Warshall
             _view.Close();
         }
 
-
         #endregion
     }
 }

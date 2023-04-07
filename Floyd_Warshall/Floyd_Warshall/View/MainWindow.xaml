@@ -59,7 +59,7 @@
     </Grid>
 
     <Window.InputBindings>
-        <KeyBinding Gesture="Ctrl+L" Command="{Binding LoadGraphCommand}" />
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding LoadGraphCommand}" />
         <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveGraphCommand}" />
     </Window.InputBindings>
 </Window>

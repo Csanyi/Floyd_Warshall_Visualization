@@ -17,8 +17,8 @@ namespace Floyd_Warshall_Test
         [TestMethod]
         public void EmptyGraph()
         {
-            Assert.AreEqual(_graph.GetEdgeCount(), 0);
-            Assert.AreEqual(_graph.GetVertexCount(), 0);
+            Assert.AreEqual(_graph.EdgeCount, 0);
+            Assert.AreEqual(_graph.VertexCount, 0);
         }
 
         [TestMethod]
@@ -26,8 +26,8 @@ namespace Floyd_Warshall_Test
         {
             _graph.AddVertex(new Vertex(1));
 
-            Assert.AreEqual(_graph.GetEdgeCount(), 0);
-            Assert.AreEqual(_graph.GetVertexCount(), 1);
+            Assert.AreEqual(_graph.EdgeCount, 0);
+            Assert.AreEqual(_graph.VertexCount, 1);
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
@@ -49,14 +49,14 @@ namespace Floyd_Warshall_Test
             _graph.AddVertex(v2);
             _graph.AddEdge(v1, v2, 10);
 
-            Assert.AreEqual(_graph.GetEdgeCount(), 1);
-            Assert.AreEqual(_graph.GetVertexCount(), 2);
+            Assert.AreEqual(_graph.EdgeCount, 1);
+            Assert.AreEqual(_graph.VertexCount, 2);
             Assert.AreEqual(_graph.GetWeight(v1,v2), 10);
 
             _graph.AddEdge(v2, v1, 11);
 
-            Assert.AreEqual(_graph.GetEdgeCount(), 2);
-            Assert.AreEqual(_graph.GetVertexCount(), 2);
+            Assert.AreEqual(_graph.EdgeCount, 2);
+            Assert.AreEqual(_graph.VertexCount, 2);
             Assert.AreEqual(_graph.GetWeight(v2, v1), 11);
         }
 
@@ -90,13 +90,13 @@ namespace Floyd_Warshall_Test
             _graph.AddVertex(v2);
             _graph.AddEdge(v1, v2, 10);
 
-            Assert.AreEqual(_graph.GetVertexCount(), 2);
-            Assert.AreEqual(_graph.GetEdgeCount(), 1);
+            Assert.AreEqual(_graph.VertexCount, 2);
+            Assert.AreEqual(_graph.EdgeCount, 1);
 
             _graph.RemoveEdge(v1, v2);
 
-            Assert.AreEqual(_graph.GetVertexCount(), 2);
-            Assert.AreEqual(_graph.GetEdgeCount(), 0);
+            Assert.AreEqual(_graph.VertexCount, 2);
+            Assert.AreEqual(_graph.EdgeCount, 0);
         }
 
         [TestMethod, ExpectedException(typeof(InvalidOperationException))]
@@ -121,8 +121,8 @@ namespace Floyd_Warshall_Test
             _graph.AddEdge(v2, v1, 10);
             _graph.RemoveVertex(v1);
 
-            Assert.AreEqual(_graph.GetVertexCount(), 1);
-            Assert.AreEqual(_graph.GetEdgeCount(), 0);
+            Assert.AreEqual(_graph.VertexCount, 1);
+            Assert.AreEqual(_graph.EdgeCount, 0);
         }
     }
 }

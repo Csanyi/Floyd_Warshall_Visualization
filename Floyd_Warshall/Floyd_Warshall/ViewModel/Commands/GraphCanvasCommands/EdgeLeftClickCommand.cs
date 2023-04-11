@@ -20,6 +20,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
             }
             else
             {
+                _viewModel.SelectedVertex = null;
                 _viewModel.SelectedEdge = e;
             }
         }

@@ -273,6 +273,9 @@ namespace Floyd_Warshall.ViewModel
 
         private void Model_NegativeCycleFound(object? sender, EventArgs e)
         {
+            _timer.Stop();
+            IsStopped = true;
+
             IsNegCycleFound = true;
             OnPropertyChanged(nameof(IsRunning));
         }

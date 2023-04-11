@@ -121,14 +121,6 @@
 
         <StatusBar Grid.Row="2">
             <StatusBarItem 
-                DockPanel.Dock="Left" 
-                Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}"
-                Margin="10,0">
-                <TextBlock Text="{Binding K, StringFormat=k: {0}}" />
-            </StatusBarItem>
-            <StatusBarItem 
-                DockPanel.Dock="Right" 
-                HorizontalAlignment="Right" 
                 Visibility="{Binding IsNegCycleFound, Converter={StaticResource BoolToVisibilityConverter}}"
                 Margin="10,0">
                 <TextBlock 

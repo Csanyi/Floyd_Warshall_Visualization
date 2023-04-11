@@ -85,7 +85,7 @@
                 </Button>
             </StatusBarItem>
             <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="2,0" Visibility="{Binding HasInputError, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Text="Numbers of up to 4-digits are allowed"/>
+                <TextBlock Text="Numbers up to 4-digits are allowed"/>
             </StatusBarItem>
             <Separator Width="1" DockPanel.Dock="Right" HorizontalAlignment="Right"  Visibility="{Binding MaxVertexCountReached, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="2,0" Visibility="{Binding MaxVertexCountReached, Converter={StaticResource BoolToVisibilityConverter}}">

@@ -22,6 +22,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 
             if (_viewModel.SelectedVertex == null)
             {
+                _viewModel.SelectedEdge = null;
                 _viewModel.SelectedVertex = v;
             }
             else if (_viewModel.SelectedVertex == v)

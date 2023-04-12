@@ -128,6 +128,7 @@ namespace Floyd_Warshall.ViewModel
             _graphModel.VertexRemoved += Model_VertexRemoved;
             _graphModel.AlgorithmInitialized += Model_AlgorithmInitialized;
             _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
+            _graphModel.AlgorithmSteppedBack += Model_AlgorithmSteppedBack;
             _graphModel.AlgorithmEnded += Model_AlgorithmEnded;
             _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
             _graphModel.GraphLoaded += Model_GraphLoaded;
@@ -166,7 +167,7 @@ namespace Floyd_Warshall.ViewModel
                     D[i].Value = e.D[j, k];
                     Pi[i].Value = e.Pi[j, k];
 
-                    ChangePos change = new ChangePos(j,k);
+                    Change change = new Change(j,k);
                     bool changed = e.ChangesD.Contains(change);
                     PrevD[i].Changed = changed;
                     D[i].Changed = changed;
@@ -260,7 +261,7 @@ namespace Floyd_Warshall.ViewModel
             IsStopped = true;
         }
 
-        private void Model_AlgorithmStepped(object? sender, EventArgs e)
+        private void Model_AlgorithmStepped(object? sender, AlgorithmSteppedEventArgs e)
         {
             OnPropertyChanged(nameof(K));
             OnPropertyChanged(nameof(PrevK));
@@ -268,11 +269,85 @@ namespace Floyd_Warshall.ViewModel
             OnPropertyChanged(nameof(HasPreviousStep));
 
             SteppedOnce = true;
+
+            if (TimerInterval > CriticalTime || IsStopped)
+            {
+                foreach(ChangeValue c in e.ChangePrevD)
+                {
+                    int ind = c.I * Size + c.J;
+                    D[ind].Changed = false;
+                    PrevD[ind].Changed = false;
+                    PrevD[ind].Value = c.Value;
+                }
+
+                foreach (ChangeValue c in e.ChangeD)
+                {
+                    int ind = c.I * Size + c.J;
+                    D[ind].Changed = true;
+                    PrevD[ind].Changed = true;
+                    D[ind].Value = c.Value;
+                }
+
+                foreach (ChangeValue c in e.ChangePrevPi)
+                {
+                    int ind = c.I * Size + c.J;
+                    Pi[ind].Changed = false;
+                    PrevPi[ind].Changed = false;
+                    PrevPi[ind].Value = c.Value;
+                }
+
+                foreach (ChangeValue c in e.ChangePi)
+                {
+                    int ind = c.I * Size + c.J;
+                    Pi[ind].Changed = true;
+                    PrevPi[ind].Changed = true;
+                    Pi[ind].Value = c.Value;
+                }
+            }
+        }
+
+        private void Model_AlgorithmSteppedBack(object? sender, AlgorithmSteppedEventArgs e)
+        {
+            OnPropertyChanged(nameof(K));
+            OnPropertyChanged(nameof(PrevK));
+            OnPropertyChanged(nameof(HasNextStep));
+            OnPropertyChanged(nameof(HasPreviousStep));
+
             IsNegCycleFound = false;
 
             if (TimerInterval > CriticalTime || IsStopped)
             {
-                UpdateData();
+                foreach (ChangeValue c in e.ChangeD)
+                {
+                    int ind = c.I * Size + c.J;
+                    D[ind].Changed = false;
+                    PrevD[ind].Changed = false;
+                    D[ind].Value = c.Value;
+                }
+
+                foreach (ChangeValue c in e.ChangePrevD)
+                {
+                    int ind = c.I * Size + c.J;
+                    D[ind].Changed = true;
+                    PrevD[ind].Changed = true;
+                    PrevD[ind].Value = c.Value;
+                }
+
+                foreach (ChangeValue c in e.ChangePi)
+                {
+                    int ind = c.I * Size + c.J;
+                    Pi[ind].Changed = false;
+                    PrevPi[ind].Changed = false;
+                    Pi[ind].Value = c.Value;
+                }
+
+                foreach (ChangeValue c in e.ChangePrevPi)
+                {
+                    int ind = c.I * Size + c.J;
+                    Pi[ind].Changed = true;
+                    PrevPi[ind].Changed = true;
+                    PrevPi[ind].Value = c.Value;
+                }
             }
         }
 

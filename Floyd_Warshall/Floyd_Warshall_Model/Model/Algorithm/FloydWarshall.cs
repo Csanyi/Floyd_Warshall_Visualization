@@ -11,11 +11,11 @@
         private readonly int[,] _pi;
         public int[,] Pi { get { return _pi; } }
 
-        private readonly ICollection<Change> _changesD;
-        public ICollection<Change> ChangesD { get { return _changesD; } }
+        private readonly ICollection<ChangeOldNew> _changesD;
+        public ICollection<ChangeOldNew> ChangesD { get { return _changesD; } }
 
-        private readonly ICollection<Change> _changesPi;
-        public ICollection<Change> ChangesPi { get { return _changesPi; } }
+        private readonly ICollection<ChangeOldNew> _changesPi;
+        public ICollection<ChangeOldNew> ChangesPi { get { return _changesPi; } }
 
         private int _k;
         public int K { get { return _k == 0 ? 0 : _vertexIds[_k - 1]; } }
@@ -29,8 +29,8 @@
             _vertexIds = vertexIds;
             _d = new int[graph.GetLength(0), graph.GetLength(1)];
             _pi = new int[graph.GetLength(0), graph.GetLength(1)];
-            _changesD = new HashSet<Change>();
-            _changesPi = new HashSet<Change>();
+            _changesD = new HashSet<ChangeOldNew>();
+            _changesPi = new HashSet<ChangeOldNew>();
             _k = 0;
             _isRunning = true;
 
@@ -74,13 +74,13 @@
                 {
                     if (_d[i, _k] != int.MaxValue && _d[_k, j] != int.MaxValue && _d[i, j] > _d[i, _k] + _d[_k, j])
                     {
-                        _changesD.Add(new Change(i, j, _d[i, j], _d[i, _k] + _d[_k, j]));
+                        _changesD.Add(new ChangeOldNew(i, j, _d[i, j], _d[i, _k] + _d[_k, j]));
                         _d[i, j] = _d[i, _k] + _d[_k, j];
                        
 
                         if (_pi[i, j] != _pi[_k, j])
                         {
-                            _changesPi.Add(new Change(i, j, _pi[i, j], _pi[_k, j]));
+                            _changesPi.Add(new ChangeOldNew(i, j, _pi[i, j], _pi[_k, j]));
                             _pi[i, j] = _pi[_k, j];
                         }
 

@@ -3,7 +3,7 @@
     public class AlgorithmData
     {
         public AlgorithmData(int[,] d, int[,] pi, int[,] prevD, int[,] prevPi,
-            ICollection<ChangePos> changesD, ICollection<ChangePos> changesPi)
+            ICollection<Change> changesD, ICollection<Change> changesPi)
         {
             D = d;
             Pi = pi;
@@ -17,7 +17,7 @@
         public int[,] Pi { get; }
         public int[,] PrevD { get; }
         public int[,] PrevPi { get; }
-        public ICollection<ChangePos> ChangesD { get; }
-        public ICollection<ChangePos> ChangesPi { get; }
+        public ICollection<Change> ChangesD { get; }
+        public ICollection<Change> ChangesPi { get; }
     }
 }

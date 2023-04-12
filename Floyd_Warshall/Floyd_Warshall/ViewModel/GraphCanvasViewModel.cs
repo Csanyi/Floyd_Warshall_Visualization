@@ -130,6 +130,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel.AlgorithmInitialized += Model_AlgorithmInitialized;
             _graphModel.AlgorithmCancelled += Model_AlgorithmCancelled;
             _graphModel.AlgorithmStepped += Model_AlgorithmStepped;
+            _graphModel.AlgorithmSteppedBack += Model_AlgorithmStepped;
             _graphModel.NegativeCycleFound += Model_NegativeCycleFound;
             _graphModel.VertexAdded += Model_VertexAdded;
             _graphModel.DirectedEdgeAdded += Model_DirectedEdgeAdded;

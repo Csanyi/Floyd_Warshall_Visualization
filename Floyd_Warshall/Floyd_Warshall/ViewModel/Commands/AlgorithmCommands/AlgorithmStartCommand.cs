@@ -21,13 +21,13 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 
         public override bool CanExecute(object? parameter)
         {
-            return _viewModel.IsStopped && _viewModel.IsRunning && _viewModel.IsInitialized;
+            return _viewModel.IsStopped && _viewModel.HasNextStep && _viewModel.IsInitialized;
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(AlgorithmViewModel.IsInitialized) || e.PropertyName == nameof(AlgorithmViewModel.IsStopped)
-                 || e.PropertyName == nameof(AlgorithmViewModel.IsRunning))
+                 || e.PropertyName == nameof(AlgorithmViewModel.HasNextStep))
             {
                 OnCanExecuteChanged();
             }

@@ -2,17 +2,22 @@
 {
     public class AlgorithmData
     {
-        public AlgorithmData(int[,] d, int[,] pi, ICollection<Tuple<int, int>>? changesD = null, ICollection<Tuple<int, int>>? changesPi = null)
+        public AlgorithmData(int[,] d, int[,] pi, int[,] prevD, int[,] prevPi,
+            ICollection<ChangePos> changesD, ICollection<ChangePos> changesPi)
         {
             D = d;
             Pi = pi;
+            PrevD = prevD;
+            PrevPi = prevPi;
             ChangesD = changesD;
             ChangesPi = changesPi;
         }
 
         public int[,] D { get; }
         public int[,] Pi { get; }
-        public ICollection<Tuple<int, int>>? ChangesD { get; }
-        public ICollection<Tuple<int, int>>? ChangesPi { get; }
+        public int[,] PrevD { get; }
+        public int[,] PrevPi { get; }
+        public ICollection<ChangePos> ChangesD { get; }
+        public ICollection<ChangePos> ChangesPi { get; }
     }
 }

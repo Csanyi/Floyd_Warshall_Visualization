@@ -3,12 +3,12 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
-    public class AlgorithmStepCommand : CommandBase
+    public class AlgorithmStepBackCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;
         private readonly GraphModel _graphModel;
 
-        public AlgorithmStepCommand(AlgorithmViewModel viewModel, GraphModel graphModel)
+        public AlgorithmStepBackCommand(AlgorithmViewModel viewModel, GraphModel graphModel)
         {
             _viewModel = viewModel;
             _graphModel = graphModel;
@@ -18,18 +18,18 @@ namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 
         public override void Execute(object? parameter)
         {
-            _graphModel.StepAlgorithm();
+            _graphModel.StepAlgorithmBack();
         }
 
         public override bool CanExecute(object? parameter)
         {
-            return  _graphModel.HasNextStep && _viewModel.IsStopped && _viewModel.IsInitialized;
+            return _graphModel.HasPreviousStep && _viewModel.IsStopped && _viewModel.IsInitialized;
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(AlgorithmViewModel.IsInitialized) || e.PropertyName == nameof(AlgorithmViewModel.IsStopped)
-                 || e.PropertyName == nameof(AlgorithmViewModel.HasNextStep))
+                 || e.PropertyName == nameof(AlgorithmViewModel.HasPreviousStep))
             {
                 OnCanExecuteChanged();
             }

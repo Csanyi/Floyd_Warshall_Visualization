@@ -12,10 +12,20 @@ namespace Floyd_Warshall_Model.Model
         private readonly IGraphDataAccess _dataAccess;
         private GraphBase _graph;
         private FloydWarshall? _floydWarshall;
-        private int? _prevK;
-        private int[,]? _prevPi;
         private int _vertexId;
         private int _edgeId;
+
+        private int _algorithmPos;
+        private int? _k;
+        private int? _prevK;
+        private int[,]? _d;
+        private int[,]? _prevD;
+        private int[,]? _pi;
+        private int[,]? _prevPi;
+        private int? _negCycleInd;
+        private List<int>? _negCycle;
+        private readonly List<ICollection<Change>> _changesD;
+        private readonly List<ICollection<Change>> _changesPi;
 
         public const int MaxVertexCount = 14;
 
@@ -25,13 +35,15 @@ namespace Floyd_Warshall_Model.Model
 
         public bool IsDirected { get { return _graph.IsDirected; } }
 
-        public bool IsAlgorithmRunning { get { return _floydWarshall != null && _floydWarshall.IsRunnging; } }
-
         public bool IsAlgorthmInitialized { get { return _floydWarshall != null; } }
 
-        public int? K { get { return _floydWarshall?.K; } }
+        public int? K { get { return _k; } }
 
         public int? PrevK { get { return _prevK; } }
+
+        public bool HasNextStep { get { return _floydWarshall != null && _graph.VertexCount > _algorithmPos && _algorithmPos != _negCycleInd; } }
+
+        public bool HasPreviousStep { get { return _floydWarshall != null && _algorithmPos > 1; } }
 
         #endregion
 
@@ -44,7 +56,7 @@ namespace Floyd_Warshall_Model.Model
         public event EventHandler<EdgeAddedEventArgs>? UndirectedEdgeAdded;
         public event EventHandler<EdgeUpdatedEventArgs>? EdgeUpdated;
         public event EventHandler? VertexRemoved;
-        public event EventHandler<AlgorithmEventArgs>? AlgorithmInitialized;
+        public event EventHandler<AlgorithmInitEventArgs>? AlgorithmInitialized;
         public event EventHandler? AlgorithmStepped;
         public event EventHandler? AlgorithmEnded;
         public event EventHandler? AlgorithmCancelled;
@@ -59,6 +71,9 @@ namespace Floyd_Warshall_Model.Model
         {
             _graph = new UndirectedGraph();
             _dataAccess = dataAccess;
+
+            _changesD = new List<ICollection<Change>>();
+            _changesPi = new List<ICollection<Change>>();
         }
 
         #endregion
@@ -255,40 +270,120 @@ namespace Floyd_Warshall_Model.Model
         public void InitAlgorithm()
         {
             _floydWarshall = new FloydWarshall(_graph.ToAdjacencyMatrix(), _graph.VertexIds);
+            _algorithmPos = 0;
+            _k = 0;
+            _d = _floydWarshall.D.Clone() as int[,];
+            _pi = _floydWarshall.Pi.Clone() as int[,];
+            _prevD = _floydWarshall.D.Clone() as int[,];
+            _prevPi = _floydWarshall.Pi.Clone() as int[,];
             OnAlgorithmInitialized(_floydWarshall.D, _floydWarshall.Pi);
         }
 
         public void StepAlgorithm()
         {
-            if (_floydWarshall == null) { return; }
+            if (_floydWarshall == null || _d == null || _pi == null || _prevD == null || _prevPi == null) { return; }
+            if(!_floydWarshall.IsRunnging && _algorithmPos == _changesD.Count) { return; }
 
-            _prevK = _floydWarshall.K;
-            _prevPi = _floydWarshall.Pi.Clone() as int[,];
+            bool end = false;
+            bool neg = false;
+            ++_algorithmPos;
 
-            int res = _floydWarshall.NextStep();
+            if (_algorithmPos - 1 < _changesD.Count && _algorithmPos >= 2)
+            {
+                _prevK = _k;
+                _k = _graph.VertexIds[_algorithmPos-1];
+
+                UpdateMatrixNew(_d, _changesD[_algorithmPos - 1]);
+                UpdateMatrixNew(_pi, _changesPi[_algorithmPos - 1]);
+                UpdateMatrixNew(_prevD, _changesD[_algorithmPos - 2]);
+                UpdateMatrixNew(_prevPi, _changesPi[_algorithmPos - 2]);
+
+                if (_negCycleInd != null && _negCycle != null && _algorithmPos == _negCycleInd)
+                {
+                    neg = true;
+                }
+                else if (!HasNextStep)
+                {
+                    end = true;
+                } 
+             
+            }
+            else
+            {
+                _prevK = _floydWarshall.K;
+                UpdateMatrixNew(_prevD, _floydWarshall.ChangesD);
+                UpdateMatrixNew(_prevPi, _floydWarshall.ChangesPi);
+
+                int res = _floydWarshall.NextStep();
+
+                UpdateMatrixNew(_d, _floydWarshall.ChangesD);
+                UpdateMatrixNew(_pi, _floydWarshall.ChangesPi);
+                _k = _floydWarshall.K;
+
+                _changesD.Add(_floydWarshall.ChangesD.ToList());
+                _changesPi.Add(_floydWarshall.ChangesPi.ToList());
+
+                if (res == 0)
+                {
+                    end = true;
+                }
+                else if (res > 0)
+                {
+                    List<int>? route = CreateRoute(res, res, _floydWarshall.Pi);
+
+                    if (route != null)
+                    {
+                        _negCycleInd = _algorithmPos;
+                        _negCycle = route;
+                        neg = true;
+                    }
+                }
+            }
 
             OnAlgorithmStepped();
 
-            if (res == 0)
+            if (neg && _negCycle != null)
             {
-                OnAlhorithmEnded();
+                OnNegativeCycleFound(_negCycle);
             }
-            else if (res > 0)
+            else if (end)
             {
-                List<int>? route = CreateRoute(res, res, _floydWarshall.Pi);
+                OnAlgorithmEnded();
+            }
 
-                if (route != null)
-                {
-                    OnNegativeCycleFound(route);
-                }
-            }
+        }
+
+        public void StepAlgorithmBack()
+        {
+            if (_floydWarshall == null || _algorithmPos <= 1 || _d == null || _pi == null || _prevD == null || _prevPi == null) { return; }
+            
+            --_algorithmPos;
+
+            _k = _prevK;
+            _prevK = _algorithmPos == 1 ? 0 : _graph.VertexIds[_algorithmPos - 2];
+
+            UpdateMatrixOld(_d, _changesD[_algorithmPos]);
+            UpdateMatrixOld(_pi, _changesPi[_algorithmPos]);
+            UpdateMatrixOld(_prevD, _changesD[_algorithmPos - 1]);
+            UpdateMatrixOld(_prevPi, _changesPi[_algorithmPos - 1]);
+
+            OnAlgorithmStepped();
         }
 
         public void CancelAlgorithm()
         {
             _floydWarshall = null;
+            _algorithmPos = 0;
+            _negCycle = null;
+            _negCycleInd = null;
+            _k = null;
             _prevK = null;
+            _d = null;
+            _pi = null;
+            _prevD = null;
             _prevPi = null;
+            _changesD.Clear();
+            _changesPi.Clear();
             OnAlgorithmCancelled();
         }
 
@@ -296,15 +391,14 @@ namespace Floyd_Warshall_Model.Model
         {
             List<int>? route = null;
 
-            if (!isPrev && _floydWarshall != null)
+            if (!isPrev && _pi != null)
             {
-                route = CreateRoute(from, to, _floydWarshall.Pi);
+                route = CreateRoute(from, to, _pi);
             }
             else if (isPrev && _prevPi != null)
             {
                 route = CreateRoute(from, to, _prevPi);
             }
-
 
             if (route != null)
             {
@@ -314,17 +408,35 @@ namespace Floyd_Warshall_Model.Model
 
         public AlgorithmData? GetAlgorithmData()
         {
-            if (_floydWarshall == null)
+            if (_floydWarshall == null ||_d == null || _pi == null || _prevD == null ||_prevPi == null)
             {
                 return null;
             }
 
-            return new AlgorithmData(_floydWarshall.D, _floydWarshall.Pi, _floydWarshall.ChangesD, _floydWarshall.ChangesPi);
+            return new AlgorithmData(_d, _pi, _prevD, _prevPi,
+                _changesD[_algorithmPos-1].Select(c => c.Pos).ToHashSet(),
+                _changesPi[_algorithmPos-1].Select(c => c.Pos).ToHashSet());
         }
 
         #endregion
 
         #region Private methods
+
+        private void UpdateMatrixNew(int[,] matrix, ICollection<Change> changes)
+        {
+            foreach (Change c in changes)
+            {
+                matrix[c.Pos.I, c.Pos.J] = c.NewValue;
+            }
+        }
+
+        private void UpdateMatrixOld(int[,] matrix, ICollection<Change> changes)
+        {
+            foreach (Change c in changes)
+            {
+                matrix[c.Pos.I, c.Pos.J] = c.OldValue;
+            }
+        }
 
         private List<int>? CreateRoute(int from, int to, int[,] pi)
         {
@@ -370,11 +482,11 @@ namespace Floyd_Warshall_Model.Model
 
         private void OnVertexRemoved() => VertexRemoved?.Invoke(this, EventArgs.Empty);
 
-        private void OnAlgorithmInitialized(int[,] d, int[,] pi) => AlgorithmInitialized?.Invoke(this, new AlgorithmEventArgs(d, pi));
+        private void OnAlgorithmInitialized(int[,] d, int[,] pi) => AlgorithmInitialized?.Invoke(this, new AlgorithmInitEventArgs(d, pi));
 
         private void OnAlgorithmStepped() => AlgorithmStepped?.Invoke(this, EventArgs.Empty);
 
-        private void OnAlhorithmEnded() => AlgorithmEnded?.Invoke(this, EventArgs.Empty);
+        private void OnAlgorithmEnded() => AlgorithmEnded?.Invoke(this, EventArgs.Empty);
 
         private void OnAlgorithmCancelled() => AlgorithmCancelled?.Invoke(this, EventArgs.Empty);
 

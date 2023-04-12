@@ -4,7 +4,6 @@ using Floyd_Warshall_Model.Model.Algorithm;
 using Floyd_Warshall_Model.Model.Events;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Channels;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -77,7 +76,9 @@ namespace Floyd_Warshall.ViewModel
 
         public bool IsInitialized { get { return _graphModel.IsAlgorthmInitialized; } }
 
-        public bool IsRunning { get { return _graphModel.IsAlgorithmRunning; } }
+        public bool HasNextStep { get { return _graphModel.HasNextStep; } }
+
+        public bool HasPreviousStep { get { return _graphModel.HasPreviousStep; } }
 
         public bool IsStopped
         {
@@ -100,6 +101,7 @@ namespace Floyd_Warshall.ViewModel
         public ICommand PauseCommand { get; private set; }
         public ICommand StartCommand { get; private set; }
         public ICommand StepCommand { get; private set; }
+        public ICommand StepBackCommand { get; private set; }
 
         #endregion
 
@@ -116,6 +118,7 @@ namespace Floyd_Warshall.ViewModel
             StartCommand = new AlgorithmStartCommand(this);
 
             StepCommand = new AlgorithmStepCommand(this, graphModel);
+            StepBackCommand = new AlgorithmStepBackCommand(this, graphModel);
 
             _timer = new DispatcherTimer();
             TimerInterval = 1000;
@@ -154,21 +157,21 @@ namespace Floyd_Warshall.ViewModel
 
             if (e != null)
             {
-
                 for (int i = 0; i < D.Count; ++i)
                 {
                     int j = i / e.D.GetLength(0);
                     int k = i % e.D.GetLength(1);
-                    PrevD[i].Value = D[i].Value;
-                    PrevPi[i].Value = Pi[i].Value;
+                    PrevD[i].Value = e.PrevD[j,k];
+                    PrevPi[i].Value = e.PrevPi[j,k];
                     D[i].Value = e.D[j, k];
                     Pi[i].Value = e.Pi[j, k];
 
-                    bool changed = e.ChangesD != null && e.ChangesD.Contains(new Tuple<int, int>(j, k));
+                    ChangePos change = new ChangePos(j,k);
+                    bool changed = e.ChangesD.Contains(change);
                     PrevD[i].Changed = changed;
                     D[i].Changed = changed;
 
-                    changed = e.ChangesPi != null && e.ChangesPi.Contains(new Tuple<int, int>(j, k));
+                    changed = e.ChangesPi.Contains(change);
                     PrevPi[i].Changed = changed;
                     Pi[i].Changed = changed;
                 }
@@ -198,22 +201,22 @@ namespace Floyd_Warshall.ViewModel
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
 
-        private void Model_AlgorithmInitialized(object? sender, AlgorithmEventArgs e)
+        private void Model_AlgorithmInitialized(object? sender, AlgorithmInitEventArgs e)
         {
             OnPropertyChanged(nameof(K));
             OnPropertyChanged(nameof(PrevK));
             SteppedOnce = false;
 
-            for (int i = 0; i < e.Data.D.GetLength(0); ++i)
+            for (int i = 0; i < e.D.GetLength(0); ++i)
             {
-                for(int j = 0; j < e.Data.D.GetLength(1); ++j)
+                for(int j = 0; j < e.D.GetLength(1); ++j)
                 {
-                    int ind = i * e.Data.D.GetLength(0) + j;
+                    int ind = i * e.D.GetLength(0) + j;
 
                     D.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
-                        Value = e.Data.D[i, j],
+                        Value = e.D[i, j],
                         X = VertexIds[i],
                         Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
@@ -221,7 +224,7 @@ namespace Floyd_Warshall.ViewModel
                     Pi.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
-                        Value = e.Data.Pi[i, j],
+                        Value = e.Pi[i, j],
                         X = VertexIds[i],
                         Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
@@ -255,15 +258,17 @@ namespace Floyd_Warshall.ViewModel
 
             _timer.Stop();
             IsStopped = true;
-
-            OnPropertyChanged(nameof(IsRunning));
         }
 
         private void Model_AlgorithmStepped(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(K));
             OnPropertyChanged(nameof(PrevK));
+            OnPropertyChanged(nameof(HasNextStep));
+            OnPropertyChanged(nameof(HasPreviousStep));
+
             SteppedOnce = true;
+            IsNegCycleFound = false;
 
             if (TimerInterval > CriticalTime || IsStopped)
             {
@@ -273,11 +278,15 @@ namespace Floyd_Warshall.ViewModel
 
         private void Model_NegativeCycleFound(object? sender, EventArgs e)
         {
+            if (TimerInterval <= CriticalTime && !IsStopped)
+            {
+                UpdateData();
+            }
+
             _timer.Stop();
             IsStopped = true;
 
             IsNegCycleFound = true;
-            OnPropertyChanged(nameof(IsRunning));
         }
 
         private void Model_GraphLoaded(object? sender, EventArgs e)

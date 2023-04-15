@@ -74,14 +74,13 @@
         public void AddVertex(Vertex v)
         {
             Check(() => !_adjacenylist.ContainsKey(v));
+            Check(() => !_adjacenylist.Keys.Any(x => x.Id == v.Id));
 
             _adjacenylist.Add(v, new List<Edge>());
         }
 
         public void RemoveVertex(Vertex v)
         {
-            Check(() => _adjacenylist.ContainsKey(v));
-
             foreach (var adjacent in _adjacenylist)
             {
                 Edge? e = GetEdge(adjacent.Key, v);
@@ -107,12 +106,14 @@
             return _adjacenylist.Keys.FirstOrDefault(v => v.Id == id);
         }
 
-        public short GetWeight(Vertex from, Vertex to)
+        public short? GetWeight(Vertex from, Vertex to)
         {
             Check(() => _adjacenylist.ContainsKey(from));
             Check(() => _adjacenylist.ContainsKey(to));
 
-            return _adjacenylist[from].First(e => e.To == to).Weight;
+            Edge? e = GetEdge(from, to);
+
+            return e?.Weight;
         }
 
         public int[,] ToAdjacencyMatrix()

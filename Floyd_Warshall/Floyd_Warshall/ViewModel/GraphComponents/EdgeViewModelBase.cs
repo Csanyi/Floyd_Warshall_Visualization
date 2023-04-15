@@ -29,7 +29,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         public short Weight
         {
-            get { return _graphModel.GetWeight(From.Id, To.Id); }
+            get { return _graphModel.GetWeight(From.Id, To.Id) ?? 0; }
         }
 
         public override double CanvasX { get { return Math.Min(From.CanvasX, To.CanvasX) + VertexViewModel.Size / 2; } }

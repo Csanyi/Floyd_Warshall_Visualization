@@ -37,7 +37,10 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
                 }
                 else
                 {
-                    _graphModel.IncrementWeight(_viewModel.SelectedVertex.Id, v.Id);
+                    try
+                    {
+                        _graphModel.IncrementWeight(_viewModel.SelectedVertex.Id, v.Id);
+                    } catch (OverflowException) { }
                 }
 
                 _viewModel.SelectedVertex = null;

@@ -234,6 +234,7 @@ namespace Floyd_Warshall.ViewModel
                     PrevD.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
+                        Value = e.D[i, j],
                         X = VertexIds[i],
                         Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),
@@ -242,6 +243,7 @@ namespace Floyd_Warshall.ViewModel
                     PrevPi.Add(new MatrixGridViewModel()
                     {
                         Index = ind,
+                        Value = e.Pi[i, j],
                         X = VertexIds[i],
                         Y = VertexIds[j],
                         ClickCommand = new MatrixGridClickCommand(this, _graphModel),

@@ -13,6 +13,11 @@
             Check(() => to != from);
             Check(() => GetEdge(from, to) == null);
 
+            if (weight < MinValue || weight > MaxValue)
+            {
+                throw new OverflowException();
+            }
+
             _adjacenylist[from].Add(new Edge(from, to, weight));
             _adjacenylist[to].Add(new Edge(to, from, weight));
         }

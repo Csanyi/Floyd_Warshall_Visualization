@@ -123,7 +123,7 @@ namespace Floyd_Warshall_Model.Model
             Vertex? from = _graph.GetVertexById(fromId);
             Vertex? to = _graph.GetVertexById(toId);
 
-            if (from != null && to != null)
+            if (from != null && to != null && from != to && _graph.GetEdge(from, to) == null)
             {
                 _graph.AddEdge(from, to, weight);
                 if (_graph.IsDirected)
@@ -161,7 +161,7 @@ namespace Floyd_Warshall_Model.Model
             return _graph.GetEdge(from, to) != null; ;
         }
 
-        public short GetWeight(int fromId, int toId)
+        public short? GetWeight(int fromId, int toId)
         {
             Vertex? from = _graph.GetVertexById(fromId);
             Vertex? to = _graph.GetVertexById(toId);
@@ -170,8 +170,10 @@ namespace Floyd_Warshall_Model.Model
             {
                 return _graph.GetWeight(from, to);
             }
-
-            return 0;
+            else
+            {
+                return null;
+            }
         }
 
         public void UpdateWeight(int fromId, int toId, short weight)
@@ -203,9 +205,9 @@ namespace Floyd_Warshall_Model.Model
             return _graph.VertexCount;
         }
 
-        public List<Edge> GetEdges()
+        public int GetEdgeCount()
         {
-            return _graph.Edges;
+            return _graph.EdgeCount;
         }
 
         public List<int> GetVertexIds()
@@ -412,14 +414,23 @@ namespace Floyd_Warshall_Model.Model
 
         public AlgorithmData? GetAlgorithmData()
         {
-            if (_floydWarshall == null ||_d == null || _pi == null || _prevD == null ||_prevPi == null)
+            if (_floydWarshall == null ||_d == null || _pi == null || _prevD == null || _prevPi == null)
             {
                 return null;
             }
 
-            return new AlgorithmData(_d, _pi, _prevD, _prevPi,
-                _changesD[_algorithmPos-1].Select(c => c as Change).ToHashSet(),
-                _changesPi[_algorithmPos-1].Select(c => c as Change).ToHashSet());
+            if(_algorithmPos < 1)
+            {
+                return new AlgorithmData(_d, _pi, _prevD, _prevPi,
+                        new HashSet<Change>(),
+                        new HashSet<Change>());
+            }
+            else
+            {
+                return new AlgorithmData(_d, _pi, _prevD, _prevPi,
+                        _changesD[_algorithmPos - 1].Select(c => c as Change).ToHashSet(),
+                        _changesPi[_algorithmPos - 1].Select(c => c as Change).ToHashSet());
+            }
         }
 
         #endregion
@@ -459,6 +470,8 @@ namespace Floyd_Warshall_Model.Model
 
             int fromInd = vertexIds.FindIndex(x => x == from);
             int toInd = vertexIds.FindIndex(x => x == to);
+
+            if(fromInd == -1 || toInd == -1) { return null; }
 
             int next = pi[fromInd, toInd];
 

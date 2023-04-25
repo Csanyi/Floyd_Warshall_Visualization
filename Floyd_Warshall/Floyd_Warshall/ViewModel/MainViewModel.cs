@@ -43,7 +43,7 @@ namespace Floyd_Warshall.ViewModel
 
         #region Events
 
-        public event EventHandler<bool>? NewGraph;
+        public event EventHandler<NewGraphEventArgs>? NewGraph;
         public event EventHandler? LoadGraph;
         public event EventHandler<GraphLocationEventArgs>? SaveGraph;
         public event EventHandler? Exit;
@@ -86,7 +86,7 @@ namespace Floyd_Warshall.ViewModel
 
         #region Private event methods
 
-        private void OnNewGraph(bool isDirected) => NewGraph?.Invoke(this, isDirected);
+        private void OnNewGraph(bool isDirected) => NewGraph?.Invoke(this, new NewGraphEventArgs(isDirected));
 
         private void OnLoad() => LoadGraph?.Invoke(this, EventArgs.Empty);
 

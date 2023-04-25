@@ -52,9 +52,9 @@ namespace Floyd_Warshall
 
         #region ViewModel event handlers
 
-        private void ViewModel_NewGraph(object? sender, bool e)
+        private void ViewModel_NewGraph(object? sender, NewGraphEventArgs e)
         {
-            _graphModel.NewGraph(e);
+            _graphModel.NewGraph(e.IsDirected);
         }
      
         private async void ViewModel_LoadGraph(object? sender, EventArgs e)

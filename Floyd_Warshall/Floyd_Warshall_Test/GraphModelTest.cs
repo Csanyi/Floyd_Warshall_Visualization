@@ -17,6 +17,8 @@ namespace Floyd_Warshall_Test
         private Mock<IGraphDataAccess> _mock = null!;
         private GraphBase _mockedGraph = null!;
 
+        private List<int>? route;
+
         #endregion
 
         #region Initialize
@@ -24,6 +26,7 @@ namespace Floyd_Warshall_Test
         [TestInitialize]
         public void Initialize()
         {
+            route = null;
             _mockedGraph = new UndirectedGraph();
             List<Vertex> vertices = new List<Vertex>();
 
@@ -629,6 +632,8 @@ namespace Floyd_Warshall_Test
                     Assert.AreEqual(_mockedGraph.GetWeight(from, to), _model.GetWeight(from.Id, to.Id));
                 }
             }
+
+            _mock.Verify(dataAccess => dataAccess.LoadAsync(String.Empty), Times.Once());
         }
 
         #endregion
@@ -692,7 +697,7 @@ namespace Floyd_Warshall_Test
         }
 
         [TestMethod]
-        public void StepUnInitializedAlgoirthm()
+        public void StepUninitializedAlgoirthm()
         {
             FillGraph();
 
@@ -795,7 +800,41 @@ namespace Floyd_Warshall_Test
             List<int> ids = _model.GetVertexIds();
 
             _model.GetRoute(ids[0], ids[2], false);
+
+            Assert.IsNotNull(route);
+
+            List<int> expectedRoute = new List<int> { ids[0], ids[1], ids[2] };
+
+            Assert.AreEqual(expectedRoute.Count, route.Count);
+
+            for(int i = 0; i < expectedRoute.Count; ++i)
+            {
+                Assert.AreEqual(expectedRoute[i], route[i]);
+            }
+        }
+
+        [TestMethod]
+        public void GetRouteUninitilaizedAlgorithm()
+        {
+            FillGraph();
+
+            List<int> ids = _model.GetVertexIds();
+
+            _model.GetRoute(ids[0], ids[1], false);
+
+            Assert.IsNull(route);
+        }
+
+        [TestMethod]
+        public void GetRouteNonExistVertex()
+        {
+            FillGraph();
+
+            List<int> ids = _model.GetVertexIds();
+
             _model.GetRoute(ids[0], ids.Last() + 1, false);
+
+            Assert.IsNull(route);
         }
 
         #endregion
@@ -904,16 +943,7 @@ namespace Floyd_Warshall_Test
 
         private void Model_RouteCreated(object? sender, RouteEventArgs e)
         {
-            List<int> ids = _model.GetVertexIds();
-
-            List<int> expectedResult = new List<int> { ids[0], ids[1], ids[2] };
-
-            Assert.AreEqual(expectedResult.Count, e.Route.Count);
-
-            for(int i = 0; i < expectedResult.Count; ++i)
-            {
-                Assert.AreEqual(expectedResult[i], e.Route[i]);
-            }
+            route = e.Route;
         }
 
         private void Model_AlgorithmEnded(object? sender, EventArgs e)

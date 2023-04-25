@@ -49,7 +49,7 @@ namespace Floyd_Warshall_Model.Model
 
         #region Events
 
-        public event EventHandler? NewGraphCreated;
+        public event EventHandler<NewGraphEventArgs>? NewGraphCreated;
         public event EventHandler<GraphLocationEventArgs>? GraphLoaded;
         public event EventHandler<VertexAddedEventArgs>? VertexAdded;
         public event EventHandler<EdgeAddedEventArgs>? DirectedEdgeAdded;
@@ -94,7 +94,7 @@ namespace Floyd_Warshall_Model.Model
 
             _vertexId = 0;
             _edgeId = 0;
-            OnNewGraphCreated();
+            OnNewGraphCreated(isDirected);
         }
 
         public void AddVertex()
@@ -495,7 +495,7 @@ namespace Floyd_Warshall_Model.Model
 
         #region Private event methods
 
-        private void OnNewGraphCreated() => NewGraphCreated?.Invoke(this, EventArgs.Empty);
+        private void OnNewGraphCreated(bool isDirected) => NewGraphCreated?.Invoke(this, new NewGraphEventArgs(isDirected));
 
         private void OnGraphLoaded(IEnumerable<VertexLocation> locations) => GraphLoaded?.Invoke(this, new GraphLocationEventArgs(locations));
 

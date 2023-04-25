@@ -14,13 +14,28 @@ namespace Floyd_Warshall.View.Converters
         {
             int n = System.Convert.ToInt32(value);
 
-            if(n != int.MaxValue && Math.Floor(Math.Log10(Math.Abs(n))) > 1)
+            if(n == int.MaxValue || n == 0)
+            {
+                return 12;
+            }
+
+            int length = (int)Math.Floor(Math.Log10(Math.Abs(n)) + 1);
+
+            if (length < 3)
+            {
+                return 12;
+            }
+            else if(length < 5)
             {
                 return 9;
             }
+            else if (length < 6)
+            {
+                return 7;
+            }
             else
             {
-                return 12;
+                return 5;
             }
         }
 

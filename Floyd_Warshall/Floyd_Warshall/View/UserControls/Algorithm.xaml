@@ -18,6 +18,29 @@
             <RowDefinition Height="25" />
         </Grid.RowDefinitions>
 
+        <TextBlock
+            Grid.Row="0"
+            Foreground="Gray"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+        >
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsInitialized}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsInitialized}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+            
+            Quick help: <LineBreak/>
+            aa
+        </TextBlock>
+        
         <Grid 
             Grid.Row="0"
             Visibility="{Binding IsInitialized, Converter={StaticResource BoolToVisibilityConverter}}">

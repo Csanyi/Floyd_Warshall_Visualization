@@ -9,22 +9,28 @@ using Floyd_Warshall_Model.Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
+    /// <summary>
+    /// Type of the graph canvas viewmodel
+    /// </summary>
     public class GraphCanvasViewModel : ViewModelBase
     {
         #region Fields
 
-        private readonly GraphModel _graphModel;
+        private readonly GraphModel _graphModel;  // the graph model
 
-        public VertexViewModel? _selectedVertex;
-        private EdgeViewModelBase? _selectedEdge;
-        private bool _canvasEnabled;
-        private bool _hasInputError;
-        private string _weightText;
+        public VertexViewModel? _selectedVertex;  // the selected vertex viewmodel
+        private EdgeViewModelBase? _selectedEdge; // the selected edge viewmodel
+        private bool _canvasEnabled;              // indicates whether the canvas is enabled
+        private bool _hasInputError;              // indicates whether there is an input error
+        private string _weightText;               // the weight of the selected edge
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the selected vertex viewmodel
+        /// </summary>
         public VertexViewModel? SelectedVertex 
         { 
             get { return _selectedVertex; } 
@@ -44,6 +50,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             } 
         }
 
+        /// <summary>
+        /// Gets or sets the selected edge viewmodel
+        /// </summary>
         public EdgeViewModelBase? SelectedEdge
         {
             get { return _selectedEdge; }
@@ -68,8 +77,14 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Indicates whether an edge is selected
+        /// </summary>
         public bool IsEdgeSelected { get { return SelectedEdge != null; } }
 
+        /// <summary>
+        /// Gets or sets the weightText field
+        /// </summary>
         public string WeightText
         {
             get { return _weightText; }
@@ -80,9 +95,19 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the mouse'a x coord
+        /// </summary>
         public double MouseX { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mouse's y coord
+        /// </summary>
         public double MouseY { get; set; }
 
+        /// <summary>
+        /// Gets or sets the canvasEnabled field
+        /// </summary>
         public bool CanvasEnabled
         {
             get => _canvasEnabled;
@@ -93,8 +118,14 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Indicates whether the vertex count has reached the maximum
+        /// </summary>
         public bool MaxVertexCountReached { get { return _graphModel.GetVertexCount() >= GraphModel.MaxVertexCount; } }
 
+        /// <summary>
+        /// Indicates whether there is an input error
+        /// </summary>
         public bool HasInputError
         {
             get { return _hasInputError; }
@@ -105,19 +136,39 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Gets or sets the list of vertices
+        /// </summary>
         public List<VertexViewModel> Verteces { get; set; }
 
+        /// <summary>
+        /// Gets or sets the list of edges
+        /// </summary>
         public List<EdgeViewModelBase> Edges { get; set; }
 
-        public ObservableCollection<GraphComponentViewModelBase> GraphComponents { get; set; }
+        /// <summary>
+        /// Gets or sets the list of graph components
+        /// </summary>
+        public ObservableCollection<GraphComponentViewModelBase> GraphComponents { get; private set; }
 
+        /// <summary>
+        /// Gets or sets tha canvas click command
+        /// </summary>
         public ICommand CanvasClickCommand { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the submit command
+        /// </summary>
         public ICommand SubmitCommand { get; private set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Constructor of the graph canvas viewmodel
+        /// </summary>
+        /// <param name="graphModel">The graph model</param>
         public GraphCanvasViewModel(GraphModel graphModel)
         {
             _graphModel = graphModel;
@@ -153,6 +204,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         #region Public methods
 
+        /// <returns>The location of the vertices</returns>
         public IEnumerable<VertexLocation> GetLocations()
         {
             return Verteces.Select(v => new VertexLocation(v.Id, v.GetX(), v.GetY()));
@@ -162,6 +214,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
         #region Private methods
 
+        /// <summary>
+        /// Resets the values
+        /// </summary>
         private void Init()
         {
             Verteces.Clear();
@@ -174,6 +229,11 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             OnPropertyChanged(nameof(MaxVertexCountReached));
         }
 
+        /// <summary>
+        /// Selects the given route
+        /// </summary>
+        /// <param name="route">The route</param>
+        /// <param name="isNegCycle">Select as negative cycle if true, otherwise selects normally</param>
         private void SelectRoute(List<int> route, bool isNegCycle)
         {
             Edges.ForEach(e => e.IsSelected = false);
@@ -216,6 +276,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Clears the selections
+        /// </summary>
         private void ClearSelections()
         {
             Verteces.ForEach(v =>

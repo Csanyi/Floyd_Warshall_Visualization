@@ -5,6 +5,9 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
+    /// <summary>
+    /// Type of the submit command
+    /// </summary>
     public class SubmitCommand : GraphCanvasCommandBase
     {
         private readonly GraphModel _graphModel;
@@ -27,7 +30,7 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 
                 _viewModel.HasInputError = false;
             }
-            catch(Exception)
+            catch(Exception ex) when (ex is FormatException || ex is OverflowException)
             {
                 _viewModel.HasInputError = true;
                 if(_viewModel.SelectedEdge != null)

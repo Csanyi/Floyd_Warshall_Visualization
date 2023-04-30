@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
+    /// <summary>
+    /// Type of the algorithm step back command
+    /// </summary>
     public class AlgorithmStepBackCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;

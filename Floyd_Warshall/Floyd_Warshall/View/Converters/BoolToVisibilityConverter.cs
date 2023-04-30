@@ -7,6 +7,10 @@ namespace Floyd_Warshall.View.Converters
 {
     public class BoolToVisibilityConverter : IValueConverter
     {
+        /// <summary>
+        /// Converts a bool value to Visibility type
+        /// </summary>
+        /// <returns>Visibility.Visible if value is true, otherwise Visibility.Collapsed</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool isVisible = System.Convert.ToBoolean(value);

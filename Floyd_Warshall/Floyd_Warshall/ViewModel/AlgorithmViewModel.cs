@@ -9,25 +9,34 @@ using System.Windows.Threading;
 
 namespace Floyd_Warshall.ViewModel
 {
+    /// <summary>
+    /// Type of the algorithm viewmodel
+    /// </summary>
     public class AlgorithmViewModel : ViewModelBase
     {
         #region Fields
 
-        private readonly GraphModel _graphModel;
-        private readonly DispatcherTimer _timer;
-        private int _size;
-        private bool _isStopped;
-        private bool _isNegCycleFound;
-        private bool _steppedOnce;
+        private readonly GraphModel _graphModel; // the graph model
+        private readonly DispatcherTimer _timer; // the timer
+        private int _size;                       // size of the graph (number of verteces)
+        private bool _isStopped;                 // indicates whether the algorithm is stopped
+        private bool _isNegCycleFound;           // indicates whether the algorithm is found a negative cycle
+        private bool _steppedOnce;               // indicates whether the algorithm is stepped once
 
-        public const int CriticalTime = 100;
+        public const int CriticalTime = 100;     // the view does not update in every step under critical time (ms)
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Gets the timer
+        /// </summary>
         public DispatcherTimer Timer { get { return _timer; } }
 
+        /// <summary>
+        /// Gets or sets the timer interval
+        /// </summary>
         public int TimerInterval
         {
             get { return _timer.Interval.Seconds * 1000 + _timer.Interval.Milliseconds; }
@@ -38,6 +47,9 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets the size
+        /// </summary>
         public int Size
         {
             get { return _size; }
@@ -48,12 +60,24 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets the vertex id being processed
+        /// </summary>
         public int? K { get { return _graphModel.K; } }
 
+        /// <summary>
+        /// Gets the previous vertex id being processed
+        /// </summary>
         public int? PrevK { get { return _graphModel.PrevK; } } 
 
+        /// <summary>
+        /// Indicates whether the vertex count is reached the minimum to start the algorithm
+        /// </summary>
         public bool IsEnoughVerteces { get { return _graphModel.GetVertexCount() > 1; } }
 
+        /// <summary>
+        /// Gets or sets the isNegCycleFound field
+        /// </summary>
         public bool IsNegCycleFound
         { 
             get { return _isNegCycleFound; }
@@ -64,6 +88,9 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets the steppedOnce field
+        /// </summary>
         public bool SteppedOnce 
         { 
             get { return _steppedOnce; }
@@ -74,12 +101,24 @@ namespace Floyd_Warshall.ViewModel
             } 
         }
 
+        /// <summary>
+        /// Indicates whether the algorithm is initialized
+        /// </summary>
         public bool IsInitialized { get { return _graphModel.IsAlgorthmInitialized; } }
 
+        /// <summary>
+        /// Incicates whether the algorithm has next step
+        /// </summary>
         public bool HasNextStep { get { return _graphModel.HasNextStep; } }
 
+        /// <summary>
+        /// Incicates whether the algorithm has previous step
+        /// </summary>
         public bool HasPreviousStep { get { return _graphModel.HasPreviousStep; } }
 
+        /// <summary>
+        /// Gets or sets the isStopped field
+        /// </summary>
         public bool IsStopped
         {
             get => _isStopped;
@@ -90,11 +129,11 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
-        public ObservableCollection<MatrixGridViewModel> D { get; set; }
-        public ObservableCollection<MatrixGridViewModel> Pi { get; set; }
-        public ObservableCollection<MatrixGridViewModel> PrevPi { get; set; }
-        public ObservableCollection<MatrixGridViewModel> PrevD { get; set; }
-        public ObservableCollection<int> VertexIds { get; set; }
+        public ObservableCollection<MatrixGridViewModel> D { get; private set; }
+        public ObservableCollection<MatrixGridViewModel> Pi { get; private set; }
+        public ObservableCollection<MatrixGridViewModel> PrevPi { get; private set; }
+        public ObservableCollection<MatrixGridViewModel> PrevD { get; private set; }
+        public ObservableCollection<int> VertexIds { get; private set; }
 
         public ICommand InitCommand { get; private set; }
         public ICommand CancelCommand { get; private set; }
@@ -107,6 +146,10 @@ namespace Floyd_Warshall.ViewModel
 
         #region Constructors
 
+        /// <summary>
+        /// Constructor of the algorithm viewmodel
+        /// </summary>
+        /// <param name="graphModel">The graph model</param>
         public AlgorithmViewModel(GraphModel graphModel)
         {
             _graphModel = graphModel;
@@ -147,11 +190,18 @@ namespace Floyd_Warshall.ViewModel
 
         #region Public methods
 
+        /// <summary>
+        /// Calls the OnPropertyChanged method
+        /// </summary>
+        /// <param name="propertyName">The changed property name</param>
         public void CallPropertyChanged(string propertyName)
         {
             OnPropertyChanged(propertyName);
         }
 
+        /// <summary>
+        /// Updates the algorithm data
+        /// </summary>
         public void UpdateData()
         {
             AlgorithmData? e = _graphModel.GetAlgorithmData();
@@ -183,6 +233,9 @@ namespace Floyd_Warshall.ViewModel
 
         #region Timer event handlers
 
+        /// <summary>
+        /// Timer tick event handler, steps the algorithm
+        /// </summary>
         private void Timer_Tick(object? sender, EventArgs e)
         {
             _graphModel.StepAlgorithm();
@@ -192,16 +245,25 @@ namespace Floyd_Warshall.ViewModel
 
         #region Model event handlers
 
+        /// <summary>
+        /// Vertex added event handler
+        /// </summary>
         private void Model_VertexAdded(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
 
+        /// <summary>
+        /// Vertex removed event handler
+        /// </summary>
         private void Model_VertexRemoved(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
 
+        /// <summary>
+        /// Algorithm initialized event handler, sets the data of the matrices
+        /// </summary>
         private void Model_AlgorithmInitialized(object? sender, AlgorithmInitEventArgs e)
         {
             OnPropertyChanged(nameof(K));
@@ -252,6 +314,10 @@ namespace Floyd_Warshall.ViewModel
             }
         }
         
+        /// <summary>
+        /// Algorithm ended event handler, stops the timer, 
+        /// updates the data of the matrices if necessary
+        /// </summary>
         private void Model_AlgorithmEnded(object? sender, EventArgs e)
         {
             if (TimerInterval <= CriticalTime && !IsStopped)
@@ -263,6 +329,9 @@ namespace Floyd_Warshall.ViewModel
             IsStopped = true;
         }
 
+        /// <summary>
+        /// Algorithm stepped event handler, updates the data of the matrices if necessary
+        /// </summary>
         private void Model_AlgorithmStepped(object? sender, AlgorithmSteppedEventArgs e)
         {
             OnPropertyChanged(nameof(K));
@@ -308,6 +377,9 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
+        /// <summary>
+        /// Algorithm stepped event handler, updates the data of the matrices if necessary
+        /// </summary>
         private void Model_AlgorithmSteppedBack(object? sender, AlgorithmSteppedEventArgs e)
         {
             OnPropertyChanged(nameof(K));
@@ -353,6 +425,10 @@ namespace Floyd_Warshall.ViewModel
             }
         }
 
+        /// <summary>
+        /// Negative cycle found event handler, stops the timer
+        /// updates the data of the matrices if necessary
+        /// </summary>
         private void Model_NegativeCycleFound(object? sender, EventArgs e)
         {
             if (TimerInterval <= CriticalTime && !IsStopped)
@@ -366,11 +442,17 @@ namespace Floyd_Warshall.ViewModel
             IsNegCycleFound = true;
         }
 
+        /// <summary>
+        /// Graph loaded event handler
+        /// </summary>
         private void Model_GraphLoaded(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));
         }
 
+        /// <summary>
+        /// New graph created event handler
+        /// </summary>
         private void Model_NewGraphCreated(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(IsEnoughVerteces));

@@ -2,8 +2,17 @@
 
 namespace Floyd_Warshall_Model.Persistence
 {
+    /// <summary>
+    /// Type of the graph file data access
+    /// </summary>
     public class GraphFileDataAccess : IGraphDataAccess
     {
+        /// <summary>
+        /// Loads graph
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <returns>The loaded graph data</returns>
+        /// <exception cref="GraphDataException"></exception>
         public async Task<GraphData> LoadAsync(string path)
         {
             try
@@ -65,6 +74,13 @@ namespace Floyd_Warshall_Model.Persistence
             }
         }
 
+        /// <summary>
+        /// Saves graph
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <param name="graph">Graph to save</param>
+        /// <param name="locations">Locations of the verteces</param>
+        /// <exception cref="GraphDataException"></exception>
         public async Task SaveAsync(string path, GraphBase graph, IEnumerable<VertexData> locations)
         {
             try

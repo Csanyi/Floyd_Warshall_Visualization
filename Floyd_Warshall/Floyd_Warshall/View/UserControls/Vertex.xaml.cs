@@ -4,6 +4,9 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.View.UserControls
 {
+    /// <summary>
+    /// Interaction logic for Vertex.xaml
+    /// </summary>
     public partial class Vertex : UserControl
     {
         public Vertex()

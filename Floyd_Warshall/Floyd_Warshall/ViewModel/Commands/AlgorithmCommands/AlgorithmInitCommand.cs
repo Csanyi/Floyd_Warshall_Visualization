@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
+    /// <summary>
+    /// Type of the algorithm initialize command
+    /// </summary>
     public class AlgorithmInitCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;

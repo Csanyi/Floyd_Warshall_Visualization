@@ -10,6 +10,7 @@ namespace Floyd_Warshall.View.Converters
 {
     public class FontSizeConverter : IValueConverter
     {
+        /// <returns>Smaller int, if the count of digits in value is more</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             int n = System.Convert.ToInt32(value);

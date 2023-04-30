@@ -5,12 +5,22 @@ using Floyd_Warshall_Model.Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
+    /// <summary>
+    /// Type of the directed edge viewmodel
+    /// </summary>
     public class DirectedEdgeViewModel : EdgeViewModelBase
     {
         private readonly int _vertexRadius = VertexViewModel.Size / 2;
-        private const double _angleOffset = 0.3;
+        private const double _angleOffset = 0.3;                      
         private const int _endPointOffset = 5;
 
+        /// <summary>
+        /// Constructor of the directed edge viewmodel
+        /// </summary>
+        /// <param name="id">The edge id</param>
+        /// <param name="graphModel">The graph model</param>
+        /// <param name="from">The start vertex viewmodel of the edge</param>
+        /// <param name="to">The end vertex viewmodel of the edge></param>
         public DirectedEdgeViewModel(int id, GraphModel graphModel, VertexViewModel from, VertexViewModel to) 
                                             : base(id, graphModel, from, to) { }
 
@@ -91,6 +101,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Gets the edge's angle in radian
+        /// </summary>
         public double AngleInRadian 
         { 
             get 
@@ -105,6 +118,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             } 
         }
 
+        /// <summary>
+        /// Gets the edge's angle in degree
+        /// </summary>
         public double Angle {
             get
             {
@@ -127,12 +143,24 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Gets the edge's width
+        /// </summary>
         private double Width { get { return Math.Abs(From.CanvasX - To.CanvasX); } }
 
+        /// <summary>
+        /// Gets the edge's height
+        /// </summary>
         private double Height { get { return Math.Abs(From.CanvasY - To.CanvasY); } }
 
+        /// <summary>
+        /// Gets the edge's text x coord
+        /// </summary>
         public double TextX { get { return (X1 + X2) / 2; } }
 
+        /// <summary>
+        /// Gets the edge's text y coord
+        /// </summary>
         public double TextY { get { return (Y1 + Y2) / 2; } }
 
         protected override void VertexPropertyChanged(object? sender, PropertyChangedEventArgs e)

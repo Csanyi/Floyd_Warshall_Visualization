@@ -2,6 +2,9 @@
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
+    /// <summary>
+    /// Type of the algorithm start command
+    /// </summary>
     public class AlgorithmStartCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;

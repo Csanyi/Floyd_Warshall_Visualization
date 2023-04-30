@@ -4,6 +4,9 @@ using Floyd_Warshall_Model.Model;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
+    /// <summary>
+    /// Type of the canvas click command
+    /// </summary>
     public class CanvasClickCommand : GraphCanvasCommandBase
     {
         private readonly GraphModel _graphModel;

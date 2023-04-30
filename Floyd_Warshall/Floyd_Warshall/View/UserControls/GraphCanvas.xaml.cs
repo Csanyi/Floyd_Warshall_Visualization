@@ -4,6 +4,9 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.View.UserControls
 {
+    /// <summary>
+    /// Interaction logic for GraphCanvas.xaml
+    /// </summary>
     public partial class GraphCanvas : UserControl
     {
         public GraphCanvas()

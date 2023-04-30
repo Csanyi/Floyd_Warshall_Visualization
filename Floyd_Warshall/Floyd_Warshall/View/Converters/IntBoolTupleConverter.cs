@@ -6,6 +6,7 @@ namespace Floyd_Warshall.View.Converters
 {
     public class IntBoolTupleConverter : IMultiValueConverter
     {
+        /// <returns>A <![CDATA[Tuple<int,bool>]]> if values first value is an int, and the second value is a bool</returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             int i = System.Convert.ToInt32(values[0]);

@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
+    /// <summary>
+    /// Type of the graph canvas command base class
+    /// </summary>
     public abstract class GraphCanvasCommandBase : CommandBase
     {
         protected readonly GraphCanvasViewModel _viewModel;

@@ -2,18 +2,37 @@
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
+    /// <summary>
+    /// Type of the vertex viewmodel
+    /// </summary>
     public class VertexViewModel : GraphComponentViewModelBase
     {
-        public static int Size { get { return 32; } }
+        private bool _inNegCycle; // indicates whether the vertex is in negative cycle
+        private double _canvasX;  // x coord on canvas 
+        private double _canvasY;  // y coord on canvas
 
+        /// <summary>
+        /// Constructor of the vertex viewmodel
+        /// </summary>
+        /// <param name="id">The vertex id</param>
         public VertexViewModel(int id) : base(id)
         {
             Edges = new List<EdgeViewModelBase>();
         }
 
+        /// <summary>
+        /// Gets the vertex size
+        /// </summary>
+        public static int Size { get { return 32; } }
+
+        /// <summary>
+        /// Gets or sets the vertex in and out edges
+        /// </summary>
         public List<EdgeViewModelBase> Edges { get; set; }
 
-        private bool _inNegCycle;
+        /// <summary>
+        /// Gets or sets the inNegCycle field
+        /// </summary>
         public bool InNegCycle
         {
             get { return _inNegCycle; }
@@ -24,7 +43,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
-        private double _canvasX;
         public override double CanvasX { 
             get { return _canvasX - VertexViewModel.Size / 2; }
             set
@@ -34,7 +52,6 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
-        private double _canvasY;
         public override double CanvasY
         {
             get { return _canvasY - VertexViewModel.Size / 2; }
@@ -45,11 +62,17 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             }
         }
 
+        /// <summary>
+        /// Gets the top left corners's x coord on the canvas
+        /// </summary>
         public double GetX()
         {
             return _canvasX;
         }
 
+        /// <summary>
+        /// Gets the top left corner's y coord on the canvas
+        /// </summary>
         public double GetY()
         {
             return _canvasY;

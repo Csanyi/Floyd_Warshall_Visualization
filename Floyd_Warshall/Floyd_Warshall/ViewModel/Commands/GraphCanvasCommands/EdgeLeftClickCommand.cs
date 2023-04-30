@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
+    /// <summary>
+    /// Type of the edge left click command
+    /// </summary>
     public class EdgeLeftClickCommand : GraphCanvasCommandBase
     {
         public EdgeLeftClickCommand(GraphCanvasViewModel viewModel) : base(viewModel) { }

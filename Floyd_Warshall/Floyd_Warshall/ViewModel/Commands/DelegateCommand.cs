@@ -3,10 +3,13 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel.Commands
 {
+    /// <summary>
+    /// General command type
+    /// </summary>
     public class DelegateCommand : ICommand
     {
-        private readonly Action<object> _execute;
-        private readonly Func<object, bool>? _canExecute;
+        private readonly Action<object> _execute;         // lambda expression that executes the activity
+        private readonly Func<object, bool>? _canExecute; // lambda expression that checks the condition of the activity
 
         public event EventHandler? CanExecuteChanged
         {
@@ -14,7 +17,12 @@ namespace Floyd_Warshall.ViewModel.Commands
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-
+        /// <summary>
+        /// Constructor of the DelegateCommand
+        /// </summary>
+        /// <param name="execute">Activity to execute</param>
+        /// <param name="canExecute">Condition of enforceability</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public DelegateCommand(Action<object> execute, Func<object, bool>? canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));

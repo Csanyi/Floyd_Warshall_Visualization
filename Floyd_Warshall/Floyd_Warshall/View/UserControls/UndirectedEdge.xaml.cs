@@ -3,7 +3,7 @@
 namespace Floyd_Warshall.View.UserControls
 {
     /// <summary>
-    /// Interaction logic for Edge.xaml
+    /// Interaction logic for UndirectedEdge.xaml
     /// </summary>
     public partial class UndirectedEdge : UserControl
     {

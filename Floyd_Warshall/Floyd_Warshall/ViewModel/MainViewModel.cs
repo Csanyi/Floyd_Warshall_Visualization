@@ -7,23 +7,35 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel
 {
+    /// <summary>
+    /// Type of the main viewmodel
+    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         #region Fields
 
-        private readonly GraphCanvasViewModel _graphCanvas;
-        private readonly AlgorithmViewModel _algorithm;
+        private readonly GraphCanvasViewModel _graphCanvas; // graph canvas viewmodel
+        private readonly AlgorithmViewModel _algorithm;     // FW algorithm viewmodel
 
-        private bool _commandsEnabled;
+        private bool _commandsEnabled;                      // indicates whether the commands are enabled
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Gets the graph canvas viewmodel
+        /// </summary>
         public GraphCanvasViewModel GraphCanvas { get { return _graphCanvas; } }
 
+        /// <summary>
+        /// Gets the FW algorithm viewmodel
+        /// </summary>
         public AlgorithmViewModel Algorithm { get { return _algorithm; } }
 
+        /// <summary>
+        /// Gets or sets the commands enabled field
+        /// </summary>
         public bool CommandsEnabled 
         {
             get { return _commandsEnabled; }
@@ -33,10 +45,25 @@ namespace Floyd_Warshall.ViewModel
                 OnPropertyChanged();
             }
         }
-   
+        
+        /// <summary>
+        /// Gets the new graph command
+        /// </summary>
         public ICommand NewGraphCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the load graph command
+        /// </summary>
         public ICommand LoadGraphCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the save graph command
+        /// </summary>
         public ICommand SaveGraphCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the exit command
+        /// </summary>
         public ICommand ExitCommand { get; private set; }
 
         #endregion
@@ -52,6 +79,10 @@ namespace Floyd_Warshall.ViewModel
 
         #region Constructors
 
+        /// <summary>
+        /// Construtcor of the main viewmodel
+        /// </summary>
+        /// <param name="graphModel">The graph model</param>
         public MainViewModel(GraphModel graphModel)
         {
             _graphCanvas = new GraphCanvasViewModel(graphModel);
@@ -86,12 +117,25 @@ namespace Floyd_Warshall.ViewModel
 
         #region Private event methods
 
+        /// <summary>
+        /// Triggers the NewGraph event
+        /// </summary>
+        /// <param name="isDirected">The direction of the new graph</param>
         private void OnNewGraph(bool isDirected) => NewGraph?.Invoke(this, new NewGraphEventArgs(isDirected));
 
+        /// <summary>
+        /// Triggers the LoadGraph event
+        /// </summary>
         private void OnLoad() => LoadGraph?.Invoke(this, EventArgs.Empty);
 
+        /// <summary>
+        /// Triggers the SaveGraph event
+        /// </summary>
         private void OnSave() => SaveGraph?.Invoke(this, new GraphLocationEventArgs(_graphCanvas.GetLocations()));
 
+        /// <summary>
+        /// Triggers the Exit event
+        /// </summary>
         private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
 
         #endregion

@@ -22,8 +22,7 @@
             Grid.Row="0"
             Foreground="Gray"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-        >
+            VerticalAlignment="Center">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Style.Triggers>
@@ -38,7 +37,12 @@
             </TextBlock.Style>
             
             Quick help: <LineBreak/>
-            aa
+            - Click on the canvas to create a vertex <LineBreak/>
+            - Select two verteces to create an edge <LineBreak/>
+            - To change the weight of an edge, click  it <LineBreak/>
+            - You can drag and drop the vertices <LineBreak/>
+            - Right-click to delete a vertex or edge <LineBreak/>
+            - Create at least two verteces to start the algortihm <LineBreak/>
         </TextBlock>
         
         <Grid 
@@ -63,7 +67,6 @@
                 </ColumnDefinition>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
 
             <local:Matrix 
                 Grid.Row="0" Grid.Column="0" 

@@ -28,9 +28,8 @@ namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
                     _viewModel.SelectedVertex = null;
             }
 
-            for (int i = 0; i < v.Edges.Count; ++i)
+            foreach (EdgeViewModelBase e in v.Edges)
             {
-                EdgeViewModelBase e = v.Edges[i];
                 _viewModel.Edges.Remove(e);
                 _viewModel.GraphComponents.Remove(e);
                 if (v == e.From)

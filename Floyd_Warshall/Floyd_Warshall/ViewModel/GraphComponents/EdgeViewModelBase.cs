@@ -94,5 +94,10 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         protected abstract void Model_EdgeUpdated(object? sender, EdgeUpdatedEventArgs e);
 
         protected void OnEdgeUpdated() => EdgeUpdated?.Invoke(this, EventArgs.Empty);
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, From.Id, To.Id);
+        }
     }
 }

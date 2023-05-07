@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Floyd_Warshall.View.Converters
@@ -10,21 +11,29 @@ namespace Floyd_Warshall.View.Converters
         /// otherwise the value's string representation</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int valueInt = System.Convert.ToInt32(value);
+            try
+            {
+                int valueInt = System.Convert.ToInt32(value);
 
-            if(valueInt == int.MaxValue)
-            {
-                return "\u221E";
+                if (valueInt == int.MaxValue)
+                {
+                    return "\u221E";
+                }
+                else
+                {
+                    return valueInt.ToString();
+                }
             }
-            else
+            catch
             {
-                return valueInt.ToString();
+                return Binding.DoNothing;
             }
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
     }
 }

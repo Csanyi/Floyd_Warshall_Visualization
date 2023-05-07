@@ -17,7 +17,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// <param name="id">The vertex id</param>
         public VertexViewModel(int id) : base(id)
         {
-            Edges = new List<EdgeViewModelBase>();
+            Edges = new HashSet<EdgeViewModelBase>();
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// <summary>
         /// Gets or sets the vertex in and out edges
         /// </summary>
-        public List<EdgeViewModelBase> Edges { get; set; }
+        public ICollection<EdgeViewModelBase> Edges { get; set; }
 
         /// <summary>
         /// Gets or sets the inNegCycle field

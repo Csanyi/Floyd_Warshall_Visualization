@@ -139,12 +139,12 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// <summary>
         /// Gets or sets the list of vertices
         /// </summary>
-        public List<VertexViewModel> Verteces { get; set; }
+        public ICollection<VertexViewModel> Verteces { get; set; }
 
         /// <summary>
         /// Gets or sets the list of edges
         /// </summary>
-        public List<EdgeViewModelBase> Edges { get; set; }
+        public ICollection<EdgeViewModelBase> Edges { get; set; }
 
         /// <summary>
         /// Gets or sets the list of graph components
@@ -189,8 +189,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             _graphModel.VertexRemoved += Model_VertexRemoved;
             _graphModel.RouteCreated += Model_RouteCreated;
 
-            Verteces = new List<VertexViewModel>();
-            Edges = new List<EdgeViewModelBase>();
+            Verteces = new HashSet<VertexViewModel>();
+            Edges = new HashSet<EdgeViewModelBase>();
             GraphComponents = new ObservableCollection<GraphComponentViewModelBase>();
 
             _selectedVertex = null;
@@ -236,10 +236,9 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// <param name="isNegCycle">Select as negative cycle if true, otherwise selects normally</param>
         private void SelectRoute(List<int> route, bool isNegCycle)
         {
-            Edges.ForEach(e => e.IsSelected = false);
-            Verteces.ForEach(v => v.IsSelected = false);
+            ClearSelections();
 
-            for(int i = 0; i < route.Count; ++i)
+            for (int i = 0; i < route.Count; ++i)
             {
                 VertexViewModel? v = Verteces.FirstOrDefault(v => v.Id == route[i]);
 
@@ -281,12 +280,15 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// </summary>
         private void ClearSelections()
         {
-            Verteces.ForEach(v =>
+            foreach(VertexViewModel v in Verteces)
             {
-                v.IsSelected = false; 
+                v.IsSelected = false;
                 v.InNegCycle = false;
-            });
-            Edges.ForEach(e => e.IsSelected = false);
+            }
+            foreach (EdgeViewModelBase e in Edges)
+            {
+                e.IsSelected = false;
+            }
         }
 
         #endregion

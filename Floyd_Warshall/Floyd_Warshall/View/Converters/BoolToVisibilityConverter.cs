@@ -13,14 +13,22 @@ namespace Floyd_Warshall.View.Converters
         /// <returns>Visibility.Visible if value is true, otherwise Visibility.Collapsed</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool isVisible = System.Convert.ToBoolean(value);
+            try
+            {
+                bool isVisible = System.Convert.ToBoolean(value);
 
-            return isVisible ? Visibility.Visible : Visibility.Collapsed;
+                return isVisible ? Visibility.Visible : Visibility.Collapsed;
+            }
+            catch
+            {
+                return Binding.DoNothing;
+            }
+      
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return DependencyProperty.UnsetValue;
         }
     }
 }

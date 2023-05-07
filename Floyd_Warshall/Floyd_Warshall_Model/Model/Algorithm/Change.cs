@@ -1,4 +1,6 @@
-﻿namespace Floyd_Warshall_Model.Model.Algorithm
+﻿using System.Drawing;
+
+namespace Floyd_Warshall_Model.Model.Algorithm
 {
     /// <summary>
     /// Type to store a change
@@ -29,6 +31,19 @@
         public override int GetHashCode()
         {
             return HashCode.Combine(I, J); ;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Change c = (Change)obj;
+                return (I == c.I) && (J == c.J);
+            }
         }
 
         public bool Equals(Change? other)

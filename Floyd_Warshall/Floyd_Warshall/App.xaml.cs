@@ -66,7 +66,7 @@ namespace Floyd_Warshall
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    Title = "Load graph",
+                    Title = "Open graph",
                     Filter = "Graph|*.gph"
                 };
 
@@ -77,7 +77,7 @@ namespace Floyd_Warshall
             }
             catch (GraphDataException)
             {
-                MessageBox.Show("Load failed!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Loading failed!", "Floyd-Warshall Visulation - Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 }
 
@@ -105,7 +105,7 @@ namespace Floyd_Warshall
             }
             catch
             {
-                MessageBox.Show("Save failed!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Save failed!", "Floyd-Warshall Visulation - Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

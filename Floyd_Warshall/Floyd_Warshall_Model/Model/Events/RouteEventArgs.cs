@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Model.Events
 {
-    /// <summary>
-    /// Type of the route event argument
-    /// </summary>
-    public class RouteEventArgs : EventArgs
+	/// <summary>
+	/// Type of the route event argument
+	/// </summary>
+	public class RouteEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor of the route event argument

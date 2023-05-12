@@ -3,10 +3,10 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel.Commands
 {
-    /// <summary>
-    ///  Type of the command base class
-    /// </summary>
-    public abstract class CommandBase : ICommand
+	/// <summary>
+	///  Type of the command base class
+	/// </summary>
+	public abstract class CommandBase : ICommand
     {
         public event EventHandler? CanExecuteChanged;
 

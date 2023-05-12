@@ -1,11 +1,9 @@
-﻿using Floyd_Warshall_Model.Model.Algorithm;
-
-namespace Floyd_Warshall_Model.Model.Events
+﻿namespace Floyd_Warshall_Model.Model.Events
 {
-    /// <summary>
-    /// Type of the algorithm initialize event argument
-    /// </summary>
-    public class AlgorithmInitEventArgs : EventArgs
+	/// <summary>
+	/// Type of the algorithm initialize event argument
+	/// </summary>
+	public class AlgorithmInitEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor of the algorithm initialize event argument

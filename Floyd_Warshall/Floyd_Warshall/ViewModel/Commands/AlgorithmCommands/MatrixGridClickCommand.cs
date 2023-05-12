@@ -4,10 +4,10 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
-    /// <summary>
-    /// Type of the matrix grid click command
-    /// </summary>
-    public class MatrixGridClickCommand : CommandBase
+	/// <summary>
+	/// Type of the matrix grid click command
+	/// </summary>
+	public class MatrixGridClickCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;
         private readonly GraphModel _graphModel;

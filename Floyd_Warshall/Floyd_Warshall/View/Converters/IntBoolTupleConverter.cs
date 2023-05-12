@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Floyd_Warshall.View.Converters
 {
-    public class IntBoolTupleConverter : IMultiValueConverter
+	public class IntBoolTupleConverter : IMultiValueConverter
     {
         /// <returns>A <![CDATA[Tuple<int,bool>]]> if values first value is an int, and the second value is a bool</returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

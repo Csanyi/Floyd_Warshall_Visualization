@@ -3,10 +3,10 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel.Commands
 {
-    /// <summary>
-    /// General command type
-    /// </summary>
-    public class DelegateCommand : ICommand
+	/// <summary>
+	/// General command type
+	/// </summary>
+	public class DelegateCommand : ICommand
     {
         private readonly Action<object> _execute;         // lambda expression that executes the activity
         private readonly Func<object, bool>? _canExecute; // lambda expression that checks the condition of the activity

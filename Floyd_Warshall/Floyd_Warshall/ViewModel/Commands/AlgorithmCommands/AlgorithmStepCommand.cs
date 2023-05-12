@@ -3,10 +3,10 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
-    /// <summary>
-    /// Type of the algorithm step command
-    /// </summary>
-    public class AlgorithmStepCommand : CommandBase
+	/// <summary>
+	/// Type of the algorithm step command
+	/// </summary>
+	public class AlgorithmStepCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;
         private readonly GraphModel _graphModel;

@@ -3,10 +3,10 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel
 {
-    /// <summary>
-    /// Type of the graph compontent viewmodel base class
-    /// </summary>
-    public abstract class GraphComponentViewModelBase : ViewModelBase, IEquatable<GraphComponentViewModelBase>
+	/// <summary>
+	/// Type of the graph compontent viewmodel base class
+	/// </summary>
+	public abstract class GraphComponentViewModelBase : ViewModelBase, IEquatable<GraphComponentViewModelBase>
     {
         private readonly int _id; // component id
         private bool _isSelected; // component selection

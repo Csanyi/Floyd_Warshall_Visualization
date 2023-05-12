@@ -5,10 +5,10 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
-    /// <summary>
-    /// Type of the edge viewmodel base class
-    /// </summary>
-    public abstract class EdgeViewModelBase : GraphComponentViewModelBase
+	/// <summary>
+	/// Type of the edge viewmodel base class
+	/// </summary>
+	public abstract class EdgeViewModelBase : GraphComponentViewModelBase
     {
         private readonly GraphModel _graphModel; // graph model
 

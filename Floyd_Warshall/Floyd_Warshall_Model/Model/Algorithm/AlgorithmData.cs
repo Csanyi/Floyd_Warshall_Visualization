@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Model.Algorithm
 {
-    /// <summary>
-    /// Type to store the algorithm data
-    /// </summary>
-    public class AlgorithmData
+	/// <summary>
+	/// Type to store the algorithm data
+	/// </summary>
+	public class AlgorithmData
     {
         /// <summary>
         /// Constructor of the AlgorithmData

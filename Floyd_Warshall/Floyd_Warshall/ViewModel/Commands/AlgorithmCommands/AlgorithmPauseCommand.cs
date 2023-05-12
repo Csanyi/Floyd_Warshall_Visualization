@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
-    /// <summary>
-    /// Type of the algorithm pause command
-    /// </summary>
-    public class AlgorithmPauseCommand : CommandBase
+	/// <summary>
+	/// Type of the algorithm pause command
+	/// </summary>
+	public class AlgorithmPauseCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;
 

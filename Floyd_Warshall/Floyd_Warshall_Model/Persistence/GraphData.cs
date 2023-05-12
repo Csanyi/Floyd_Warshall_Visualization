@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall_Model.Persistence
 {
-    /// <summary>
-    /// Type to stor graph data
-    /// </summary>
-    public class GraphData
+	/// <summary>
+	/// Type to stor graph data
+	/// </summary>
+	public class GraphData
     {
         /// <summary>
         /// Constructor of the graph data

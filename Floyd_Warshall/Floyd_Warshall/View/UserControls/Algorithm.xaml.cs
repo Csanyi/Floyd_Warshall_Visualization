@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall.View.UserControls
 {
-    /// <summary>
-    /// Interaction logic for Algorithm.xaml
-    /// </summary>
-    public partial class Algorithm : UserControl
+	/// <summary>
+	/// Interaction logic for Algorithm.xaml
+	/// </summary>
+	public partial class Algorithm : UserControl
     {
         public Algorithm()
         {

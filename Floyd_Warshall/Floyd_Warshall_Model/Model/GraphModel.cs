@@ -5,10 +5,10 @@ using Floyd_Warshall_Model.Persistence;
 
 namespace Floyd_Warshall_Model.Model
 {
-    /// <summary>
-    /// Type of the graph model
-    /// </summary>
-    public class GraphModel
+	/// <summary>
+	/// Type of the graph model
+	/// </summary>
+	public class GraphModel
     {
         #region Fields
 

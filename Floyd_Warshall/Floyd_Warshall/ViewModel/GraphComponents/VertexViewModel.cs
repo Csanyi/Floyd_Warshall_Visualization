@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
-    /// <summary>
-    /// Type of the vertex viewmodel
-    /// </summary>
-    public class VertexViewModel : GraphComponentViewModelBase
+	/// <summary>
+	/// Type of the vertex viewmodel
+	/// </summary>
+	public class VertexViewModel : GraphComponentViewModelBase
     {
         private bool _inNegCycle; // indicates whether the vertex is in negative cycle
         private double _canvasX;  // x coord on canvas 

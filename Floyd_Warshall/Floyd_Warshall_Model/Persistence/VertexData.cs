@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Persistence
 {
-    /// <summary>
-    /// Type to store vertex data
-    /// </summary>
-    public class VertexData
+	/// <summary>
+	/// Type to store vertex data
+	/// </summary>
+	public class VertexData
     {
         /// <summary>
         /// Constructor of the vertex data

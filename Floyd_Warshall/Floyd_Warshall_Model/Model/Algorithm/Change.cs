@@ -1,11 +1,9 @@
-﻿using System.Drawing;
-
-namespace Floyd_Warshall_Model.Model.Algorithm
+﻿namespace Floyd_Warshall_Model.Model.Algorithm
 {
-    /// <summary>
-    /// Type to store a change
-    /// </summary>
-    public class Change : IEquatable<Change>
+	/// <summary>
+	/// Type to store a change
+	/// </summary>
+	public class Change : IEquatable<Change>
     {
         /// <summary>
         /// Constructor of the Change

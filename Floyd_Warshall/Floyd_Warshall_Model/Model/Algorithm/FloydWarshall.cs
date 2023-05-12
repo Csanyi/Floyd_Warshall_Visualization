@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Model.Algorithm
 {
-    /// <summary>
-    /// Type of the Floyd-Warshall algorithm
-    /// </summary>
-    public class FloydWarshall
+	/// <summary>
+	/// Type of the Floyd-Warshall algorithm
+	/// </summary>
+	public class FloydWarshall
     {
         #region Fields
 

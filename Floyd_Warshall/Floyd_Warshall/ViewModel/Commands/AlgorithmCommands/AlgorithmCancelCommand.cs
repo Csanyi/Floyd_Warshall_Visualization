@@ -3,10 +3,10 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.AlgorithmCommands
 {
-    /// <summary>
-    /// Type of the algorithm cancel command
-    /// </summary>
-    public class AlgorithmCancelCommand : CommandBase
+	/// <summary>
+	/// Type of the algorithm cancel command
+	/// </summary>
+	public class AlgorithmCancelCommand : CommandBase
     {
         private readonly AlgorithmViewModel _viewModel;
         private readonly GraphModel _graphModel;

@@ -123,11 +123,11 @@
                         <Setter Property="Margin"  Value="8,2"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsStopped}" Value="False" >
-                                <Setter Property="Content" Value="{DynamicResource StrStart}" />
+                                <Setter Property="Content" Value="{DynamicResource StrStop}" />
                                 <Setter Property="Command" Value="{Binding PauseCommand}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsStopped}" Value="True" >
-                                <Setter Property="Content" Value="{DynamicResource StrStop}" />
+                                <Setter Property="Content" Value="{DynamicResource StrStart}" />
                                 <Setter Property="Command" Value="{Binding StartCommand}" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -145,7 +145,7 @@
                 Visibility="{Binding IsNegCycleFound, Converter={StaticResource BoolToVisibilityConverter}}"
                 Margin="10,0">
                 <TextBlock 
-                    Text="Negative cycle found!" />
+                    Text="{DynamicResource StrNegCycle}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

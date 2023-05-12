@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall.ViewModel
 {
-    /// <summary>
-    /// Type of the matrix grid viewmodel
-    /// </summary>
-    public class MatrixGridViewModel : ViewModelBase
+	/// <summary>
+	/// Type of the matrix grid viewmodel
+	/// </summary>
+	public class MatrixGridViewModel : ViewModelBase
     {
         private int _value;
         private bool _changed;

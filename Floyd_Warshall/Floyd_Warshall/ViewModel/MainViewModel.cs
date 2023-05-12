@@ -7,10 +7,10 @@ using System.Windows.Input;
 
 namespace Floyd_Warshall.ViewModel
 {
-    /// <summary>
-    /// Type of the main viewmodel
-    /// </summary>
-    public class MainViewModel : ViewModelBase
+	/// <summary>
+	/// Type of the main viewmodel
+	/// </summary>
+	public class MainViewModel : ViewModelBase
     {
         #region Fields
 
@@ -66,7 +66,9 @@ namespace Floyd_Warshall.ViewModel
         /// </summary>
         public ICommand ExitCommand { get; private set; }
 
-
+        /// <summary>
+        /// Gets the language switch command
+        /// </summary>
         public ICommand SwitchLanguageCommand { get; private set; }
 
         #endregion
@@ -77,7 +79,7 @@ namespace Floyd_Warshall.ViewModel
         public event EventHandler? LoadGraph;
         public event EventHandler<GraphLocationEventArgs>? SaveGraph;
         public event EventHandler? Exit;
-        public event EventHandler<string?>? SwithLanguage;
+        public event EventHandler<LanguageEventArgs>? SwitchLanguage;
 
         #endregion
 
@@ -97,7 +99,7 @@ namespace Floyd_Warshall.ViewModel
             SaveGraphCommand = new DelegateCommand(_ => OnSave());
             ExitCommand = new DelegateCommand(_ => OnExit());
 
-			SwitchLanguageCommand = new DelegateCommand(param => OnLanguageSwitched(param as string));
+			SwitchLanguageCommand = new DelegateCommand(param => OnLanguageSwitch(param as string));
 
             graphModel.AlgorithmInitialized += Model_AlgorithmInitialized;
             graphModel.AlgorithmCancelled += Model_AlgorithmCancelled;
@@ -144,8 +146,11 @@ namespace Floyd_Warshall.ViewModel
         /// </summary>
         private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
 
-
-        private void OnLanguageSwitched(string? lang) => SwithLanguage?.Invoke(this, lang);
+        /// <summary>
+        /// Triggers the SwitchLanguage event
+        /// </summary>
+        /// <param name="lang">The code of the language</param>
+        private void OnLanguageSwitch(string? langCode) => SwitchLanguage?.Invoke(this, new LanguageEventArgs(langCode));
 
         #endregion
     }

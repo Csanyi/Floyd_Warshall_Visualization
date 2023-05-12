@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall_Model.Persistence
 {
-    /// <summary>
-    /// Type of the graph file data access
-    /// </summary>
-    public class GraphFileDataAccess : IGraphDataAccess
+	/// <summary>
+	/// Type of the graph file data access
+	/// </summary>
+	public class GraphFileDataAccess : IGraphDataAccess
     {
         /// <summary>
         /// Loads graph

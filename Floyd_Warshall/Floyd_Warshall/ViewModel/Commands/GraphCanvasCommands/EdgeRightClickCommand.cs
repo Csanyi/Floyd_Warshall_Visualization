@@ -5,10 +5,10 @@ using Floyd_Warshall_Model.Model;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
-    /// <summary>
-    /// Type of the edge right click command
-    /// </summary>
-    public class EdgeRightClickCommand : GraphCanvasCommandBase
+	/// <summary>
+	/// Type of the edge right click command
+	/// </summary>
+	public class EdgeRightClickCommand : GraphCanvasCommandBase
     {
         private readonly GraphModel _graphModel;
 

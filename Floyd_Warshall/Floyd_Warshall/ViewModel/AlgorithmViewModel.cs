@@ -9,10 +9,10 @@ using System.Windows.Threading;
 
 namespace Floyd_Warshall.ViewModel
 {
-    /// <summary>
-    /// Type of the algorithm viewmodel
-    /// </summary>
-    public class AlgorithmViewModel : ViewModelBase
+	/// <summary>
+	/// Type of the algorithm viewmodel
+	/// </summary>
+	public class AlgorithmViewModel : ViewModelBase
     {
         #region Fields
 

@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Model.Events
 {
-    /// <summary>
-    /// Type of the new grah event argument
-    /// </summary>
-    public class NewGraphEventArgs : EventArgs
+	/// <summary>
+	/// Type of the new grah event argument
+	/// </summary>
+	public class NewGraphEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor of the new graph event argument

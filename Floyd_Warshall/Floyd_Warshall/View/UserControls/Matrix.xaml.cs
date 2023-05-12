@@ -5,10 +5,10 @@ using System.Windows.Controls;
 
 namespace Floyd_Warshall.View.UserControls
 {
-    /// <summary>
-    /// Interaction logic for Matrix.xaml
-    /// </summary>
-    public partial class Matrix : UserControl
+	/// <summary>
+	/// Interaction logic for Matrix.xaml
+	/// </summary>
+	public partial class Matrix : UserControl
     {
         public Matrix()
         {

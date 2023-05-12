@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
 namespace Floyd_Warshall.View.Converters
 {
-    public class FontSizeConverter : IValueConverter
+	public class FontSizeConverter : IValueConverter
     {
         /// <returns>Smaller int, if the count of digits in value is more</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

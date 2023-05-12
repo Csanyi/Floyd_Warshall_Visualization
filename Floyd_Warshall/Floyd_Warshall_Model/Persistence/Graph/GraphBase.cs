@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
-    /// <summary>
-    /// Base type of the graph
-    /// </summary>
-    public abstract class GraphBase
+	/// <summary>
+	/// Base type of the graph
+	/// </summary>
+	public abstract class GraphBase
     {
         #region Fields
 

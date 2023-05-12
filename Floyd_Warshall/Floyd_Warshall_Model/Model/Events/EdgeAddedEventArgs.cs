@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Model.Events
 {
-    /// <summary>
-    /// Type of the edge added event argument
-    /// </summary>
-    public class EdgeAddedEventArgs : EventArgs
+	/// <summary>
+	/// Type of the edge added event argument
+	/// </summary>
+	public class EdgeAddedEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor of the edge added event argument

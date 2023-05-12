@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace Floyd_Warshall.ViewModel
 {
-    /// <summary>
-    /// Type of the viewmodel base class
-    /// </summary>
-    public abstract class ViewModelBase : INotifyPropertyChanged
+	/// <summary>
+	/// Type of the viewmodel base class
+	/// </summary>
+	public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

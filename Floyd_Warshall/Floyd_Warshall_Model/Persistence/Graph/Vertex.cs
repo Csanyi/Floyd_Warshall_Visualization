@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
-    /// <summary>
-    /// Type of the graph vertex
-    /// </summary>
-    public class Vertex
+	/// <summary>
+	/// Type of the graph vertex
+	/// </summary>
+	public class Vertex
     {
         /// <summary>
         /// Constuctor of the vertex

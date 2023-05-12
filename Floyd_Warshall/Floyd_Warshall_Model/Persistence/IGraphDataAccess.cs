@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall_Model.Persistence
 {
-    /// <summary>
-    /// Inteface to manage the graph data access
-    /// </summary>
-    public interface IGraphDataAccess
+	/// <summary>
+	/// Inteface to manage the graph data access
+	/// </summary>
+	public interface IGraphDataAccess
     {
         /// <summary>
         /// Loads graph

@@ -5,10 +5,10 @@ using Floyd_Warshall_Model.Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
-    /// <summary>
-    /// Type of the directed edge viewmodel
-    /// </summary>
-    public class DirectedEdgeViewModel : EdgeViewModelBase
+	/// <summary>
+	/// Type of the directed edge viewmodel
+	/// </summary>
+	public class DirectedEdgeViewModel : EdgeViewModelBase
     {
         private readonly int _vertexRadius = VertexViewModel.Size / 2;
         private const double _angleOffset = 0.3;                      

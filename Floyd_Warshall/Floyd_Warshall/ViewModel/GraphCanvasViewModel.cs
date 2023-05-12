@@ -9,10 +9,10 @@ using Floyd_Warshall_Model.Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
-    /// <summary>
-    /// Type of the graph canvas viewmodel
-    /// </summary>
-    public class GraphCanvasViewModel : ViewModelBase
+	/// <summary>
+	/// Type of the graph canvas viewmodel
+	/// </summary>
+	public class GraphCanvasViewModel : ViewModelBase
     {
         #region Fields
 
@@ -225,6 +225,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
 
             SelectedEdge = null;
             SelectedVertex = null;
+
+            HasInputError = false;
 
             OnPropertyChanged(nameof(MaxVertexCountReached));
         }

@@ -8,7 +8,7 @@ using System.Data;
 
 namespace Floyd_Warshall_Test
 {
-    [TestClass]
+	[TestClass]
     public class GraphModelTest
     {
         #region Fields

@@ -1,11 +1,9 @@
-﻿using Floyd_Warshall_Model.Persistence;
-
-namespace Floyd_Warshall_Model.Model.Events
+﻿namespace Floyd_Warshall_Model.Model.Events
 {
-    /// <summary>
-    /// Type of the graph location event argument
-    /// </summary>
-    public class GraphLocationEventArgs : EventArgs
+	/// <summary>
+	/// Type of the graph location event argument
+	/// </summary>
+	public class GraphLocationEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor of the graph location event argument

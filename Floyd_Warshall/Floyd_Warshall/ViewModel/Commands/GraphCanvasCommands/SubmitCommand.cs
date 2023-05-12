@@ -5,10 +5,10 @@ using System.ComponentModel;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
-    /// <summary>
-    /// Type of the submit command
-    /// </summary>
-    public class SubmitCommand : GraphCanvasCommandBase
+	/// <summary>
+	/// Type of the submit command
+	/// </summary>
+	public class SubmitCommand : GraphCanvasCommandBase
     {
         private readonly GraphModel _graphModel;
 

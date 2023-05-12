@@ -5,10 +5,10 @@ using Floyd_Warshall_Model.Model;
 
 namespace Floyd_Warshall.ViewModel.Commands.GraphCanvasCommands
 {
-    /// <summary>
-    /// Type of the vertex left click command
-    /// </summary>
-    public class VertexLeftClickCommand : GraphCanvasCommandBase
+	/// <summary>
+	/// Type of the vertex left click command
+	/// </summary>
+	public class VertexLeftClickCommand : GraphCanvasCommandBase
     {
         private readonly GraphModel _graphModel;
 

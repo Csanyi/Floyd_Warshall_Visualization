@@ -2,10 +2,10 @@
 
 namespace Floyd_Warshall_Model.Model.Events
 {
-    /// <summary>
-    /// Type of the algorithm step event argument
-    /// </summary>
-    public class AlgorithmSteppedEventArgs : EventArgs
+	/// <summary>
+	/// Type of the algorithm step event argument
+	/// </summary>
+	public class AlgorithmSteppedEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor of the algorithm step event argument

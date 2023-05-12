@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace Floyd_Warshall.View.Converters
 {
-    public class IntWithInfConverter : IValueConverter
+	public class IntWithInfConverter : IValueConverter
     {
         /// <returns>Unicode charecter infinity if value is int.MaxValue,
         /// otherwise the value's string representation</returns>

@@ -18,7 +18,7 @@
     <system:String x:Key="StrEn">Angol</system:String>
     <system:String x:Key="StrHu">Magyar</system:String>
 
-    <system:String x:Key="StrInit">Inicializáció</system:String>
+    <system:String x:Key="StrInit">Inicializál</system:String>
     <system:String x:Key="StrCancel">Bezár</system:String>
     <system:String x:Key="StrStart">Elindít</system:String>
     <system:String x:Key="StrStop">Leállít</system:String>
@@ -29,8 +29,8 @@
     <system:String x:Key="StrSubmit">Beállít</system:String>
     <system:String x:Key="StrWeight">Élsúly</system:String>
     <system:String x:Key="StrMaxVert">Elérte a csúcsok maximális számát</system:String>
-    <system:String x:Key="StrWeightError">Legfeljebb 4 számjegyű számok megengedettek</system:String>
-    <system:String x:Key="StrNegCycle">Negatív kör!</system:String>
+    <system:String x:Key="StrWeightError">Legfeljebb 4 jegyű számok megengedettek</system:String>
+    <system:String x:Key="StrNegCycle">Negatív kör található a gráfban!</system:String>
 
     <system:String x:Key="StrHelp" xml:space="preserve">
         Gyors segítség:

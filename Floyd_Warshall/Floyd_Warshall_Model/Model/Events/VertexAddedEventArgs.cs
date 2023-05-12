@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Model.Events
 {
-    /// <summary>
-    /// Type of the vertex added event argument
-    /// </summary>
-    public class VertexAddedEventArgs : EventArgs
+	/// <summary>
+	/// Type of the vertex added event argument
+	/// </summary>
+	public class VertexAddedEventArgs : EventArgs
     {
         /// <summary>
         /// Constructor of the vertex added event argument

@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Model
 {
-    /// <summary>
-    /// Type to store the vertex location
-    /// </summary>
-    public class VertexLocation
+	/// <summary>
+	/// Type to store the vertex location
+	/// </summary>
+	public class VertexLocation
     {
         /// <summary>
         /// Constructor of the VertexLocation

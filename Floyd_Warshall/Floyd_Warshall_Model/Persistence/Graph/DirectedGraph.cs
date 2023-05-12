@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
-    /// <summary>
-    /// Type of the directed graph
-    /// </summary>
-    public class DirectedGraph : GraphBase
+	/// <summary>
+	/// Type of the directed graph
+	/// </summary>
+	public class DirectedGraph : GraphBase
     {
         /// <summary>
         /// Constructor of the undirected graph

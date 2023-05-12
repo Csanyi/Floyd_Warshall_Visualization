@@ -1,9 +1,9 @@
 ﻿namespace Floyd_Warshall_Model.Persistence.Graph
 {
-    /// <summary>
-    /// Type of the graph edge
-    /// </summary>
-    public class Edge
+	/// <summary>
+	/// Type of the graph edge
+	/// </summary>
+	public class Edge
     {
         /// <summary>
         /// Constructor of the edge

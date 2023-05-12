@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace Floyd_Warshall.View.Converters
 {
-    public class BoolToVisibilityConverter : IValueConverter
+	public class BoolToVisibilityConverter : IValueConverter
     {
         /// <summary>
         /// Converts a bool value to Visibility type

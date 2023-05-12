@@ -5,16 +5,14 @@ using Floyd_Warshall_Model.Model.Events;
 using Floyd_Warshall_Model.Persistence;
 using Microsoft.Win32;
 using System;
-using System.Globalization;
-using System.Threading;
 using System.Windows;
 
 namespace Floyd_Warshall
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+	/// <summary>
+	/// Interaction logic for App.xaml
+	/// </summary>
+	public partial class App : Application
     {
         #region Fields
 
@@ -37,13 +35,6 @@ namespace Floyd_Warshall
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-
-
-            CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("hu-HU");
-
-			Thread.CurrentThread.CurrentCulture = cultureInfo;
-			Thread.CurrentThread.CurrentUICulture = cultureInfo;
-
 			_graphModel = new GraphModel(new GraphFileDataAccess());
             _viewModel = new MainViewModel(_graphModel);
 
@@ -52,15 +43,14 @@ namespace Floyd_Warshall
             _viewModel.SaveGraph += ViewModel_SaveGraph;
             _viewModel.Exit += ViewModel_Exit;
 
-            _viewModel.SwithLanguage += ViewModel_SwitchLanguage;
+            _viewModel.SwitchLanguage += ViewModel_SwitchLanguage;
 
 			_view = new MainWindow
             {
                 DataContext = _viewModel
             };
 
-			ViewModel_SwitchLanguage(this, "en-US");
-
+			ViewModel_SwitchLanguage(this, new LanguageEventArgs("en"));
 
 			_view.Show();
         }
@@ -142,12 +132,11 @@ namespace Floyd_Warshall
             _view.Close();
         }
 
-		private void ViewModel_SwitchLanguage(object? sender, string? e)
+		private void ViewModel_SwitchLanguage(object? sender, LanguageEventArgs e)
         {
             ResourceDictionary dict = new ResourceDictionary();
 
-
-			switch (e)
+			switch (e.LangCode)
             {
                 case "en":
                     dict.Source = new Uri("..\\Resources\\AppText.xaml", UriKind.Relative);

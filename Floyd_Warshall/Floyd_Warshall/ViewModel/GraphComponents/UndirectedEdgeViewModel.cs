@@ -3,10 +3,10 @@ using Floyd_Warshall_Model.Model.Events;
 
 namespace Floyd_Warshall.ViewModel.GraphComponents
 {
-    /// <summary>
-    /// Type of the undirected edge viewmodel
-    /// </summary>
-    public class UndirectedEdgeViewModel : EdgeViewModelBase
+	/// <summary>
+	/// Type of the undirected edge viewmodel
+	/// </summary>
+	public class UndirectedEdgeViewModel : EdgeViewModelBase
     {
         /// <summary>
         /// Constructor of the undirected edge viewmodel

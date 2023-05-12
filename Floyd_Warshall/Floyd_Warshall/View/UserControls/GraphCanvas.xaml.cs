@@ -57,7 +57,7 @@ namespace Floyd_Warshall.View.UserControls
 
                 if (CanvasClick != null && CanvasClick.CanExecute(null))
                 {
-                    CanvasClick?.Execute(null);
+                    CanvasClick.Execute(null);
 
                 }
             }

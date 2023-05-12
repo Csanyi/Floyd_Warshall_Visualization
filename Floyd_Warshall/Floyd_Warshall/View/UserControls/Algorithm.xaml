@@ -35,13 +35,12 @@
                     </Style.Triggers>
                 </Style>
             </TextBlock.Style>
-            
             Quick help: <LineBreak/>
             - Click on the canvas to create a vertex <LineBreak/>
             - Select two verteces to create an edge <LineBreak/>
-            - To change the weight of an edge, click  it <LineBreak/>
+            - Click on an edge to change its weight<LineBreak/>
             - You can drag and drop the vertices <LineBreak/>
-            - Right-click to delete a vertex or edge <LineBreak/>
+            - Right-click to delete a vertex or an edge <LineBreak/>
             - Create at least two verteces to start the algortihm <LineBreak/>
         </TextBlock>
         

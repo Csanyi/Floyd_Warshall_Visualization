@@ -30,7 +30,7 @@
                         ClipToBounds="True"
                         AllowDrop="True"
                         Drop="Canvas_Drop"
-                        MouseLeftButtonDown="Canvas_MouseLeftButtonUp" >
+                        MouseLeftButtonUp="Canvas_MouseLeftButtonUp" >
                     </Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>

@@ -1,0 +1,55 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="StrTitle">Floyd-Warshall Vizualizáció</system:String>
+    
+    <system:String x:Key="StrFile">Fájl</system:String>
+    <system:String x:Key="StrLang">Nyelv</system:String>
+    
+    <system:String x:Key="StrNew">Új Gráf</system:String>
+    <system:String x:Key="StrOpen">Megnyitás</system:String>
+    <system:String x:Key="StrSave">Mentés</system:String>
+    <system:String x:Key="StrExit">Kilépés</system:String>
+    
+    <system:String x:Key="StrDirected">Irányított</system:String>
+    <system:String x:Key="StrUndirected">Irányítatlan</system:String>
+    
+    <system:String x:Key="StrEn">Angol</system:String>
+    <system:String x:Key="StrHu">Magyar</system:String>
+
+    <system:String x:Key="StrInit">Inicializáció</system:String>
+    <system:String x:Key="StrCancel">Bezár</system:String>
+    <system:String x:Key="StrStart">Elindít</system:String>
+    <system:String x:Key="StrStop">Leállít</system:String>
+    <system:String x:Key="StrStepBack">Visszalép</system:String>
+    <system:String x:Key="StrStepForward">Előrelép</system:String>
+    <system:String x:Key="StrSpeed">Sebesség</system:String>
+
+    <system:String x:Key="StrSubmit">Beállít</system:String>
+    <system:String x:Key="StrWeight">Élsúly</system:String>
+    <system:String x:Key="StrMaxVert">Elérte a csúcsok maximális számát</system:String>
+    <system:String x:Key="StrWeightError">Legfeljebb 4 számjegyű számok megengedettek</system:String>
+    <system:String x:Key="StrNegCycle">Negatív kör!</system:String>
+
+    <system:String x:Key="StrHelp" xml:space="preserve">
+        Gyors segítség:
+        - Csúcs létrehozásához kattintson a vászonra
+        - Válasszon ki két csúcsot egy él létrehozásához
+        - Kattintson egy élre a súlyának megváltoztatásához
+        - A csúcsokat a jobb egérgomb lenyomva tartása mellett tudja mozgatni
+        - Kattintson a jobb egérgombbal egy csúcsra vagy egy élre a törléséhez
+        - Hozzon létre legalább két csúcsot az algoritmus elindításához
+    </system:String>
+
+    <system:String x:Key="StrGraph">Gráf</system:String>
+    <system:String x:Key="StrLoadGraph">Gráf betöltése</system:String>
+    <system:String x:Key="StrSaveGraph">Gráf mentése</system:String>
+    <system:String x:Key="StrError">Hiba</system:String>
+    <system:String x:Key="StrLoadError">Betöltés sikertelen!</system:String>
+    <system:String x:Key="StrSaveError">Mentés sikertelen!</system:String>
+    <system:String x:Key="StrPathError">Az elérési út helytelen, vagy a könyvtárat nem lehet írni</system:String>
+
+
+
+</ResourceDictionary>

@@ -7,7 +7,7 @@
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:userControls="clr-namespace:Floyd_Warshall.View.UserControls"
         mc:Ignorable="d"
-        Title="Floyd-Warshall Visulatiton"
+        Title="{DynamicResource StrTitle}"
         Height="720" Width="1280" MinHeight="562" MinWidth="1000"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         SizeChanged="MainWindow_SizeChanged" >
@@ -18,22 +18,55 @@
         </Grid.RowDefinitions>
 
         <Menu>
-            <MenuItem Header="File">
-                <MenuItem Header="New Graph" IsEnabled="{Binding CommandsEnabled}">
-                    <MenuItem Header="Directed" Command="{Binding NewGraphCommand}">
+            <MenuItem Header="{DynamicResource StrFile}">
+                <MenuItem Header="{DynamicResource StrNew}" IsEnabled="{Binding CommandsEnabled}">
+                    <MenuItem.Icon>
+                        <Image Source="..\Resources\Icons\new-file-50.png" />
+                    </MenuItem.Icon>
+                    <MenuItem Header="{DynamicResource StrDirected}" Command="{Binding NewGraphCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="..\Resources\Icons\arrow-50.png" />
+                        </MenuItem.Icon>
                         <MenuItem.CommandParameter>
                             <s:Boolean>True</s:Boolean>
                         </MenuItem.CommandParameter>
                     </MenuItem>
-                    <MenuItem Header="Undirected" Command="{Binding NewGraphCommand}">
+                    <MenuItem Header="{DynamicResource StrUndirected}" Command="{Binding NewGraphCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="..\Resources\Icons\line-50.png" />
+                        </MenuItem.Icon>
                         <MenuItem.CommandParameter>
                             <s:Boolean>False</s:Boolean>
                         </MenuItem.CommandParameter>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Open" Command="{Binding LoadGraphCommand}" />
-                <MenuItem Header="Save" Command="{Binding SaveGraphCommand}" />
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+                <MenuItem Header="{DynamicResource StrOpen}" Command="{Binding LoadGraphCommand}" InputGestureText="Ctrl+O" >
+                    <MenuItem.Icon>
+                        <Image Source="..\Resources\Icons\open-50.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource StrSave}" Command="{Binding SaveGraphCommand}" InputGestureText="Ctrl+S" >
+                    <MenuItem.Icon>
+                        <Image Source="..\Resources\Icons\save-50.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource StrExit}" Command="{Binding ExitCommand}" >
+                    <MenuItem.Icon>
+                        <Image Source="..\Resources\Icons\cross-50.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource StrLang}" >
+                <MenuItem Header="{DynamicResource StrEn}" Command="{Binding SwitchLanguageCommand}" CommandParameter="en" >
+                    <MenuItem.Icon>
+                        <Image Source="..\Resources\Icons\great-britain-48.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource StrHu}" Command="{Binding SwitchLanguageCommand}" CommandParameter="hu" >
+                    <MenuItem.Icon>
+                        <Image Source="..\Resources\Icons\hungary-48.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
 

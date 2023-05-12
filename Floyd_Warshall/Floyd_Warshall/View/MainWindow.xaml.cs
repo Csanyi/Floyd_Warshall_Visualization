@@ -27,5 +27,5 @@ namespace Floyd_Warshall.View
             graphCanvas.canvas.LayoutTransform = scale;
             graphCanvas.canvas.UpdateLayout();
         }
-    }
+	}
 }

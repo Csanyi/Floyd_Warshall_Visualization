@@ -66,6 +66,9 @@ namespace Floyd_Warshall.ViewModel
         /// </summary>
         public ICommand ExitCommand { get; private set; }
 
+
+        public ICommand SwitchLanguageCommand { get; private set; }
+
         #endregion
 
         #region Events
@@ -74,6 +77,7 @@ namespace Floyd_Warshall.ViewModel
         public event EventHandler? LoadGraph;
         public event EventHandler<GraphLocationEventArgs>? SaveGraph;
         public event EventHandler? Exit;
+        public event EventHandler<string?>? SwithLanguage;
 
         #endregion
 
@@ -88,10 +92,12 @@ namespace Floyd_Warshall.ViewModel
             _graphCanvas = new GraphCanvasViewModel(graphModel);
             _algorithm = new AlgorithmViewModel(graphModel);
 
-            NewGraphCommand = new DelegateCommand(param => OnNewGraph(Convert.ToBoolean(param)), param => CommandsEnabled);
-            LoadGraphCommand = new DelegateCommand(param => OnLoad(), param => CommandsEnabled);
-            SaveGraphCommand = new DelegateCommand(param => OnSave());
-            ExitCommand = new DelegateCommand(param => OnExit());
+            NewGraphCommand = new DelegateCommand(param => OnNewGraph(Convert.ToBoolean(param)), _ => CommandsEnabled);
+            LoadGraphCommand = new DelegateCommand(_ => OnLoad(), _ => CommandsEnabled);
+            SaveGraphCommand = new DelegateCommand(_ => OnSave());
+            ExitCommand = new DelegateCommand(_ => OnExit());
+
+			SwitchLanguageCommand = new DelegateCommand(param => OnLanguageSwitched(param as string));
 
             graphModel.AlgorithmInitialized += Model_AlgorithmInitialized;
             graphModel.AlgorithmCancelled += Model_AlgorithmCancelled;
@@ -137,6 +143,9 @@ namespace Floyd_Warshall.ViewModel
         /// Triggers the Exit event
         /// </summary>
         private void OnExit() => Exit?.Invoke(this, EventArgs.Empty);
+
+
+        private void OnLanguageSwitched(string? lang) => SwithLanguage?.Invoke(this, lang);
 
         #endregion
     }

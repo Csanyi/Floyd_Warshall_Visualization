@@ -64,7 +64,7 @@
         </ItemsControl>
         <StatusBar Grid.Row="1">
             <StatusBarItem DockPanel.Dock="Left" Visibility="{Binding IsEdgeSelected, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Text="Edge weight" />
+                <TextBlock Text="{DynamicResource StrWeight}" />
             </StatusBarItem>
             <StatusBarItem DockPanel.Dock="Left"  Visibility="{Binding IsEdgeSelected, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBox
@@ -79,17 +79,17 @@
             </StatusBarItem>
             <StatusBarItem DockPanel.Dock="Left"  Visibility="{Binding IsEdgeSelected, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Button
-                    Content="Submit"
+                    Content="{DynamicResource StrSubmit}"
                     Padding="2,0" 
                     Command="{Binding SubmitCommand}">
                 </Button>
             </StatusBarItem>
             <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="2,0" Visibility="{Binding HasInputError, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Text="Numbers up to 4-digits are allowed"/>
+                <TextBlock Text="{DynamicResource StrWeightError}"/>
             </StatusBarItem>
             <Separator Width="1" DockPanel.Dock="Right" HorizontalAlignment="Right"  Visibility="{Binding MaxVertexCountReached, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <StatusBarItem DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="2,0" Visibility="{Binding MaxVertexCountReached, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Text="Maximum vertex count is reached"/>
+                <TextBlock Text="{DynamicResource StrMaxVert}"/>
             </StatusBarItem>
         </StatusBar>
         <Grid.Style>

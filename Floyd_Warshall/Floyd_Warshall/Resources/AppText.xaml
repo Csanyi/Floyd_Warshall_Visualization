@@ -1,0 +1,52 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="StrTitle">Floyd-Warshall Visulatiton</system:String>
+    
+    <system:String x:Key="StrFile">File</system:String>
+    <system:String x:Key="StrLang">Language</system:String>
+    
+    <system:String x:Key="StrNew">New Graph</system:String>
+    <system:String x:Key="StrOpen">Open</system:String>
+    <system:String x:Key="StrSave">Save</system:String>
+    <system:String x:Key="StrExit">Exit</system:String>
+    <system:String x:Key="StrDirected">Directed</system:String>
+    <system:String x:Key="StrUndirected">Undirected</system:String>
+    
+    <system:String x:Key="StrEn">English</system:String>
+    <system:String x:Key="StrHu">Hungarian</system:String>
+    
+    <system:String x:Key="StrInit">Initialize</system:String>
+    <system:String x:Key="StrCancel">Cancel</system:String>
+    <system:String x:Key="StrStart">Start</system:String>
+    <system:String x:Key="StrStop">Stop</system:String>
+    <system:String x:Key="StrStepBack">Step back</system:String>
+    <system:String x:Key="StrStepForward">Step forward</system:String>
+    <system:String x:Key="StrSpeed">Speed</system:String>
+
+    <system:String x:Key="StrSubmit">Submit</system:String>
+    <system:String x:Key="StrWeight">Edge weight</system:String>
+    <system:String x:Key="StrMaxVert">Maximum vertex count is reached</system:String>
+    <system:String x:Key="StrWeightError">Numbers up to 4-digits are allowed</system:String>
+    <system:String x:Key="StrNegCycle">Negative cycle found!</system:String>
+
+    <system:String x:Key="StrHelp" xml:space="preserve">
+        Quick help:
+        - Click on the canvas to create a vertex
+        - Select two verteces to create an edge
+        - Click on an edge to change its weight
+        - You can drag and drop the vertices
+        - Right-click to delete a vertex or an edge
+        - Create at least two verteces to start the algortihm
+    </system:String>
+
+    <system:String x:Key="StrGraph">Graph</system:String>
+    <system:String x:Key="StrLoadGraph">Open graph</system:String>
+    <system:String x:Key="StrSaveGraph">Save graph</system:String>
+    <system:String x:Key="StrError">Error</system:String>
+    <system:String x:Key="StrLoadError">Loading failed!</system:String>
+    <system:String x:Key="StrSaveError">Save failed!</system:String>
+    <system:String x:Key="StrPathError">The path is incorrect or the directory cannot be written</system:String>
+
+</ResourceDictionary>

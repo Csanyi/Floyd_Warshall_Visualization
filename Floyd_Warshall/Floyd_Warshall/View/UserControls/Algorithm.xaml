@@ -22,7 +22,8 @@
             Grid.Row="0"
             Foreground="Gray"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Text="{DynamicResource StrHelp}">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Style.Triggers>
@@ -35,13 +36,6 @@
                     </Style.Triggers>
                 </Style>
             </TextBlock.Style>
-            Quick help: <LineBreak/>
-            - Click on the canvas to create a vertex <LineBreak/>
-            - Select two verteces to create an edge <LineBreak/>
-            - Click on an edge to change its weight<LineBreak/>
-            - You can drag and drop the vertices <LineBreak/>
-            - Right-click to delete a vertex or an edge <LineBreak/>
-            - Create at least two verteces to start the algortihm <LineBreak/>
         </TextBlock>
         
         <Grid 
@@ -112,11 +106,11 @@
                         <Setter Property="Margin"  Value="8,2"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsInitialized}" Value="False" >
-                                <Setter Property="Content" Value="Initialize" />
+                                <Setter Property="Content" Value="{DynamicResource StrInit}" />
                                 <Setter Property="Command" Value="{Binding InitCommand}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsInitialized}" Value="True" >
-                                <Setter Property="Content" Value="Cancel" />
+                                <Setter Property="Content" Value="{DynamicResource StrCancel}" />
                                 <Setter Property="Command" Value="{Binding CancelCommand}" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -129,20 +123,20 @@
                         <Setter Property="Margin"  Value="8,2"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsStopped}" Value="False" >
-                                <Setter Property="Content" Value="Pause" />
+                                <Setter Property="Content" Value="{DynamicResource StrStart}" />
                                 <Setter Property="Command" Value="{Binding PauseCommand}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsStopped}" Value="True" >
-                                <Setter Property="Content" Value="Start" />
+                                <Setter Property="Content" Value="{DynamicResource StrStop}" />
                                 <Setter Property="Command" Value="{Binding StartCommand}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Grid.Column="2" Content="Step back" Command="{Binding StepBackCommand}" Margin="8,2"/>
-            <Button Grid.Column="3" Content="Step forward" Command="{Binding StepCommand}" Margin="8,2"/>
-            <TextBlock Grid.Column="4" Text="Speed" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,2"/>
+            <Button Grid.Column="2" Content="{DynamicResource StrStepBack}" Command="{Binding StepBackCommand}" Margin="8,2"/>
+            <Button Grid.Column="3" Content="{DynamicResource StrStepForward}" Command="{Binding StepCommand}" Margin="8,2"/>
+            <TextBlock Grid.Column="4" Text="{DynamicResource StrSpeed}" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Margin="10,2"/>
             <Slider Grid.Column="5" Minimum="0" Maximum="2000" TickPlacement="BottomRight" TickFrequency="250" IsSnapToTickEnabled="True" Value="{Binding TimerInterval}"/>
         </Grid>
 

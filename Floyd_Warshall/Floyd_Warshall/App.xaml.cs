@@ -5,6 +5,8 @@ using Floyd_Warshall_Model.Model.Events;
 using Floyd_Warshall_Model.Persistence;
 using Microsoft.Win32;
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
 
 namespace Floyd_Warshall
@@ -35,7 +37,14 @@ namespace Floyd_Warshall
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            _graphModel = new GraphModel(new GraphFileDataAccess());
+
+
+            CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture("hu-HU");
+
+			Thread.CurrentThread.CurrentCulture = cultureInfo;
+			Thread.CurrentThread.CurrentUICulture = cultureInfo;
+
+			_graphModel = new GraphModel(new GraphFileDataAccess());
             _viewModel = new MainViewModel(_graphModel);
 
             _viewModel.NewGraph += ViewModel_NewGraph;
@@ -43,12 +52,17 @@ namespace Floyd_Warshall
             _viewModel.SaveGraph += ViewModel_SaveGraph;
             _viewModel.Exit += ViewModel_Exit;
 
-            _view = new MainWindow
+            _viewModel.SwithLanguage += ViewModel_SwitchLanguage;
+
+			_view = new MainWindow
             {
                 DataContext = _viewModel
             };
 
-            _view.Show();
+			ViewModel_SwitchLanguage(this, "en-US");
+
+
+			_view.Show();
         }
 
         #endregion
@@ -62,12 +76,18 @@ namespace Floyd_Warshall
      
         private async void ViewModel_LoadGraph(object? sender, EventArgs e)
         {
-            try
-            {
+            string? graph = Resources["StrGraph"] as string;
+			string? load = Resources["StrLoadGraph"] as string;
+			string? fail = Resources["StrLoadError"] as string;
+			string? error =Resources["StrError"] as string;
+			string? title = Resources["StrTitle"] as string;
+
+			try
+			{
                 OpenFileDialog openFileDialog = new OpenFileDialog
                 {
-                    Title = "Open graph",
-                    Filter = "Graph|*.gph"
+                    Title = load,
+                    Filter = $"{graph}|*.gph"
                 };
 
                 if (openFileDialog.ShowDialog() == true)
@@ -77,18 +97,25 @@ namespace Floyd_Warshall
             }
             catch (GraphDataException)
             {
-                MessageBox.Show("Loading failed!", "Floyd-Warshall Visulation - Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(fail, $"{title} - {error}", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 }
 
         private async void ViewModel_SaveGraph(object? sender, GraphLocationEventArgs e)
         {
-            try
+			string? graph = Resources["StrGraph"] as string;
+			string? save = Resources["StrSaveGraph"] as string;
+			string? fail = Resources["StrSaveError"] as string;
+			string? error = Resources["StrError"] as string;
+			string? title = Resources["StrTitle"] as string;
+            string? pathError = Resources["StrPathError"] as string;
+
+			try
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
-                    Title = "Save graph",
-                    Filter = "Graph|*.gph"
+                    Title = save,
+                    Filter = $"{graph}|*.gph"
                 };
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -99,21 +126,43 @@ namespace Floyd_Warshall
                     }
                     catch (GraphDataException)
                     {
-                        MessageBox.Show("Save failed!" + Environment.NewLine + "The path is incorrect or the directory cannot be written.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(fail + Environment.NewLine + pathError, $"{title} - {error}",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
             catch
             {
-                MessageBox.Show("Save failed!", "Floyd-Warshall Visulation - Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+				MessageBox.Show(fail, $"{title} - {error}", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
 
         private void ViewModel_Exit(object? sender, EventArgs e)
         {
             _view.Close();
         }
 
-        #endregion
-    }
+		private void ViewModel_SwitchLanguage(object? sender, string? e)
+        {
+            ResourceDictionary dict = new ResourceDictionary();
+
+
+			switch (e)
+            {
+                case "en":
+                    dict.Source = new Uri("..\\Resources\\AppText.xaml", UriKind.Relative);
+                    break;
+				case "hu":
+                    dict.Source = new Uri("..\\Resources\\AppText.hu-HU.xaml", UriKind.Relative);
+					break;
+				default:
+                    dict.Source = new Uri("..\\Resources\\AppText.xaml", UriKind.Relative);
+					break;
+			}
+
+            Resources.MergedDictionaries.Add(dict);
+        }
+
+		#endregion
+	}
 }

@@ -18,12 +18,12 @@
     <system:String x:Key="StrEn">Angol</system:String>
     <system:String x:Key="StrHu">Magyar</system:String>
 
-    <system:String x:Key="StrInit">Inicializál</system:String>
-    <system:String x:Key="StrCancel">Bezár</system:String>
-    <system:String x:Key="StrStart">Elindít</system:String>
-    <system:String x:Key="StrStop">Leállít</system:String>
-    <system:String x:Key="StrStepBack">Visszalép</system:String>
-    <system:String x:Key="StrStepForward">Előrelép</system:String>
+    <system:String x:Key="StrInit">Inicializálás</system:String>
+    <system:String x:Key="StrCancel">Bezárás</system:String>
+    <system:String x:Key="StrStart">Elindítás</system:String>
+    <system:String x:Key="StrStop">Leállítás</system:String>
+    <system:String x:Key="StrStepBack">Visszalépés</system:String>
+    <system:String x:Key="StrStepForward">Előrelépés</system:String>
     <system:String x:Key="StrSpeed">Sebesség</system:String>
 
     <system:String x:Key="StrSubmit">Beállít</system:String>

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="StrTitle">Floyd-Warshall Visulatiton</system:String>
+    <system:String x:Key="StrTitle">Floyd-Warshall Visualization</system:String>
     
     <system:String x:Key="StrFile">File</system:String>
     <system:String x:Key="StrLang">Language</system:String>

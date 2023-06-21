@@ -110,7 +110,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// </summary>
         public bool CanvasEnabled
         {
-            get => _canvasEnabled;
+            get { return _canvasEnabled; }
             set
             {
                 _canvasEnabled = value;
@@ -139,12 +139,12 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// <summary>
         /// Gets or sets the list of vertices
         /// </summary>
-        public ICollection<VertexViewModel> Verteces { get; set; }
+        public ICollection<VertexViewModel> Verteces { get; private set; }
 
         /// <summary>
         /// Gets or sets the list of edges
         /// </summary>
-        public ICollection<EdgeViewModelBase> Edges { get; set; }
+        public ICollection<EdgeViewModelBase> Edges { get; private set; }
 
         /// <summary>
         /// Gets or sets the list of graph components

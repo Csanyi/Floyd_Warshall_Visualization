@@ -55,8 +55,8 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
             get { return _graphModel.GetWeight(From.Id, To.Id) ?? 0; }
         }
 
-        public override double CanvasX { get { return Math.Min(From.CanvasX, To.CanvasX) + VertexViewModel.Size / 2; } }
-        public override double CanvasY { get { return Math.Min(From.CanvasY, To.CanvasY) + VertexViewModel.Size / 2; } }
+        public override double CanvasX { get { return Math.Min(From.GetX(), To.GetX()); } }
+        public override double CanvasY { get { return Math.Min(From.GetY(), To.GetY()); } }
 
         /// <summary>
         /// Gets the edge start's x coord

@@ -149,7 +149,7 @@ namespace Floyd_Warshall.ViewModel
         /// <summary>
         /// Triggers the SwitchLanguage event
         /// </summary>
-        /// <param name="lang">The code of the language</param>
+        /// <param name="langCode">The code of the language</param>
         private void OnLanguageSwitch(string? langCode) => SwitchLanguage?.Invoke(this, new LanguageEventArgs(langCode));
 
         #endregion

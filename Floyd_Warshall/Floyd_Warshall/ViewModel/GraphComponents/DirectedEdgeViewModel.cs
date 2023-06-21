@@ -28,7 +28,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         {
             get
             {
-                double x1 = From.CanvasX - CanvasX + _vertexRadius;
+                double x1 = From.GetX() - CanvasX;
                 double radian = AngleInRadian;
                 double offset = _vertexRadius * Math.Cos(radian - _angleOffset);
 
@@ -47,7 +47,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         {
             get
             {
-                double y1 = From.CanvasY - CanvasY + _vertexRadius;
+                double y1 = From.GetY() - CanvasY;
                 double radian = AngleInRadian;
                 double offset = _vertexRadius * Math.Sin(radian - _angleOffset);
 
@@ -66,7 +66,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         {
             get
             {
-                double x2 = To.CanvasX - CanvasX + _vertexRadius;
+                double x2 = To.GetX() - CanvasX;
                 double radian = AngleInRadian;
                 double offset = (_vertexRadius + _endPointOffset) * Math.Cos(radian + _angleOffset);
 
@@ -86,7 +86,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         {
             get
             {
-                double y2 = To.CanvasY - CanvasY + _vertexRadius;
+                double y2 = To.GetY() - CanvasY;
                 double radian = AngleInRadian;
                 double offset = (_vertexRadius + _endPointOffset) * Math.Sin(radian + _angleOffset);
 

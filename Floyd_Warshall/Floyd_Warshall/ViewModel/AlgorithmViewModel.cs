@@ -121,7 +121,7 @@ namespace Floyd_Warshall.ViewModel
         /// </summary>
         public bool IsStopped
         {
-            get => _isStopped;
+            get { return _isStopped; }
             set
             {
                 _isStopped = value;

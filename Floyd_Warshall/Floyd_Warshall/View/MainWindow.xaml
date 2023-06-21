@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Menu>
+        <Menu Grid.Row="0">
             <MenuItem Header="{DynamicResource StrFile}">
                 <MenuItem Header="{DynamicResource StrNew}" IsEnabled="{Binding CommandsEnabled}">
                     <MenuItem.Icon>

@@ -52,11 +52,8 @@
                     <Setter Property="Canvas.Left" Value="{Binding CanvasX}" />
                     <Setter Property="Canvas.Top" Value="{Binding CanvasY}" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Type}" Value="{x:Type vm:EdgeViewModelBase}">
-                            <Setter Property="Panel.ZIndex" Value="1" />
-                        </DataTrigger>
                         <DataTrigger Binding="{Binding Type}" Value="{x:Type vm:VertexViewModel}">
-                            <Setter Property="Panel.ZIndex" Value="2" />
+                            <Setter Property="Panel.ZIndex" Value="1" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

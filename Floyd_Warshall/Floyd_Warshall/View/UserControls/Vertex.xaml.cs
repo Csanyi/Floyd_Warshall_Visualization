@@ -14,9 +14,6 @@ namespace Floyd_Warshall.View.UserControls
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty IdProperty =
-            DependencyProperty.Register("Id", typeof(int), typeof(Vertex), new PropertyMetadata(0));
-
         public double X
         {
             get { return (double)GetValue(XProperty); }

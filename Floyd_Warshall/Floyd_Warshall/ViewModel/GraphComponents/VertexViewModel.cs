@@ -28,7 +28,7 @@ namespace Floyd_Warshall.ViewModel.GraphComponents
         /// <summary>
         /// Gets or sets the vertex in and out edges
         /// </summary>
-        public ICollection<EdgeViewModelBase> Edges { get; set; }
+        public ICollection<EdgeViewModelBase> Edges { get; private set; }
 
         /// <summary>
         /// Gets or sets the inNegCycle field

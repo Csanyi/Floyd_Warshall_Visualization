@@ -30,12 +30,12 @@
             </Ellipse.Style>
         </Ellipse>
         <ContentPresenter 
-                        Content="{Binding Id}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        TextBlock.FontSize="12"
-                        TextBlock.FontWeight="Bold"
-                        IsHitTestVisible="False"/>
+            Content="{Binding Id}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            TextBlock.FontSize="12"
+            TextBlock.FontWeight="Bold"
+            IsHitTestVisible="False"/>
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseLeftButtonUp" >
                 <i:InvokeCommandAction Command="{Binding LeftClickCommand}" CommandParameter="{Binding Id}" />
